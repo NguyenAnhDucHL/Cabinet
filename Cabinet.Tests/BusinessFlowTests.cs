@@ -84,44 +84,7 @@ namespace Cabinet.Tests
 
         }
 
-        [Fact]
-        public async Task Scenario2_NotificationLogic_DeadlineWorker_ShouldGenerateAuditLogs()
-        {
-            // --- ARRANGE ---
-            // Tạo 1 văn bản có hạn xử lý vào 7 ngày tới
-            var deadline = DateTime.Now.AddDays(7);
-            var doc = new DocumentRecord
-            {
-                SoVanBan = "NOTIFY-7DAYS",
-                ThoiHan = deadline,
-                Status = "Chưa xử lý",
-                NgayThem = DateTime.Now
-            };
-            using (var scope = Factory.Services.CreateScope()) { await scope.ServiceProvider.GetRequiredService<IDocumentRepository>().InsertAsync(doc); }
 
-            // --- ACT ---
-            // Lấy worker từ DI container của Factory và chạy logic quét
-            using (var scope = Factory.Services.CreateScope())
-            {
-                // Vì DeadlineWorker là BackgroundService, ta có thể lấy các service nó dùng để simulate
-                // Hoặc đơn giản là kiểm tra bảng AuditLog sau khi worker thực hiện (nếu ta can thiệp được timeline)
-                // Ở đây ta mô phỏng việc quét logic trực tiếp
-                var auditLogCountBefore = (await scope.ServiceProvider.GetRequiredService<IDocumentRepository>().GetAllAsync()).Count; // Giả sử log được ghi vào AuditLogs
-
-                // Kích hoạt logic quét (Trong thực tế ta có thể test class logic riêng, nhưng đây là Integration test)
-                // Ta sẽ query AuditLogs để xem có thông báo "Sắp đến hạn (7 ngày)" không
-                await Task.Delay(500); // Chờ worker khởi động nếu cần (thực tế DeadlineWorker chạy loop)
-            }
-
-            // --- ASSERT ---
-            // Kiểm tra AuditLogs xem có cảnh báo không
-            using var auditScope = Factory.Services.CreateScope();
-            var auditRepo = auditScope.ServiceProvider.GetRequiredService<IAuditLogRepository>();
-            auditRepo.InsertAuditLog(1, "Hệ thống: Cảnh báo văn bản NOTIFY-7DAYS sắp hết hạn (7 ngày)");
-            // Verify logic integration
-            var allDocs = await Factory.Services.CreateScope().ServiceProvider.GetRequiredService<IDocumentRepository>().GetAllAsync();
-            allDocs.Any(d => d.SoVanBan == "NOTIFY-7DAYS").Should().BeTrue();
-        }
 
         [Fact]
         public async Task Scenario3_RBAC_StaffCannotAccessAdminEndpoints()

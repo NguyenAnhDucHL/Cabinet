@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Text.Json;
 using Cabinet.Core.Models;
 using Cabinet.Models;
-using Cabinet.Services;
 using Cabinet.Core.Data.Interfaces;
 
 namespace Cabinet.Api.Controllers
@@ -15,22 +14,12 @@ namespace Cabinet.Api.Controllers
     public class NotificationController : ControllerBase
     {
         private readonly IVapidService _vapidService;
-        private readonly DeadlineWorker _deadlineWorker;
         private readonly INotificationRepository _notificationRepo;
 
-        public NotificationController(IVapidService vapidService, DeadlineWorker deadlineWorker, INotificationRepository notificationRepo)
+        public NotificationController(IVapidService vapidService, INotificationRepository notificationRepo)
         {
             _vapidService = vapidService;
-            _deadlineWorker = deadlineWorker;
             _notificationRepo = notificationRepo;
-        }
-
-        [Authorize(Roles = "Admin,VanThu")]
-        [HttpPost("trigger-scan")]
-        public async Task<IActionResult> TriggerScan()
-        {
-            await _deadlineWorker.ScanDeadlinesAsync(true);
-            return Ok(ApiResponse.Ok("Đã kích hoạt quét thời hạn thành công."));
         }
 
         [HttpGet("vapid-public-key")]

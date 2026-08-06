@@ -1389,3 +1389,12 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `.agents/rules/tc-rule-no-temporary-files.md` (Mới)
 - **Lệnh git commit**: `git commit -m "docs(agents): cập nhật chi tiết rule xóa file tạm No-Temporary-Files"`
 
+
+### [2026-08-07 01:42] Xóa DeadlineWorker (job quét deadline công văn cũ)
+- **Mô tả**: Xóa `NotificationService.cs` (class `DeadlineWorker`) là background job quét ThoiHan công văn cũ — không còn dùng trong Cabinet. Đồng thời bỏ dependency `DeadlineWorker` khỏi `NotificationController` (xóa endpoint `/api/notification/trigger-scan`) và xóa `Scenario2` trong `BusinessFlowTests.cs` (test deadline worker cũ).
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Services/NotificationService.cs` (Xóa)
+  - `Cabinet.Api/Controllers/NotificationController.cs` (Sửa đổi — bỏ DeadlineWorker DI + endpoint trigger-scan)
+  - `Cabinet.Tests/BusinessFlowTests.cs` (Sửa đổi — xóa Scenario2)
+- **Lệnh git commit**: `git commit -m "refactor(notify): xóa DeadlineWorker job quét deadline công văn không còn dùng"`
+
