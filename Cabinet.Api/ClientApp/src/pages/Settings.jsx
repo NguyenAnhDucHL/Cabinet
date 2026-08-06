@@ -112,7 +112,6 @@ export function Settings() {
       icon: <History className="size-4" />,
       desc: 'Theo dõi hoạt động bảo mật',
     },
-
   ]
 
   return (
@@ -200,7 +199,6 @@ export function Settings() {
                 />
               )}
               {activeTab === 'audit' && <AuditTab />}
-
             </div>
           </div>
         </div>

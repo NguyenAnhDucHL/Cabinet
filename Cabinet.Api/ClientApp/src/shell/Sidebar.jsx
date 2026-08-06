@@ -1,12 +1,7 @@
 import { ROLES } from '../constants/roles'
 /* eslint-disable */
 import React from 'react'
-import {
-  LayoutDashboard,
-  Users,
-  Settings,
-  MonitorPlay,
-} from 'lucide-react'
+import { LayoutDashboard, Users, Settings, MonitorPlay } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   Sidebar,
@@ -23,7 +18,7 @@ import {
 const navItems = [
   { tab: 'cabinet', labelKey: 'cabinet', label: 'Phòng họp không giấy tờ', icon: MonitorPlay },
   { tab: 'users', id: 'nav-users', labelKey: 'users', label: 'Nhân sự', icon: Users },
-  { tab: 'settings', labelKey: 'settings', label: 'Cấu hình', icon: Settings }
+  { tab: 'settings', labelKey: 'settings', label: 'Cấu hình', icon: Settings },
 ]
 
 export function AppSidebar({ activeTab, setActiveTab, setCurrentDocId, setIsReviewOpen }) {

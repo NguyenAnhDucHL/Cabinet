@@ -33,10 +33,10 @@ Format chuẩn:
 | Scope | Ý nghĩa |
 |---|---|
 | `auth` | Xác thực, JWT, login/logout |
-| `docs` | Documents — quản lý công văn |
-| `ocr` | Luồng xử lý OCR + RabbitMQ |
-| `routing` | Luân chuyển công văn |
-| `stats` | Dashboard, báo cáo |
+| `meetings` | Quản lý phiên họp, lịch họp |
+| `proceedings` | Quản lý kỷ yếu |
+| `conclusions` | Quản lý kết luận sau họp |
+| `notes` | Quản lý sổ tay ghi chú |
 | `users` | Quản lý người dùng |
 | `admin` | Phòng ban, nhãn, luật tự động |
 | `notify` | Thông báo Push, SignalR |
@@ -55,9 +55,9 @@ Format chuẩn:
 
 **✅ HỢP LỆ:**
 ```
-feat(ocr): thêm retry 3 lần khi PaddleOCR timeout
+feat(meetings): thêm API lấy danh sách phiên họp của tôi
 fix(auth): sửa lỗi BCrypt bị ghi đè rỗng khi update user info
-refactor(docs): tách DocumentExtractorService thành Facade pattern
+refactor(notes): tách UI sổ tay thành component con
 test(auth): thêm unit test kiểm tra PBKDF2 và BCrypt hash
 chore(infra): cập nhật Dockerfile dùng .NET 10 runtime image
 security(auth): tăng lockout lên 30 phút sau 5 lần đăng nhập sai

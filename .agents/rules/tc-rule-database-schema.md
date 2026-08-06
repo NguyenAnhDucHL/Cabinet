@@ -33,62 +33,45 @@ CREATE TABLE Users (
 );
 ```
 
-### `Documents` — Công văn
+### `Rooms` — Phòng họp
 ```sql
-CREATE TABLE Documents (
+CREATE TABLE Rooms (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    SoVanBan TEXT,
-    TenCongVan TEXT NOT NULL,
-    TrichYeu TEXT,
-    FullText TEXT,             -- Nội dung OCR
-    NgayBanHanh TEXT,          -- ISO 8601
-    CoQuanBanHanh TEXT,
-    CoQuanChuQuan TEXT,
-    ThoiHan TEXT,              -- ISO 8601 — DEADLINE (dùng cho thuật toán 7-3-1)
-    DonViChiDao TEXT,
-    Status TEXT NOT NULL,      -- 'Chưa xử lý' | 'Đang xử lý' | 'Hoàn thành' | 'Lỗi OCR'
-    Priority TEXT DEFAULT 'Thường', -- 'Thường' | 'Khẩn' | 'Hỏa tốc'
-    FilePath TEXT,
-    ContentHash TEXT,          -- SHA256 — chống trùng lặp file
-    DepartmentId INTEGER,
-    AssignedTo INTEGER,        -- UserId
-    AssignedUserIds TEXT,      -- JSON Array: "[1, 2, 3]"
-    AssignedDepartmentIds TEXT,-- JSON Array: "[1, 2]"
-    EvidencePaths TEXT,        -- JSON Array paths
-    EvidenceNotes TEXT,
-    CompletionDate TEXT,       -- ISO 8601
-    CreatedAt TEXT DEFAULT (datetime('now')),
-    UpdatedAt TEXT
+    Name TEXT NOT NULL,
+    Capacity INTEGER,
+    Location TEXT,
+    Description TEXT,
+    CreatedAt TEXT DEFAULT (datetime('now'))
 );
 ```
 
-### `DocumentRoutings` — Luân chuyển
+### `Meetings` — Phiên họp
 ```sql
-CREATE TABLE DocumentRoutings (
+CREATE TABLE Meetings (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    DocumentId INTEGER NOT NULL,
-    SenderId INTEGER NOT NULL,
-    ReceiverId INTEGER NOT NULL,
-    ParentRoutingId INTEGER,
-    Role TEXT,                 -- 'Chủ trì' | 'Phối hợp'
-    ForwardDate TEXT,
-    Deadline TEXT,
-    Status TEXT DEFAULT 'Chưa xử lý' -- 'Chưa xử lý' | 'Đang xử lý' | 'Hoàn thành' | 'Từ chối'
+    Title TEXT NOT NULL,
+    StartTime TEXT,
+    EndTime TEXT,
+    RoomId INTEGER,
+    Status TEXT DEFAULT 'Sắp diễn ra', -- 'Sắp diễn ra' | 'Đang diễn ra' | 'Hoàn thành' | 'Hủy'
+    CreatorId INTEGER,
+    Location TEXT,
+    Presider TEXT,
+    PreparingUnit TEXT,
+    Content TEXT,
+    Notes TEXT,
+    OrganizingUnit TEXT,
+    ExpectedAttendees INTEGER,
+    ExternalParticipants TEXT,
+    MeetingType TEXT,
+    OnlineMeetingUrl TEXT,
+    ProgramFilePaths TEXT, -- JSON Array
+    InvitationFilePaths TEXT, -- JSON Array
+    CreatedAt TEXT DEFAULT (datetime('now'))
 );
 ```
 
 ### Bảng phụ khác
-- `Comments`, `CommentReactions` — Bình luận và thả tim
-- `Departments` — Phòng ban (`Id`, `Name`, `Code`, `ParentId`)
-- `Labels` — Nhãn phân loại
-- `AutoRules` — Luật tự động gán nhãn/người
-- `PushSubscriptions` — Web Push subscriptions
-- `Notifications` — Thông báo in-app
-- `AuditLogs`, `LoginAuditLog` — Nhật ký hệ thống
-
-### Phân hệ Phòng họp không giấy tờ (Cabinet)
-- `Rooms`: Phòng họp (`Id`, `Name`, `Capacity`, `Location`, `Description`, `CreatedAt`)
-- `Meetings`: Phiên họp (`Id`, `Title`, `StartTime`, `EndTime`, `RoomId`, `Status`, `CreatorId`, `Location`, `Presider`, `PreparingUnit`, `Content`, `Notes`, `OrganizingUnit`, `ExpectedAttendees`, `ExternalParticipants`, `MeetingType`, `OnlineMeetingUrl`, `ProgramFilePaths`, `InvitationFilePaths`)
 - `MeetingParticipants`: Thành phần tham dự (`MeetingId`, `UserId`, `AttendanceStatus`)
 - `Questionnaires`: Phiếu lấy ý kiến (`Id`, `MeetingId`, `Title`, `AssignedTo`, `Deadline`, `Status`, `CreatedAt`)
 - `QuestionnaireTemplates`: Mẫu phiếu lấy ý kiến (`Id`, `Name`, `Description`, `CreatedAt`, `UpdatedAt`)
@@ -96,6 +79,10 @@ CREATE TABLE DocumentRoutings (
 - `MeetingProceedingItems`: Liên kết Kỷ yếu ↔ Phiên họp (`ProceedingId`, `MeetingId`)
 - `MeetingConclusions`: Kết luận phiên họp (`Id`, `MeetingId`, `FileName`, `Status`, `LastHandlerId`, `Progress`, `UpdatedAt`)
 - `MeetingNotes`: Sổ tay ghi chú (`Id`, `MeetingId`, `UserId`, `Content`, `AttachmentPaths`, `CreatedAt`)
+- `Departments` — Phòng ban (`Id`, `Name`, `Code`, `ParentId`)
+- `PushSubscriptions` — Web Push subscriptions
+- `Notifications` — Thông báo in-app
+- `AuditLogs`, `LoginAuditLog` — Nhật ký hệ thống
 
 ## 2. Quy trình Thay đổi Schema
 
@@ -105,45 +92,44 @@ CREATE TABLE DocumentRoutings (
 **Khi cần thêm cột/bảng mới:**
 1. Viết `ALTER TABLE` hoặc `CREATE TABLE` SQL.
 2. Chạy trực tiếp trên DB dev: `sqlite3 data_dump/documents.db < migration.sql`.
-3. Thêm SQL script vào file `fix_db.py` hoặc file migration riêng trong `data_dump/`.
+3. Thêm SQL script vào file migration.
 4. Cập nhật `SYSTEM_FEATURES.md` phần Database Schema.
 5. Ghi vào `COMMIT_LOG.md` với SQL script đầy đủ.
 
 **Mapping JSON columns:**
 ```csharp
 // ✅ Serialize/Deserialize thủ công
-var assignedUserIds = JsonSerializer.Deserialize<List<int>>(
-    reader.GetString(reader.GetOrdinal("AssignedUserIds")) ?? "[]"
+var filePaths = JsonSerializer.Deserialize<List<string>>(
+    reader.GetString(reader.GetOrdinal("ProgramFilePaths")) ?? "[]"
 );
 
-var json = JsonSerializer.Serialize(userIds);
-cmd.Parameters.AddWithValue("@AssignedUserIds", json);
+var json = JsonSerializer.Serialize(filePaths);
+cmd.Parameters.AddWithValue("@ProgramFilePaths", json);
 ```
 
 ## 3. Quy tắc Query Chuẩn
 
 ```csharp
 // ✅ Pattern chuẩn cho Repository method
-public async Task<Document?> GetByIdAsync(int id)
+public async Task<Meeting?> GetByIdAsync(int id)
 {
     using var conn = new SqliteConnection(_connectionString);
     await conn.OpenAsync();
     
     using var cmd = conn.CreateCommand();
     cmd.CommandText = @"
-        SELECT Id, SoVanBan, TenCongVan, TrichYeu, Status, Priority,
-               ThoiHan, FilePath, DepartmentId, AssignedTo
-        FROM Documents
+        SELECT Id, Title, StartTime, EndTime, RoomId, Status, Presider
+        FROM Meetings
         WHERE Id = @Id";
     cmd.Parameters.AddWithValue("@Id", id);
     
     using var reader = await cmd.ExecuteReaderAsync();
     if (!await reader.ReadAsync()) return null;
     
-    return new Document
+    return new Meeting
     {
         Id = reader.GetInt32(0),
-        SoVanBan = reader.IsDBNull(1) ? null : reader.GetString(1),
+        Title = reader.GetString(1),
         // ... map từng field
     };
 }

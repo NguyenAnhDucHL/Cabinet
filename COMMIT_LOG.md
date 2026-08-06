@@ -1363,3 +1363,21 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `seed_db.sql` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "chore(db): restore seed_db.sql without LFS"`
+
+### [2026-08-06 18:31] Xóa bỏ tài liệu legacy hệ thống công văn (OCR) và cập nhật Rule Agent
+- **Mô tả**: Dự án đã chuyển hoàn toàn sang phòng họp không giấy tờ (Cabinet). Xóa bỏ toàn bộ các file markdown legacy liên quan đến OCR, hệ thống công văn cũ trong thư mục docs/ và tests/, đồng thời cập nhật các rule của agent để chuyển context sang Meeting, Proceedings, Conclusions thay vì Document và OCR.
+- **Tệp thay đổi**:
+  - `.agents/AGENTS.md` (Sửa đổi)
+  - `.agents/rules/tc-rule-conventional-commits.md` (Sửa đổi)
+  - `.agents/rules/tc-rule-database-schema.md` (Sửa đổi)
+  - `.agents/rules/tc-rule-quality-gate.md` (Sửa đổi)
+  - `.agents/skills/tc-skill-code-review.md` (Sửa đổi)
+  - `.agents/skills/tc-skill-docker-setup.md` (Sửa đổi)
+  - `.agents/workflows/tc-workflow-new-feature.md` (Sửa đổi)
+  - `CODE_QUALITY.md` (Sửa đổi)
+  - `SYSTEM_FEATURES.md` (Sửa đổi)
+  - `docs/legacy/*` (Xóa)
+  - `tests/README.md`, `tests/test_results/*` (Xóa)
+  - `.agents/skills/tc-skill-ocr-debug.md` (Xóa)
+- **Lệnh git commit**: `git commit -m "docs(meetings): dọn dẹp tài liệu OCR legacy và chuyển context sang Cabinet"`
+

@@ -94,7 +94,7 @@ dotnet test --collect:"XPlat Code Coverage"
 
 **Các module bắt buộc phải có test:**
 - Password hash/verify logic (`AuthPasswordHashTests.cs`)
-- OCR regex parsing (`OcrTextRegexTests.cs`)
+- Logic thống kê, báo cáo dashboard
 - Bất kỳ service nào có logic nghiệp vụ phức tạp
 
 ## 4. Tự Kiểm tra Trước Khi Commit (AI Agent Checklist)

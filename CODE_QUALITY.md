@@ -96,9 +96,9 @@ Format bắt buộc:
 
 **Ví dụ HỢP LỆ:**
 ```
-feat(upload): thêm hỗ trợ quét OCR nhiều trang
+feat(meetings): thêm tính năng lên lịch phiên họp mới
 fix(auth): sửa lỗi khóa tài khoản khi đổi mật khẩu
-docs: cập nhật SYSTEM_FEATURES.md thêm mô tả Chat
+docs: cập nhật SYSTEM_FEATURES.md bổ sung mô tả API Phòng họp
 ```
 
 **Ví dụ BỊ CHẶN:**

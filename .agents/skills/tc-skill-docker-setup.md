@@ -42,7 +42,6 @@ docker-compose stop
 |---|---|---|
 | `/app/data/documents.db` | `./data_dump/documents.db` | SQLite DB chính |
 | `/app/data/uploads/` | `./data_dump/uploads/` | File upload |
-| `/app/data/debug/` | `./data_dump/debug/` | OCR debug artifacts |
 
 ## Khi DB bị lỗi hoặc cần reset
 
@@ -75,10 +74,7 @@ docker-compose exec api ls /app/data/
 Tạo file `.env` ở thư mục gốc (không commit):
 ```env
 JWT_SECRET=your_long_random_secret_here
-RABBITMQ_DEFAULT_USER=admin
-RABBITMQ_DEFAULT_PASS=your_rabbitmq_password
 CLAMAV_HOST=clamav
-PADDLEOCR_URL=http://paddleocr:8000
 ```
 
 ## Cổng mặc định
@@ -87,8 +83,6 @@ PADDLEOCR_URL=http://paddleocr:8000
 |---|---|---|
 | Nginx | `80` | Entry point chính |
 | ASP.NET Core | `5000` (internal) | Backend API |
-| RabbitMQ Management | `15672` | Admin UI |
-| PaddleOCR | `8000` (internal) | OCR service |
 
 ---
 **Status:** ACTIVE  
