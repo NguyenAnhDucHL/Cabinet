@@ -1381,3 +1381,11 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `.agents/skills/tc-skill-ocr-debug.md` (Xóa)
 - **Lệnh git commit**: `git commit -m "docs(meetings): dọn dẹp tài liệu OCR legacy và chuyển context sang Cabinet"`
 
+
+### [2026-08-07 01:34] Cập nhật rule xóa file tạm
+- **Mô tả**: Bổ sung tệp rule `tc-rule-no-temporary-files.md` và tinh chỉnh nội dung Rule 7 trong `AGENTS.md` theo sát yêu cầu của Developer, bắt buộc AI tự động xóa các file tạm sinh ra trong quá trình kiểm tra tài khoản, lỗi, dump,... ngay sau khi hoàn thành.
+- **Tệp thay đổi**:
+  - `.agents/AGENTS.md` (Sửa đổi)
+  - `.agents/rules/tc-rule-no-temporary-files.md` (Mới)
+- **Lệnh git commit**: `git commit -m "docs(agents): cập nhật chi tiết rule xóa file tạm No-Temporary-Files"`
+
