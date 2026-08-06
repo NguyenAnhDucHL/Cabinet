@@ -1338,3 +1338,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `src/constants/document.js` (Sửa đổi)
   - 14 file components và pages (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "refactor: loại bỏ magic strings toàn bộ frontend (roles, status, priority)"`
+
+### [2026-08-07 00:24] Fix LFS issue for seed_db.sql
+- **Mô tả**: Khắc phục lỗi GH008 LFS missing object bằng cách xóa lịch sử LFS và commit lại file tĩnh
+- **Tệp thay đổi**:
+  - `seed_db.sql` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(db): restore seed_db.sql without LFS"`
