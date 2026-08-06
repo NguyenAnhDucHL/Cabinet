@@ -1,3 +1,10 @@
+### [2026-08-06 21:56] Di chuyển source code phonghopkhonggiayto ra thư mục gốc Cabinet
+- **Mô tả**:
+  - Di chuyển toàn bộ mã nguồn của hệ thống từ thư mục con `phonghopkhonggiayto` ra thư mục gốc `Cabinet`.
+- **Tệp thay đổi**:
+  - Tất cả mã nguồn (Di chuyển)
+- **Lệnh git commit**: `git commit -m "chore: di chuyển source code ra thư mục gốc Cabinet"`
+
 ### [2026-08-05 22:50] Nâng cấp bảo mật Session lên chuẩn Enterprise (Refresh Token & Heartbeat)
 - **Mô tả**:
   - Chuyển đổi từ Access Token 24h sang kiến trúc bảo mật chuẩn: Access Token 15 phút + Refresh Token 7 ngày.

@@ -1,14 +1,14 @@
 services:
-  official-doc-backend:
+  cabinet-backend:
     build:
       context: .
       dockerfile: Dockerfile
       network: host
-    container_name: doc-coordination-system
+    container_name: cabinet-system
     expose:
       - "5000"
     ports:
-      - "59607:5000"
+      - "59608:5000"
     # ✅ Tầng 5: Chạy container với quyền tối thiểu — chống leo thang quyền (ransomware)
     security_opt:
       - no-new-privileges:true
@@ -29,12 +29,7 @@ services:
       - OcrSettings__MaxPagesToScan=7
       - OcrSettings__EnableOsd=false
       - OcrSettings__EnableDeskew=true
-      # --- RabbitMQ Settings ---
-      - RabbitMQ__HostName=rabbitmq
-      - RabbitMQ__UserName=${RABBITMQ_USER}
-      - RabbitMQ__Password=${RABBITMQ_PASS}
     depends_on:
-      - rabbitmq
       - clamav
     volumes:
       - ./data_dump:/app/data
@@ -42,16 +37,7 @@ services:
       - ./ToolCalendar.Core/Models/PaddleOCR:/app/Models/PaddleOCR:ro
     restart: always
 
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: doc-coordination-rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
-    restart: always
+
 
   # ✅ Tầng 1: ClamAV Anti-Virus Scanner
   # Container riêng biệt, cô lập hoàn toàn với backend
@@ -70,15 +56,15 @@ services:
   nginx:
     image: nginx:alpine
     platform: linux/amd64
-    container_name: nginx-proxy
+    container_name: cabinet-nginx-proxy
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:80"
+      - "8443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./nginx/certs:/etc/nginx/certs:ro
     depends_on:
-      - official-doc-backend
+      - cabinet-backend
     restart: always
 
   ngrok:

@@ -78,8 +78,7 @@ builder.Services.AddRateLimiter(options =>
 
 // Đăng ký Repositories (Clean Architecture)
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
-builder.Services.AddScoped<ToolCalendar.Data.Repositories.IDocumentRoutingRepository, ToolCalendar.Data.Repositories.DocumentRoutingRepository>();
+
 builder.Services.AddScoped<ToolCalendar.Core.Data.Repositories.IRoomRepository, ToolCalendar.Core.Data.Repositories.RoomRepository>();
 builder.Services.AddScoped<ToolCalendar.Core.Data.Repositories.IMeetingRepository, ToolCalendar.Core.Data.Repositories.MeetingRepository>();
 builder.Services.AddScoped<ToolCalendar.Core.Data.Repositories.IQuestionnaireRepository, ToolCalendar.Core.Data.Repositories.QuestionnaireRepository>();
@@ -122,30 +121,11 @@ builder.Services.AddIdentityCore<User>(options =>
 // → tương thích ngược hoàn toàn với mật khẩu BCrypt cũ trong database
 builder.Services.AddScoped<IPasswordHasher<User>, HybridPasswordHasher>();
 
-// Đăng ký Upload Service (tách logic upload ra khỏi Controller)
-builder.Services.AddScoped<IDocumentUploadService, DocumentUploadService>();
-
-// Cấu hình HTTP Client cho các gọi API bên ngoài (như Gemini)
+// (Đã xóa OCR, DocumentUpload, DeadlineWorker)
 builder.Services.AddHttpClient();
-
-// Đăng ký OCR & Extraction Services
-builder.Services.AddSingleton<IOcrService, OcrService>();
-builder.Services.AddScoped<IOcrTextProcessingService, OcrTextProcessingService>();
-builder.Services.AddScoped<IOcrImageProcessingService, OcrImageProcessingService>();
-builder.Services.AddScoped<IDocumentExtractorService, DocumentExtractorService>();
-// builder.Services.AddHostedService<OcrRuntimeValidationService>();
-
-// Cấu hình Hàng đợi OCR xử lý nền
-builder.Services.AddSingleton<OcrQueueService>();
-builder.Services.AddSingleton<IOcrQueueService>(sp => sp.GetRequiredService<OcrQueueService>());
-builder.Services.AddHostedService(sp => sp.GetRequiredService<OcrQueueService>());
-
-// Cấu hình Email & Thông báo tự động
 builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddSingleton<IVapidService, VapidService>();
 builder.Services.AddScoped<INotificationManager, NotificationManager>();
-builder.Services.AddSingleton<DeadlineWorker>();
-builder.Services.AddHostedService(sp => sp.GetRequiredService<DeadlineWorker>());
 
 // ✅ Security Services
 builder.Services.AddSingleton<IClamAvService, ClamAvService>();  // Virus scanning
