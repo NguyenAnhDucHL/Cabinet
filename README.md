@@ -48,7 +48,7 @@ NGROK_DOMAIN=your_custom_domain.ngrok-free.app
 
 ## 💻 Phát triển Frontend Vite React
 
-Frontend mới nằm trong `ToolCalendar.Api/ClientApp` và build ra `ToolCalendar.Api/wwwroot` để backend .NET vẫn phục vụ static files như trước.
+Frontend mới nằm trong `Cabinet.Api/ClientApp` và build ra `Cabinet.Api/wwwroot` để backend .NET vẫn phục vụ static files như trước.
 UI wrapper dùng **React 19**, **Tailwind CSS v4** và **shadcn/ui**; các màn nghiệp vụ legacy vẫn được nạp từ `wwwroot/js` và `wwwroot/partials`.
 
 ### Hot reload khi phát triển UI
@@ -57,7 +57,7 @@ Cách thuận tiện nhất là chạy backend bằng Docker, còn frontend ch�
 
 ```powershell
 docker compose up -d official-doc-backend nginx
-cd ToolCalendar.Api/ClientApp
+cd Cabinet.Api/ClientApp
 npm run dev
 ```
 
@@ -71,11 +71,11 @@ Backend Docker expose `http://localhost:59607`, và Vite đã proxy các route `
 
 1. Chạy backend API:
    ```powershell
-   dotnet run --project ToolCalendar.Api/ToolCalendar.Api.csproj
+   dotnet run --project Cabinet.Api/Cabinet.Api.csproj
    ```
 2. Cài dependencies frontend:
    ```powershell
-   cd ToolCalendar.Api/ClientApp
+   cd Cabinet.Api/ClientApp
    npm install
    ```
 3. Chạy Vite dev server:
@@ -90,7 +90,7 @@ Backend Docker expose `http://localhost:59607`, và Vite đã proxy các route `
 Build production frontend thủ công:
 
 ```powershell
-cd ToolCalendar.Api/ClientApp
+cd Cabinet.Api/ClientApp
 npm run build
 ```
 

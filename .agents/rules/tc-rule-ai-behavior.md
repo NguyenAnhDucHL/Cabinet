@@ -1,6 +1,6 @@
 # TC-RULE-AI-BEHAVIOR
 
-Quy tắc này định nghĩa chuẩn mực hành vi, tư duy phân tích và nguyên tắc viết code dành cho AI Agent khi làm việc trên dự án Tool-Calendar. AI Agent phải tuân thủ nghiêm ngặt để đảm bảo chất lượng cấp độ Enterprise (vượt qua hoặc đạt chuẩn OpenClaw).
+Quy tắc này định nghĩa chuẩn mực hành vi, tư duy phân tích và nguyên tắc viết code dành cho AI Agent khi làm việc trên dự án Cabinet. AI Agent phải tuân thủ nghiêm ngặt để đảm bảo chất lượng cấp độ Enterprise (vượt qua hoặc đạt chuẩn OpenClaw).
 
 > [!IMPORTANT]
 > Mục tiêu tối thượng của AI Agent không phải là "sửa cho xong lỗi", mà là **"duy trì và nâng tầm kiến trúc tổng thể của hệ thống"**.
@@ -23,7 +23,7 @@ Tuyệt đối không đưa ra kết luận hoặc thay đổi mã nguồn chỉ
 
 ## 2. Kiểm Tra Tiền Trạm Dịch Vụ Có Sẵn (Existing-Solutions Preflight)
 
-Không "phát minh lại cái bánh xe". Tool-Calendar sử dụng hệ sinh thái mạnh mẽ của `.NET 10`, `React 19`, và `Tailwind v4`.
+Không "phát minh lại cái bánh xe". Cabinet sử dụng hệ sinh thái mạnh mẽ của `.NET 10`, `React 19`, và `Tailwind v4`.
 
 - Trước khi đề xuất tự viết một hàm phức tạp (ví dụ: parse ngày tháng, format tiền tệ, xử lý đồ thị, retry policy), AI **phải** kiểm tra xem có thư viện/hàm native nào hỗ trợ sẵn không.
 - Chỉ xây dựng custom logic khi không có sẵn giải pháp tốt, giải pháp có sẵn quá đắt đỏ, hoặc người dùng yêu cầu cụ thể.

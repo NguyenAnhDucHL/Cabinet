@@ -5,12 +5,12 @@ description: "Kỹ năng setup Docker và debug môi trường development."
 
 # TC-SKILL-DOCKER-SETUP
 
-Kỹ năng này hướng dẫn cách setup, chạy và debug môi trường Docker cho Tool-Calendar.
+Kỹ năng này hướng dẫn cách setup, chạy và debug môi trường Docker cho Cabinet.
 
 ## Cấu trúc docker-compose
 
 ```
-Tool-Calendar/
+Cabinet/
 ├── docker-compose.yml          ← Main compose file
 ├── Dockerfile                  ← ASP.NET Core + React build
 ├── nginx/                      ← Nginx reverse proxy config

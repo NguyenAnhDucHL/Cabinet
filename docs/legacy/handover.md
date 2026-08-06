@@ -1,6 +1,6 @@
 # Tài liệu Bàn giao Hạ tầng Backend (Giai đoạn 1)
 
-Dự án **ToolCalendar** đã hoàn thành thiết lập toàn bộ lõi Backend chuyên sâu, đảm bảo hiệu suất và tính bảo mật theo yêu cầu nghiệp vụ.
+Dự án **Cabinet** đã hoàn thành thiết lập toàn bộ lõi Backend chuyên sâu, đảm bảo hiệu suất và tính bảo mật theo yêu cầu nghiệp vụ.
 
 ## 1. Kiến trúc Tổng quan
 

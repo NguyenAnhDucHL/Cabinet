@@ -21,13 +21,13 @@ function fixCommas(filePath) {
 }
 
 const files = [
-  'ToolCalendar.Api/ClientApp/src/cabinet/CabinetAppShell.jsx',
-  'ToolCalendar.Api/ClientApp/src/documents/pages/DocDetail.jsx',
-  'ToolCalendar.Api/ClientApp/src/documents/pages/Documents.jsx',
-  'ToolCalendar.Api/ClientApp/src/documents/pages/MyTasks.jsx',
-  'ToolCalendar.Api/ClientApp/src/documents/pages/Review.jsx',
-  'ToolCalendar.Api/ClientApp/src/documents/pages/Search.jsx',
-  'ToolCalendar.Api/ClientApp/src/documents/pages/Upload.jsx'
+  'Cabinet.Api/ClientApp/src/cabinet/CabinetAppShell.jsx',
+  'Cabinet.Api/ClientApp/src/documents/pages/DocDetail.jsx',
+  'Cabinet.Api/ClientApp/src/documents/pages/Documents.jsx',
+  'Cabinet.Api/ClientApp/src/documents/pages/MyTasks.jsx',
+  'Cabinet.Api/ClientApp/src/documents/pages/Review.jsx',
+  'Cabinet.Api/ClientApp/src/documents/pages/Search.jsx',
+  'Cabinet.Api/ClientApp/src/documents/pages/Upload.jsx'
 ];
 
 files.forEach(f => fixCommas(path.resolve(f)));

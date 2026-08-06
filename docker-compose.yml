@@ -33,8 +33,8 @@ services:
       - clamav
     volumes:
       - ./data_dump:/app/data
-      - ./ToolCalendar.Api/Uploads:/app/Uploads
-      - ./ToolCalendar.Core/Models/PaddleOCR:/app/Models/PaddleOCR:ro
+      - ./Cabinet.Api/Uploads:/app/Uploads
+      - ./Cabinet.Core/Models/PaddleOCR:/app/Models/PaddleOCR:ro
     restart: always
 
 

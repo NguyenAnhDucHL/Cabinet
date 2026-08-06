@@ -1,6 +1,6 @@
 ---
 trigger: always_on
-description: "Chuẩn Conventional Commits cho dự án Tool-Calendar — bắt buộc khi tạo commit."
+description: "Chuẩn Conventional Commits cho dự án Cabinet — bắt buộc khi tạo commit."
 ---
 
 # TC-RULE-CONVENTIONAL-COMMITS

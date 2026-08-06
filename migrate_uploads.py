@@ -3,7 +3,7 @@ import shutil
 import sqlite3
 import glob
 
-UPLOAD_DIR = 'ToolCalendar.Api/Uploads'
+UPLOAD_DIR = 'Cabinet.Api/Uploads'
 DB_PATH = 'data_dump/documents.db'
 
 doc_dir = os.path.join(UPLOAD_DIR, 'Documents')

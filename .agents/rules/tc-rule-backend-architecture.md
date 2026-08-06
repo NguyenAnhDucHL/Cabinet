@@ -5,7 +5,7 @@ description: "Kiến trúc bắt buộc cho Backend ASP.NET Core — ADO.NET, Ap
 
 # TC-RULE-BACKEND-ARCHITECTURE
 
-Quy tắc này định nghĩa các ràng buộc kiến trúc bắt buộc cho layer Backend của Tool-Calendar. AI Agent **phải** tuân thủ 100% — không có ngoại lệ.
+Quy tắc này định nghĩa các ràng buộc kiến trúc bắt buộc cho layer Backend của Cabinet. AI Agent **phải** tuân thủ 100% — không có ngoại lệ.
 
 ## 1. Database Access — Chỉ ADO.NET
 

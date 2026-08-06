@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Cabinet.Api/Cabinet.Api.csproj" />
+  <Project Path="Cabinet.Core/Cabinet.Core.csproj" />
+  <Project Path="Cabinet.Tests/Cabinet.Tests.csproj" />
+</Solution>

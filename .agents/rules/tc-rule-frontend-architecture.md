@@ -5,7 +5,7 @@ description: "Quy tắc kiến trúc Frontend React — Global Fetch Interceptor
 
 # TC-RULE-FRONTEND-ARCHITECTURE
 
-Quy tắc này định nghĩa các ràng buộc bắt buộc cho layer Frontend React của Tool-Calendar.
+Quy tắc này định nghĩa các ràng buộc bắt buộc cho layer Frontend React của Cabinet.
 
 ## 1. HTTP Client — Chỉ dùng `fetch` Native
 
@@ -114,7 +114,7 @@ export default function DocumentList() {
 ## 6. Build & Dev Server
 
 ```bash
-# Dev (trong ToolCalendar.Api/ClientApp/)
+# Dev (trong Cabinet.Api/ClientApp/)
 npm run dev
 
 # Build production (chỉ khi cần deploy)

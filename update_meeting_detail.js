@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-const path = '/Users/macbookpro/Tool-Calendar/ToolCalendar.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx'
+const path = '/Users/macbookpro/Cabinet/Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx'
 let content = fs.readFileSync(path, 'utf8')
 
 // Fix the title area

@@ -2,7 +2,7 @@
 name: tc-skill-db-migration
 description: |
   Hướng dẫn AI Agent thực hiện thay đổi database schema (SQLite/ADO.NET) an toàn
-  trong dự án Tool-Calendar. Bắt buộc đọc trước khi thêm cột, bảng hoặc xóa dữ liệu.
+  trong dự án Cabinet. Bắt buộc đọc trước khi thêm cột, bảng hoặc xóa dữ liệu.
 ---
 
 # TC-SKILL-DB-MIGRATION
@@ -88,7 +88,7 @@ CREATE INDEX IF NOT EXISTS idx_newtable_name ON NewTable(Name);
 ```
 
 Sau khi tạo bảng, phải:
-1. Thêm Repository class trong `ToolCalendar.Core/Data/Repositories/`
+1. Thêm Repository class trong `Cabinet.Core/Data/Repositories/`
 2. Đăng ký DI trong `Program.cs`
 3. Ghi vào `COMMIT_LOG.md` với SQL đầy đủ
 
@@ -139,7 +139,7 @@ COMMIT;
   ALTER TABLE TenBang ADD COLUMN TenCot TEXT DEFAULT '' NOT NULL;
   ```
 - **Tệp thay đổi**:
-  - `ToolCalendar.Core/Data/Repositories/XxxRepository.cs` (Sửa đổi)
+  - `Cabinet.Core/Data/Repositories/XxxRepository.cs` (Sửa đổi)
   - `SYSTEM_FEATURES.md` (Cập nhật schema section)
 - **Lệnh git commit**: `git commit -m "feat(db): thêm cột TenCot vào bảng TenBang"`
 ```

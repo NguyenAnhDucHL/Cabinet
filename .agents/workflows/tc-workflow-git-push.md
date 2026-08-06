@@ -4,7 +4,7 @@ description: "Quy trình chuẩn để commit và push code lên repository."
 
 # TC-WORKFLOW-GIT-PUSH
 
-Quy trình này là đường commit chuẩn bắt buộc cho mọi Developer và AI Agent trong dự án Tool-Calendar.
+Quy trình này là đường commit chuẩn bắt buộc cho mọi Developer và AI Agent trong dự án Cabinet.
 
 ## Bước 1 — Nạp Ngữ cảnh (Context Loading)
 
@@ -38,19 +38,19 @@ Chạy trước khi commit để tránh bị chặn bởi hooks:
 dotnet format --verify-no-changes
 
 # Kiểm tra ESLint
-cd ToolCalendar.Api/ClientApp && npx eslint src/
+cd Cabinet.Api/ClientApp && npx eslint src/
 
 # Kiểm tra Prettier
-cd ToolCalendar.Api/ClientApp && npx prettier --check .
+cd Cabinet.Api/ClientApp && npx prettier --check .
 
 # Chạy Unit Tests
-dotnet test ToolCalendar.Tests/
+dotnet test Cabinet.Tests/
 ```
 
 **Nếu có lỗi, tự động sửa:**
 ```bash
 dotnet format
-cd ToolCalendar.Api/ClientApp && npx eslint src/ --fix && npx prettier --write .
+cd Cabinet.Api/ClientApp && npx eslint src/ --fix && npx prettier --write .
 ```
 
 ## Bước 4 — Cập nhật COMMIT_LOG.md

@@ -5,7 +5,7 @@ description: "Chính sách bảo mật — cấm secrets trong Git, quản lý c
 
 # TC-RULE-SECRET-MANAGEMENT
 
-Quy tắc này bảo vệ toàn bộ secrets, credentials và dependency surface trong dự án Tool-Calendar.
+Quy tắc này bảo vệ toàn bộ secrets, credentials và dependency surface trong dự án Cabinet.
 
 ## 1. Tuyệt đối không commit Secret vào Git
 

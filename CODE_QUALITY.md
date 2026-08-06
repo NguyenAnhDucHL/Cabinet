@@ -61,12 +61,12 @@ Developer / AI
   - Cấm để `debugger`
   - Cảnh báo thiếu `key` trong list render
   - Bắt buộc tuân thủ Rules of Hooks
-- **Cách pass**: Chạy `cd ToolCalendar.Api/ClientApp && npx eslint src/` để kiểm tra trước.
+- **Cách pass**: Chạy `cd Cabinet.Api/ClientApp && npx eslint src/` để kiểm tra trước.
 - **Tham chiếu**: ESLint Recommended, React Best Practices.
 
 ### Chốt 4 — Prettier (Định dạng code)
 - **Lý do**: Đảm bảo toàn bộ code JS/JSX trong dự án có định dạng nhất quán (indent, dấu chấm phẩy, nháy đơn...).
-- **Cách pass**: Chạy `cd ToolCalendar.Api/ClientApp && npx prettier --write .` trước khi commit.
+- **Cách pass**: Chạy `cd Cabinet.Api/ClientApp && npx prettier --write .` trước khi commit.
 - **Config**: Xem file `.prettierrc` trong thư mục `ClientApp`.
 
 ### Chốt 5 — dotnet format (C#)
@@ -114,14 +114,14 @@ sửa lỗi
 
 ```sh
 # Kiểm tra ESLint
-cd ToolCalendar.Api/ClientApp && npx eslint src/
+cd Cabinet.Api/ClientApp && npx eslint src/
 
 # Tự động sửa lỗi định dạng Prettier
-cd ToolCalendar.Api/ClientApp && npx prettier --write .
+cd Cabinet.Api/ClientApp && npx prettier --write .
 
 # Tự động sửa chuẩn code C#
 dotnet format
 
 # Cài dev dependencies lần đầu
-cd ToolCalendar.Api/ClientApp && npm install
+cd Cabinet.Api/ClientApp && npm install
 ```

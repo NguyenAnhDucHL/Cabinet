@@ -52,22 +52,22 @@ Developer / AI Agent
 - **Lý do**: Đảm bảo code React không có bug ẩn.
 - **Cách kiểm tra thủ công**:
   ```bash
-  cd ToolCalendar.Api/ClientApp && npx eslint src/
+  cd Cabinet.Api/ClientApp && npx eslint src/
   ```
 - **Cách tự động sửa**:
   ```bash
-  cd ToolCalendar.Api/ClientApp && npx eslint src/ --fix
+  cd Cabinet.Api/ClientApp && npx eslint src/ --fix
   ```
 
 ### Chốt 4 — Prettier
 - **Lý do**: Code format nhất quán — dễ review, dễ đọc.
 - **Cách kiểm tra thủ công**:
   ```bash
-  cd ToolCalendar.Api/ClientApp && npx prettier --check .
+  cd Cabinet.Api/ClientApp && npx prettier --check .
   ```
 - **Cách tự động sửa**:
   ```bash
-  cd ToolCalendar.Api/ClientApp && npx prettier --write .
+  cd Cabinet.Api/ClientApp && npx prettier --write .
   ```
 
 ### Chốt 5 — dotnet format
@@ -83,10 +83,10 @@ Developer / AI Agent
 
 ## 3. Unit Tests — Yêu cầu với tính năng mới
 
-Mọi tính năng mới hoặc logic quan trọng phải có Unit Test tương ứng trong `ToolCalendar.Tests/`:
+Mọi tính năng mới hoặc logic quan trọng phải có Unit Test tương ứng trong `Cabinet.Tests/`:
 ```bash
 # Chạy toàn bộ test
-dotnet test ToolCalendar.Tests/
+dotnet test Cabinet.Tests/
 
 # Xem coverage (nếu được cài)
 dotnet test --collect:"XPlat Code Coverage"

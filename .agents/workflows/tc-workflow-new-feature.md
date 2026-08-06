@@ -1,5 +1,5 @@
 ---
-description: "Quy trình chuẩn để thêm tính năng mới vào hệ thống Tool-Calendar."
+description: "Quy trình chuẩn để thêm tính năng mới vào hệ thống Cabinet."
 ---
 
 # TC-WORKFLOW-NEW-FEATURE
@@ -30,7 +30,7 @@ Quy trình này hướng dẫn cách triển khai một tính năng mới một 
 
 ### 3.1 — Repository (ADO.NET)
 ```csharp
-// Trong ToolCalendar.Core/Data/Repositories/
+// Trong Cabinet.Core/Data/Repositories/
 public async Task<T> GetSomethingAsync(int param)
 {
     using var conn = new SqliteConnection(_connectionString);
@@ -41,7 +41,7 @@ public async Task<T> GetSomethingAsync(int param)
 
 ### 3.2 — Service (Business Logic)
 ```csharp
-// Trong ToolCalendar.Core/Services/
+// Trong Cabinet.Core/Services/
 public class NewFeatureService : INewFeatureService
 {
     private readonly INewFeatureRepository _repo;
@@ -51,14 +51,14 @@ public class NewFeatureService : INewFeatureService
 
 ### 3.3 — Đăng ký DI trong Program.cs
 ```csharp
-// ToolCalendar.Api/Program.cs
+// Cabinet.Api/Program.cs
 builder.Services.AddScoped<INewFeatureService, NewFeatureService>();
 builder.Services.AddScoped<INewFeatureRepository, NewFeatureRepository>();
 ```
 
 ### 3.4 — Controller
 ```csharp
-// ToolCalendar.Api/Controllers/
+// Cabinet.Api/Controllers/
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
@@ -76,7 +76,7 @@ public class NewFeatureController : ControllerBase
 ## Bước 4 — Implement Frontend (nếu cần)
 
 ```jsx
-// Trong ToolCalendar.Api/ClientApp/src/pages/ hoặc src/components/
+// Trong Cabinet.Api/ClientApp/src/pages/ hoặc src/components/
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 
@@ -106,7 +106,7 @@ export default function NewFeaturePage() {
 ## Bước 5 — Viết Unit Tests
 
 ```csharp
-// Trong ToolCalendar.Tests/
+// Trong Cabinet.Tests/
 public class NewFeatureTests
 {
     [Fact]

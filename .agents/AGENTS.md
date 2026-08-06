@@ -1,6 +1,6 @@
-# TOOL-CALENDAR — AGENT CONSTITUTION (AGENTS.md)
+# CABINET — AGENT CONSTITUTION (AGENTS.md)
 
-Bạn là **AI Agent** đang làm việc trong dự án **Tool-Calendar** — Hệ thống Điều phối Công văn Nội bộ & Phòng họp không giấy tờ (Cabinet). Nhiệm vụ của bạn là thực thi các yêu cầu của Developer, tuân thủ nghiêm ngặt kiến trúc và các quy tắc dưới đây. Đọc tài liệu này **TRƯỚC KHI** thực hiện bất kỳ thay đổi nào.
+Bạn là **AI Agent** đang làm việc trong dự án **Cabinet** — Phòng họp không giấy tờ. Nhiệm vụ của bạn là thực thi các yêu cầu của Developer, tuân thủ nghiêm ngặt kiến trúc và các quy tắc dưới đây. Đọc tài liệu này **TRƯỚC KHI** thực hiện bất kỳ thay đổi nào.
 
 ---
 
@@ -33,13 +33,13 @@ Bạn là **AI Agent** đang làm việc trong dự án **Tool-Calendar** — H�
 ## III. Cấu trúc Thư mục Trọng yếu
 
 ```
-Tool-Calendar/
+Cabinet/
 ├── .agents/                      ← [PROTECTED] Quy tắc AI
 │   ├── AGENTS.md                 ← File này
 │   ├── rules/                    ← Các rule chi tiết
 │   ├── skills/                   ← Kỹ năng chuyên biệt
 │   └── workflows/                ← Quy trình chuẩn
-├── ToolCalendar.Api/
+├── Cabinet.Api/
 │   ├── Controllers/              ← API endpoints, dùng ApiResponse<T>
 │   │   └── Cabinet/              ← Phân hệ Phòng họp không giấy tờ
 │   ├── Middleware/               ← GlobalExceptionMiddleware
@@ -48,11 +48,11 @@ Tool-Calendar/
 │   │       ├── main.jsx          ← Global Fetch Interceptor ở đây
 │   │       └── cabinet/          ← Giao diện Phòng họp không giấy tờ
 │   └── Program.cs                ← DI registration, middleware pipeline
-├── ToolCalendar.Core/
+├── Cabinet.Core/
 │   ├── Models/ApiResponse.cs     ← Response contract bắt buộc
 │   ├── Data/Repositories/        ← ADO.NET queries
 │   └── Services/                 ← Business logic, OCR services
-├── ToolCalendar.Tests/           ← Unit tests bắt buộc
+├── Cabinet.Tests/           ← Unit tests bắt buộc
 ├── SYSTEM_FEATURES.md            ← [ĐỌC TRƯỚC] Bộ não hệ thống
 ├── COMMIT_LOG.md                 ← [CẬP NHẬT SAU MỖI THAY ĐỔI]
 └── CODE_QUALITY.md               ← Tiêu chuẩn chất lượng code
@@ -63,18 +63,18 @@ Tool-Calendar/
 ## IV. Ma trận Quyền Hạn (Governance Matrix)
 
 ### ✅ Vùng Tự do (Có thể sửa đổi tự do)
-- `ToolCalendar.Api/Controllers/` — Thêm/sửa API endpoint (bao gồm `Cabinet/`)
-- `ToolCalendar.Api/ClientApp/src/` — React components, pages, hooks (bao gồm `cabinet/`)
-- `ToolCalendar.Core/Services/` — Business logic, services
-- `ToolCalendar.Core/Data/Repositories/` — ADO.NET queries
-- `ToolCalendar.Tests/` — Unit tests
+- `Cabinet.Api/Controllers/` — Thêm/sửa API endpoint (bao gồm `Cabinet/`)
+- `Cabinet.Api/ClientApp/src/` — React components, pages, hooks (bao gồm `cabinet/`)
+- `Cabinet.Core/Services/` — Business logic, services
+- `Cabinet.Core/Data/Repositories/` — ADO.NET queries
+- `Cabinet.Tests/` — Unit tests
 - `docs/` — Tài liệu bổ sung
 
 ### ⚠️ Vùng Tinh chỉnh (Cẩn thận khi sửa — phải ghi COMMIT_LOG)
-- `ToolCalendar.Api/Program.cs` — DI và middleware pipeline
-- `ToolCalendar.Api/ClientApp/package.json` — Dependencies
+- `Cabinet.Api/Program.cs` — DI và middleware pipeline
+- `Cabinet.Api/ClientApp/package.json` — Dependencies
 - `docker-compose.yml` — Config containers
-- `ToolCalendar.Core/Models/ApiResponse.cs` — Phải giữ nguyên contract
+- `Cabinet.Core/Models/ApiResponse.cs` — Phải giữ nguyên contract
 
 ### 🚫 Vùng Cấm (Không được tự ý sửa)
 - `.agents/rules/` — Các file rule trong thư mục này
@@ -94,7 +94,7 @@ Tool-Calendar/
 1. **Bootstrap** → Đọc `SYSTEM_FEATURES.md` và `COMMIT_LOG.md`
 2. **Assess** → Kiểm tra tính năng đã tồn tại chưa, tránh duplicate
 3. **Implement** → Viết code tuân thủ Tech Stack và Architecture
-4. **Test** → Thêm/cập nhật Unit Tests trong `ToolCalendar.Tests/`
+4. **Test** → Thêm/cập nhật Unit Tests trong `Cabinet.Tests/`
 5. **Log** → Cập nhật `COMMIT_LOG.md` với đầy đủ thông tin
 6. **Commit** → Dùng đúng chuẩn Conventional Commits
 
@@ -118,7 +118,7 @@ Tool-Calendar/
 
 ---
 
-**Status:** ACTIVE — TOOL-CALENDAR PROJECT RULES  
+**Status:** ACTIVE — CABINET PROJECT RULES  
 **Version:** 2.1 (Nâng cấp chuẩn OpenClaw)  
 **Last Updated:** 2026-07-25  
 **See also:** [SYSTEM_FEATURES.md](../SYSTEM_FEATURES.md) | [COMMIT_LOG.md](../COMMIT_LOG.md) | [CODE_QUALITY.md](../CODE_QUALITY.md) | [tc-rule-ai-behavior.md](rules/tc-rule-ai-behavior.md)

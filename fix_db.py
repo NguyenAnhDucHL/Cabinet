@@ -1,6 +1,6 @@
 import re
 
-with open('ToolCalendar.Core/Data/DatabaseService.cs', 'r', encoding='utf-8') as f:
+with open('Cabinet.Core/Data/DatabaseService.cs', 'r', encoding='utf-8') as f:
     content = f.read()
 
 # 1. CREATE TABLE Departments
@@ -128,7 +128,7 @@ report_new = '''FROM Departments d
                 GROUP BY d.Id, d.Name'''
 content = content.replace(report_old, report_new)
 
-with open('ToolCalendar.Core/Data/DatabaseService.cs', 'w', encoding='utf-8') as f:
+with open('Cabinet.Core/Data/DatabaseService.cs', 'w', encoding='utf-8') as f:
     f.write(content)
 
 print('Updated successfully')

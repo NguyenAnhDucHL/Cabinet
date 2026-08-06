@@ -5,7 +5,7 @@ description: "Kỹ năng debug luồng OCR — RabbitMQ, PaddleOCR, SignalR pipe
 
 # TC-SKILL-OCR-DEBUG
 
-Kỹ năng này hướng dẫn cách debug và troubleshoot luồng OCR trong Tool-Calendar.
+Kỹ năng này hướng dẫn cách debug và troubleshoot luồng OCR trong Cabinet.
 
 ## Sơ đồ Luồng OCR
 
@@ -74,16 +74,16 @@ DocumentExtractorService (Facade)
 
 | File | Vai trò |
 |---|---|
-| `ToolCalendar.Core/Services/DocumentExtractorService.cs` | Facade điều phối |
-| `ToolCalendar.Core/Services/OcrImageProcessingService.cs` | Xử lý Image/PDF |
-| `ToolCalendar.Core/Services/OcrTextProcessingService.cs` | Regex bóc tách |
-| `ToolCalendar.Core/Services/Ocr/OcrDebugArtifactWriter.cs` | Ghi debug artifacts |
-| `ToolCalendar.Api/Program.cs` | OcrQueueService registration |
+| `Cabinet.Core/Services/DocumentExtractorService.cs` | Facade điều phối |
+| `Cabinet.Core/Services/OcrImageProcessingService.cs` | Xử lý Image/PDF |
+| `Cabinet.Core/Services/OcrTextProcessingService.cs` | Regex bóc tách |
+| `Cabinet.Core/Services/Ocr/OcrDebugArtifactWriter.cs` | Ghi debug artifacts |
+| `Cabinet.Api/Program.cs` | OcrQueueService registration |
 
 ## Khi thêm loại file mới (ví dụ: .docx):
 1. Thêm handler trong `OcrImageProcessingService`.
 2. Cập nhật whitelist file type trong `DocumentsController.Upload()`.
-3. Thêm Unit Test trong `ToolCalendar.Tests/`.
+3. Thêm Unit Test trong `Cabinet.Tests/`.
 4. Ghi vào `SYSTEM_FEATURES.md` phần "4.2. Luồng OCR".
 
 ---

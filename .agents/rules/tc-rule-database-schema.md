@@ -5,7 +5,7 @@ description: "Quy tắc DB Schema — cấu trúc bảng SQLite và quy định 
 
 # TC-RULE-DATABASE-SCHEMA
 
-Quy tắc này định nghĩa cấu trúc database chuẩn và quy trình thay đổi schema cho dự án Tool-Calendar.
+Quy tắc này định nghĩa cấu trúc database chuẩn và quy trình thay đổi schema cho dự án Cabinet.
 
 > [!IMPORTANT]
 > Dự án dùng **ADO.NET thủ công**. Không có migration framework. Mọi thay đổi schema phải được thực hiện thủ công qua SQL script và ghi vào `COMMIT_LOG.md`.

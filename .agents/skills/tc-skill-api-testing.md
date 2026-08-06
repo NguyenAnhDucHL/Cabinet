@@ -1,13 +1,13 @@
 ---
 name: tc-skill-api-testing
 description: |
-  Hướng dẫn AI Agent kiểm thử API endpoints của Tool-Calendar.
+  Hướng dẫn AI Agent kiểm thử API endpoints của Cabinet.
   Bao gồm cách test thủ công bằng curl/HTTPie và cách viết unit test C#.
 ---
 
 # TC-SKILL-API-TESTING
 
-Kỹ năng này cung cấp quy trình kiểm thử API của hệ thống Tool-Calendar.
+Kỹ năng này cung cấp quy trình kiểm thử API của hệ thống Cabinet.
 Áp dụng khi: thêm endpoint mới, sửa logic, hoặc debug lỗi production.
 
 ---
@@ -144,15 +144,15 @@ check_response() {
 
 ---
 
-## 4. Unit Test C# (ToolCalendar.Tests)
+## 4. Unit Test C# (Cabinet.Tests)
 
 ### Template test cho Controller
 
 ```csharp
-// ToolCalendar.Tests/Controllers/AdminControllerTests.cs
+// Cabinet.Tests/Controllers/AdminControllerTests.cs
 using Xunit;
 using Microsoft.AspNetCore.Mvc;
-using ToolCalendar.Core.Models;
+using Cabinet.Core.Models;
 
 public class AdminControllerTests
 {
@@ -193,13 +193,13 @@ public class AdminControllerTests
 
 ```bash
 # Chạy tất cả tests
-dotnet test ToolCalendar.Tests/
+dotnet test Cabinet.Tests/
 
 # Chạy test cụ thể
-dotnet test ToolCalendar.Tests/ --filter "FullyQualifiedName~AdminControllerTests"
+dotnet test Cabinet.Tests/ --filter "FullyQualifiedName~AdminControllerTests"
 
 # Xem coverage (nếu có)
-dotnet test ToolCalendar.Tests/ --collect:"XPlat Code Coverage"
+dotnet test Cabinet.Tests/ --collect:"XPlat Code Coverage"
 ```
 
 ---
@@ -212,7 +212,7 @@ dotnet test ToolCalendar.Tests/ --collect:"XPlat Code Coverage"
 - [ ] Test với role không đủ quyền → `403 Forbidden`
 - [ ] Test với input null/rỗng → `400 BadRequest` + message rõ ràng
 - [ ] Test với id không tồn tại → `404` hoặc message rõ ràng
-- [ ] Unit test đã được thêm vào `ToolCalendar.Tests/`
+- [ ] Unit test đã được thêm vào `Cabinet.Tests/`
 
 ---
 
@@ -228,5 +228,5 @@ dotnet test ToolCalendar.Tests/ --collect:"XPlat Code Coverage"
 
 ---
 **Status:** ACTIVE
-**Scope:** Mọi API endpoint trong Tool-Calendar
+**Scope:** Mọi API endpoint trong Cabinet
 **Trigger:** Sau khi thêm/sửa endpoint, hoặc khi debug

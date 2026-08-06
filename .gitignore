@@ -53,12 +53,12 @@ test_ssl/
 client_setup/
 node_modules/
 .vite/
-ToolCalendar.Api/ClientApp/node_modules/
-ToolCalendar.Api/ClientApp/dist/
+Cabinet.Api/ClientApp/node_modules/
+Cabinet.Api/ClientApp/dist/
 
 # Local Caches and Models
 .nuget_cache/
-ToolCalendar.Core/Models/PaddleOCR/
+Cabinet.Core/Models/PaddleOCR/
 Models/PaddleOCR/
 scratch/
 

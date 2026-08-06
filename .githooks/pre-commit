@@ -95,7 +95,7 @@ print_step "CHỐT 3/5 — ESLint (JavaScript/React Quality Check)..."
 if [ -z "$STAGED_JS" ]; then
     print_pass "Không có file JS/JSX nào cần kiểm tra."
 else
-    CLIENT_APP="ToolCalendar.Api/ClientApp"
+    CLIENT_APP="Cabinet.Api/ClientApp"
     ESLINT_BIN="$CLIENT_APP/node_modules/.bin/eslint"
 
     if [ -f "$ESLINT_BIN" ]; then
@@ -125,7 +125,7 @@ print_step "CHỐT 4/5 — Prettier (Code Formatting Check)..."
 if [ -z "$STAGED_JS" ]; then
     print_pass "Không có file JS/JSX nào cần kiểm tra định dạng."
 else
-    CLIENT_APP="ToolCalendar.Api/ClientApp"
+    CLIENT_APP="Cabinet.Api/ClientApp"
     PRETTIER_BIN="$CLIENT_APP/node_modules/.bin/prettier"
 
     if [ -f "$PRETTIER_BIN" ]; then
@@ -148,7 +148,7 @@ else
             else
                 print_fail "Prettier phát hiện file chưa được format:"
                 printf "${RED}$UNFORMATTED${RESET}\n"
-                echo "         👉 Chạy lệnh: cd ToolCalendar.Api/ClientApp && npx prettier --write ."
+                echo "         👉 Chạy lệnh: cd Cabinet.Api/ClientApp && npx prettier --write ."
             fi
         fi
     else

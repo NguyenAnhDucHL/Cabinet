@@ -10,7 +10,7 @@ for i, line in enumerate(lines):
 
 # The file goes until line 1445 or so (return of DocDetail)
 # We can just extract everything from `start` to the end of the return block.
-with open('ToolCalendar.Api/ClientApp/src/documents/pages/DocDetail/components/DocModals.jsx', 'w') as f:
+with open('Cabinet.Api/ClientApp/src/documents/pages/DocDetail/components/DocModals.jsx', 'w') as f:
     f.write('import React, { useState } from "react";\n')
     f.write('import { X, Save, Loader2, Paperclip } from "lucide-react";\n')
     f.write('import { cn } from "@/lib/utils";\n')

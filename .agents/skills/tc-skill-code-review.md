@@ -1,13 +1,13 @@
 ---
 name: tc-skill-code-review
 description: |
-  Hướng dẫn AI Agent tự review code trong dự án Tool-Calendar trước khi commit/push.
+  Hướng dẫn AI Agent tự review code trong dự án Cabinet trước khi commit/push.
   Áp dụng cho mọi thay đổi ở Controller, Service, Repository và React component.
 ---
 
 # TC-SKILL-CODE-REVIEW
 
-Kỹ năng này giúp AI Agent tự kiểm tra chất lượng code theo chuẩn dự án Tool-Calendar
+Kỹ năng này giúp AI Agent tự kiểm tra chất lượng code theo chuẩn dự án Cabinet
 trước khi commit. Chạy checklist này sau mỗi thay đổi code, trước khi cập nhật COMMIT_LOG.md.
 
 ---
@@ -120,18 +120,18 @@ git diff --stat
 dotnet format --verify-no-changes
 
 # 3. Kiểm tra ESLint (nếu có thay đổi frontend)
-cd ToolCalendar.Api/ClientApp && npx eslint src/ --max-warnings 0
+cd Cabinet.Api/ClientApp && npx eslint src/ --max-warnings 0
 
 # 4. Build để bắt lỗi compile
 dotnet build
 
 # 5. Chạy tests
-dotnet test ToolCalendar.Tests/
+dotnet test Cabinet.Tests/
 ```
 
 Nếu tất cả pass → tiến hành cập nhật `COMMIT_LOG.md` và commit.
 
 ---
 **Status:** ACTIVE
-**Scope:** Mọi thay đổi code trong Tool-Calendar
+**Scope:** Mọi thay đổi code trong Cabinet
 **Trigger:** Trước mỗi commit
