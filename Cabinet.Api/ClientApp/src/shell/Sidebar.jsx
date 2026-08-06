@@ -3,15 +3,9 @@ import { ROLES } from '../constants/roles'
 import React from 'react'
 import {
   LayoutDashboard,
-  FileText,
-  Upload,
   Users,
-  CheckSquare,
   Settings,
-  Search,
-  BarChart3,
   MonitorPlay,
-  CalendarDays,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
@@ -27,32 +21,9 @@ import {
 } from '@/components/ui/sidebar'
 
 const navItems = [
-  { tab: 'dashboard', labelKey: 'dashboard', label: 'Trang chủ', icon: LayoutDashboard },
-  { tab: 'documents', labelKey: 'documents', label: 'Văn bản', icon: FileText },
-  { tab: 'search', labelKey: 'search', label: 'Tìm kiếm', icon: Search },
-  { tab: 'reports', labelKey: 'reports', label: 'Báo cáo thống kê', icon: BarChart3 },
-  { tab: 'upload', labelKey: 'upload', label: 'Tải hồ sơ mới', icon: Upload },
+  { tab: 'cabinet', labelKey: 'cabinet', label: 'Phòng họp không giấy tờ', icon: MonitorPlay },
   { tab: 'users', id: 'nav-users', labelKey: 'users', label: 'Nhân sự', icon: Users },
-  {
-    tab: 'my-tasks',
-    id: 'nav-my-tasks',
-    labelKey: 'my_tasks',
-    label: 'Công việc của tôi',
-    icon: CheckSquare,
-  },
-  { tab: 'settings', labelKey: 'settings', label: 'Cấu hình', icon: Settings },
-  {
-    isLink: true,
-    url: '/phonghopkhonggiayto',
-    label: 'Phòng họp không giấy tờ',
-    icon: MonitorPlay,
-  },
-  {
-    isLink: true,
-    url: '/campha',
-    label: 'Văn bản đến hạn',
-    icon: CalendarDays,
-  },
+  { tab: 'settings', labelKey: 'settings', label: 'Cấu hình', icon: Settings }
 ]
 
 export function AppSidebar({ activeTab, setActiveTab, setCurrentDocId, setIsReviewOpen }) {
@@ -94,10 +65,6 @@ export function AppSidebar({ activeTab, setActiveTab, setCurrentDocId, setIsRevi
                 // Role-based filtering
                 const role = localStorage.getItem('user_role') || ROLES.CAN_BO
                 if (item.tab === 'users' && role !== ROLES.ADMIN) return null
-                if (item.tab === 'my-tasks' && role !== ROLES.CAN_BO && role !== ROLES.VAN_THU)
-                  return null
-                if (item.tab === 'upload' && role !== ROLES.ADMIN && role !== ROLES.VAN_THU)
-                  return null
 
                 if (item.hidden) return null
 

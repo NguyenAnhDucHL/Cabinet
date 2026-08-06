@@ -1,3 +1,22 @@
+### [2026-08-07 01:20] Thêm luật xóa file rác vào AGENTS.md
+- **Mô tả**: Bổ sung luật số 7 (No-Temporary-Files) vào Core Principles yêu cầu AI luôn xóa sạch các file tạm thời, script kiểm tra lỗi, hay test accounts ngay sau khi sử dụng xong.
+- **Tệp thay đổi**:
+  - `.agents/AGENTS.md` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "docs(rules): thêm luật bắt buộc xóa file rác/tạm vào AGENTS.md"`
+
+### [2026-08-07 01:13] Refactor toàn bộ Frontend - xóa code thừa hệ thống công văn cũ
+- **Mô tả**: Xóa sạch code thừa từ hệ thống quản lý công văn khỏi AppShell. Viết lại AppShell.jsx sạch, chỉ còn 3 tab: Cabinet, Users, Settings. Xóa Mobile Bottom Nav cũ, clean up imports, sửa labels/AutoRules khỏi AdminController và AdminRepository. DB đã xác nhận chỉ còn 13 bảng cần thiết cho phòng họp.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/shell/AppShell.jsx` (Viết lại - giảm từ 1184 xuống ~740 dòng)
+  - `Cabinet.Api/ClientApp/src/shell/Sidebar.jsx` (Sửa đổi - chỉ còn 3 nav items)
+  - `Cabinet.Api/Controllers/AdminController.cs` (Sửa đổi - xóa endpoints Labels/Rules)
+  - `Cabinet.Core/Data/Repositories/AdminRepository.cs` (Sửa đổi - xóa methods Labels/Rules)
+  - `Cabinet.Api/ClientApp/src/pages/Settings.jsx` (Sửa đổi - xóa BackupTab)
+  - `Cabinet.Api/ClientApp/src/components/settings/index.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/package.json` (Sửa đổi - đổi tên thành cabinet-client)
+  - `Cabinet.Core/Services/VapidService.cs` (Sửa đổi - đổi domain email)
+- **Lệnh git commit**: `git commit -m "refactor(api): xóa toàn bộ code thừa hệ thống công văn, chỉ giữ Cabinet phòng họp"`
+
 ### [2026-08-06 22:00] Đổi tên dự án từ ToolCalendar sang Cabinet
 - **Mô tả**:
   - Đổi tên tất cả các thư mục, file và namespaces từ `ToolCalendar` sang `Cabinet`.

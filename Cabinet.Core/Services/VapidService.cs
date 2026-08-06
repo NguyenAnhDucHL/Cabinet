@@ -49,7 +49,7 @@ namespace Cabinet.Services
             if (string.IsNullOrEmpty(_publicKey) || string.IsNullOrEmpty(_privateKey)) return;
 
             var subscription = new WebPush.PushSubscription(endpoint, p256dh, auth);
-            var subject = Environment.GetEnvironmentVariable("VAPID_SUBJECT") ?? "mailto:admin@toolcalendar.local";
+            var subject = Environment.GetEnvironmentVariable("VAPID_SUBJECT") ?? "mailto:admin@cabinet.local";
             var vapidDetails = new VapidDetails(subject, _publicKey, _privateKey);
             var webPushClient = new WebPushClient();
 

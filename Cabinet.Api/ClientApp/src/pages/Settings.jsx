@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 // Import Tab Components from components/settings
-import { GeneralTab, AuditTab, BackupTab } from '@/components/settings'
+import { GeneralTab, AuditTab } from '@/components/settings'
 
 export function Settings() {
   const [config, setConfig] = useState({
@@ -112,12 +112,7 @@ export function Settings() {
       icon: <History className="size-4" />,
       desc: 'Theo dõi hoạt động bảo mật',
     },
-    {
-      id: 'backup',
-      label: 'Dữ liệu & Sao lưu',
-      icon: <Database className="size-4" />,
-      desc: 'Bảo trì & Lưu trữ dữ liệu',
-    },
+
   ]
 
   return (
@@ -205,7 +200,7 @@ export function Settings() {
                 />
               )}
               {activeTab === 'audit' && <AuditTab />}
-              {activeTab === 'backup' && <BackupTab />}
+
             </div>
           </div>
         </div>

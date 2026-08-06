@@ -89,7 +89,6 @@ builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IMeetingConclusionRepo
 builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IMeetingNoteRepository, Cabinet.Core.Data.Repositories.MeetingNoteRepository>();
 
 // Refactored Repositories
-builder.Services.AddScoped<IStatsRepository, StatsRepository>();
 builder.Services.AddScoped<ISettingRepository, SettingRepository>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
@@ -253,13 +252,8 @@ builder.Services.AddAuthentication(x =>
             var accept = context.Request.Headers["Accept"].ToString();
             var path = context.Request.Path.Value ?? "";
             
-            // Nếu người dùng mở URL trực tiếp trên trình duyệt (Accept: text/html)
-            // Thay vì hiện màn hình lỗi 401 mặc định, redirect về trang chủ để báo lỗi thân thiện
-            if (accept.Contains("text/html") && path.StartsWith("/api/documents") && path.EndsWith("/file"))
-            {
-                context.HandleResponse(); // Ngăn chặn response 401 mặc định
-                context.Response.Redirect("/?error=unauthorized");
-            }
+            // Không còn API Documents
+
             return Task.CompletedTask;
         },
         OnForbidden = context =>
@@ -267,10 +261,7 @@ builder.Services.AddAuthentication(x =>
             var accept = context.Request.Headers["Accept"].ToString();
             var path = context.Request.Path.Value ?? "";
             
-            if (accept.Contains("text/html") && path.StartsWith("/api/documents") && path.EndsWith("/file"))
-            {
-                context.Response.Redirect("/?error=forbidden");
-            }
+            // Không còn API Documents
             return Task.CompletedTask;
         }
     };
