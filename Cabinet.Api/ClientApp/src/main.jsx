@@ -6,6 +6,19 @@ import { createRoot } from 'react-dom/client'
 // ─── Global Fetch Interceptor for standardized ApiResponse ────────────────
 const originalFetch = window.fetch
 window.fetch = async (...args) => {
+  // Tự động inject Authorization header cho mọi request tới /api/
+  const url = typeof args[0] === 'string' ? args[0] : args[0]?.url || ''
+  if (url.startsWith('/api/') || url.includes('/api/')) {
+    const token = localStorage.getItem('auth_token')
+    if (token) {
+      const options = args[1] || {}
+      const headers = new Headers(options.headers || {})
+      if (!headers.has('Authorization')) {
+        headers.set('Authorization', `Bearer ${token}`)
+      }
+      args[1] = { ...options, headers }
+    }
+  }
   const response = await originalFetch(...args)
   const contentType = response.headers.get('content-type')
   if (contentType && contentType.includes('application/json')) {

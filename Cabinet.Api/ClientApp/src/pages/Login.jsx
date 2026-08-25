@@ -1,10 +1,9 @@
 /* eslint-disable */
 /* global sessionStorage */
 import React, { useEffect, useState } from 'react'
-import { Eye, EyeOff, TriangleAlert, Lock, User, Loader2 } from 'lucide-react'
+import { Eye, EyeOff, TriangleAlert, QrCode, Phone, Mail, Loader2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
@@ -78,49 +77,53 @@ export function LoginPage({ onLoginSuccess }) {
   }
 
   return (
-    <div className="relative h-screen w-full flex items-center justify-center p-4 overflow-hidden bg-background">
-      {/* Premium Background Blobs */}
-      <div className="bg-blobs fixed inset-0 pointer-events-none -z-10">
-        <div className="blob blob-1 scale-[2] opacity-30 animate-pulse" />
-        <div
-          className="blob blob-2 scale-[2] opacity-30 animate-pulse"
-          style={{ animationDelay: '2s' }}
-        />
-      </div>
+    <div
+      className="relative min-h-screen w-full flex items-center justify-center p-4 overflow-hidden bg-[#000a29]"
+      style={{
+        backgroundImage: `url('/assets/tech_bg.png')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundBlendMode: 'overlay',
+      }}
+    >
+      <div className="w-full max-w-[1000px] h-[600px] bg-white rounded-[2rem] shadow-2xl flex overflow-hidden relative z-10 animate-in fade-in zoom-in duration-700">
+        {/* Left Side: Image */}
+        <div className="hidden md:block w-1/2 h-full relative">
+          <img
+            src="/assets/cabinet-login.png"
+            alt="Meeting Room"
+            className="w-full h-full object-cover"
+          />
+        </div>
 
-      <div className="w-full max-w-[420px] relative animate-in fade-in zoom-in duration-700">
-        {/* Decorative Glow */}
-        <div className="absolute -top-[5%] -left-[5%] size-32 bg-primary/10 rounded-full blur-[60px]" />
-        <div className="absolute -bottom-[5%] -right-[5%] size-32 bg-primary/10 rounded-full blur-[60px]" />
-
-        <Card className="relative glass-card border-none shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] overflow-hidden rounded-[2rem]">
-          {/* Top Accent Line */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary to-primary opacity-80" />
-
-          <CardHeader className="pt-8 pb-4 text-center space-y-3">
-            <div className="mx-auto size-20 rounded-2xl bg-white/50 backdrop-blur-md flex items-center justify-center ring-1 ring-white/20 shadow-sm transition-transform hover:scale-105 duration-500">
-              <img
-                src="/assets/LINK STRATEGY.png"
-                alt="Logo"
-                className="size-14 object-contain drop-shadow-sm"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://via.placeholder.com/64'
-                }}
-              />
+        {/* Right Side: Login Form */}
+        <div className="w-full md:w-1/2 p-10 flex flex-col">
+          <div className="flex flex-col items-center mb-10 mt-4">
+            <div className="flex items-center justify-center mb-4">
+              {/* Cabinet Logo representation */}
+              <div className="flex items-center gap-2">
+                <img
+                  src="/assets/logo.png"
+                  alt="Logo"
+                  className="h-10"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none'
+                  }}
+                />
+                <span className="text-3xl font-bold tracking-tight text-slate-800">Cabinet</span>
+              </div>
             </div>
-            <div className="space-y-0.5">
-              <CardTitle className="text-2xl font-black text-foreground tracking-tight">
-                Chào mừng trở lại
-              </CardTitle>
-              <CardDescription className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-[0.2em]">
-                Hệ thống điều phối công văn
-              </CardDescription>
-            </div>
-          </CardHeader>
+            <h1 className="text-[#051c48] font-extrabold text-[19px] md:text-[20px] text-center uppercase tracking-wide leading-snug whitespace-nowrap">
+              Hệ thống thông tin phục vụ họp
+              <br />
+              và xử lý công việc
+            </h1>
+          </div>
 
-          <CardContent className="pb-8 px-8">
+          {/* Form */}
+          <div className="w-full max-w-sm mx-auto flex-1 flex flex-col justify-center">
             {showKickedBanner && (
-              <div className="mb-6 rounded-xl border border-destructive/20 bg-destructive/5 p-3 animate-in fade-in slide-in-from-top-2 duration-500">
+              <div className="mb-4 rounded-xl border border-destructive/20 bg-destructive/5 p-3">
                 <div className="flex items-center gap-2.5">
                   <TriangleAlert className="size-4 text-destructive shrink-0" />
                   <p className="text-[11px] font-bold text-destructive leading-tight">
@@ -130,103 +133,92 @@ export function LoginPage({ onLoginSuccess }) {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-1.5 group">
-                <Label
-                  htmlFor="username"
-                  className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/50 ml-1 group-focus-within:text-primary transition-colors"
-                >
-                  Tên đăng nhập
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="username" className="text-[13px] font-bold text-slate-700">
+                  Tên tài khoản <span className="text-red-500">*</span>
                 </Label>
-                <div className="relative group/input">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/30 group-focus-within/input:text-primary transition-colors">
-                    <User className="size-4" />
-                  </div>
-                  <Input
-                    type="text"
-                    id="username"
-                    placeholder="Tài khoản..."
-                    required
-                    autoFocus
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="h-12 pl-11 bg-white/30 border-white/10 focus:bg-white/50 focus:border-primary/30 transition-all rounded-xl font-bold shadow-sm"
-                  />
-                </div>
+                <Input
+                  type="text"
+                  id="username"
+                  required
+                  autoFocus
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="h-12 border-slate-300 focus:border-red-500 focus:ring-red-500/20 rounded-xl px-4"
+                />
               </div>
 
-              <div className="space-y-1.5 group">
-                <Label
-                  htmlFor="password"
-                  className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/50 ml-1 group-focus-within:text-primary transition-colors"
-                >
-                  Mật khẩu
+              <div className="space-y-2 relative">
+                <Label htmlFor="password" className="text-[13px] font-bold text-slate-700">
+                  Mật khẩu <span className="text-red-500">*</span>
                 </Label>
-                <div className="relative group/input">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/30 group-focus-within/input:text-primary transition-colors">
-                    <Lock className="size-4" />
-                  </div>
-                  <Input
-                    type={showPassword ? 'text' : 'password'}
-                    id="password"
-                    placeholder="••••••••"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="h-12 pl-11 pr-11 bg-white/30 border-white/10 focus:bg-white/50 focus:border-primary/30 transition-all rounded-xl font-bold shadow-sm"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-muted-foreground/20 hover:text-primary transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                  </button>
-                </div>
+                <Input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-12 border-slate-300 focus:border-red-500 focus:ring-red-500/20 rounded-xl px-4 pr-12"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-10 text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+                </button>
               </div>
 
-              <div className="pt-2">
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={cn(
-                    'w-full h-12 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300 shadow-lg',
-                    isSubmitting
-                      ? 'bg-muted text-muted-foreground opacity-50'
-                      : 'bg-primary hover:bg-sidebar-mid text-primary-foreground shadow-primary/20 hover:-translate-y-0.5'
-                  )}
-                >
-                  {isSubmitting ? (
-                    <div className="flex items-center gap-2">
-                      <Loader2 className="size-4 animate-spin" />
-                      <span>Đang xác thực...</span>
-                    </div>
-                  ) : (
-                    'Đăng nhập ngay'
-                  )}
-                </Button>
-              </div>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className={cn(
+                  'w-full h-12 rounded-xl text-[15px] font-bold transition-all duration-300',
+                  isSubmitting
+                    ? 'bg-slate-200 text-slate-500'
+                    : 'bg-[#e3001b] hover:bg-[#c20017] text-white shadow-md'
+                )}
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center gap-2 justify-center">
+                    <Loader2 className="size-4 animate-spin" />
+                    <span>Đang xác thực...</span>
+                  </div>
+                ) : (
+                  'Đăng nhập'
+                )}
+              </Button>
 
               {error && (
-                <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-[11px] font-bold text-center animate-in shake-1">
+                <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-[13px] font-bold text-center">
                   {error}
                 </div>
               )}
             </form>
-          </CardContent>
 
-          <div className="bg-white/20 backdrop-blur-md p-4 border-t border-white/5 text-center">
-            <p className="text-[9px] text-muted-foreground/50 font-black uppercase tracking-widest">
-              &copy; 2026 LINK STRATEGY SYSTEM
-            </p>
+            <div className="mt-8 flex flex-col items-center">
+              <button
+                type="button"
+                className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors font-medium text-sm"
+              >
+                <QrCode className="size-5" />
+                <span>Mã QR tải app</span>
+              </button>
+            </div>
           </div>
-        </Card>
 
-        {/* Footer info */}
-        <div className="mt-6 text-center animate-in fade-in duration-1000">
-          <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">
-            Link Strategy Technology Team
-          </p>
+          {/* Footer Contacts */}
+          <div className="mt-auto pt-6 flex items-center justify-center gap-6 text-[#e3001b] font-bold text-[13px]">
+            <div className="flex items-center gap-2">
+              <Phone className="size-4" />
+              <span>18008000-N7</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Mail className="size-4" />
+              <span>-</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

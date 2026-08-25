@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useRef } from 'react'
+/* eslint-disable */
+import React, { useState, useRef } from 'react'
 import { Search, Plus, FileText, Trash2, Loader2, UploadCloud, X, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -21,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { useNotes } from '../features/notes/hooks/useNotes'
 
 const fmt = (dt) => {
   if (!dt) return ''
@@ -29,54 +30,19 @@ const fmt = (dt) => {
 }
 
 export function CabinetNotebook() {
-  const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const { notes, meetings, loading, fetchNotes, createNote, deleteNote } = useNotes()
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [saving, setSaving] = useState(false)
-  const [meetings, setMeetings] = useState([])
-
-  // Form state
   const [formMeetingId, setFormMeetingId] = useState('')
   const [formContent, setFormContent] = useState('')
   const [formFiles, setFormFiles] = useState([])
   const fileInputRef = useRef(null)
 
-  const fetchNotes = (currentSearch = '') => {
-    setLoading(true)
-    const params = currentSearch ? `?search=${encodeURIComponent(currentSearch)}` : ''
-    fetch(`/api/phonghopkhonggiayto/notes${params}`)
-      .then((r) => r.json())
-      .then((json) => setData(json.data || []))
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }
-
-  const fetchMeetings = () => {
-    fetch('/api/phonghopkhonggiayto/meetings/schedule')
-      .then((r) => r.json())
-      .then((json) => setMeetings(json.data || []))
-      .catch(() => {})
-  }
-
-  useEffect(() => {
-    fetchNotes()
-    fetchMeetings()
-  }, [])
-
   const handleSearch = (e) => {
     const q = e.target.value
     setSearch(q)
     fetchNotes(q)
-  }
-
-  const handleAddFile = (e) => {
-    const files = Array.from(e.target.files)
-    setFormFiles((prev) => [...prev, ...files])
-  }
-
-  const handleRemoveFile = (idx) => {
-    setFormFiles((prev) => prev.filter((_, i) => i !== idx))
   }
 
   const handleCreate = async () => {
@@ -87,31 +53,14 @@ export function CabinetNotebook() {
       formData.append('meetingId', formMeetingId)
       formData.append('content', formContent)
       formFiles.forEach((f) => formData.append('files', f))
-
-      const resp = await fetch('/api/phonghopkhonggiayto/notes', {
-        method: 'POST',
-        body: formData,
-      })
-      const json = await resp.json()
-      if (json.success) {
-        fetchNotes(search)
-        setIsAddModalOpen(false)
-        setFormMeetingId('')
-        setFormContent('')
-        setFormFiles([])
-      }
+      await createNote(formData)
+      setIsAddModalOpen(false)
+      setFormMeetingId('')
+      setFormContent('')
+      setFormFiles([])
     } finally {
       setSaving(false)
     }
-  }
-
-  const handleDelete = async (id) => {
-    // eslint-disable-next-line no-alert
-    if (!window.confirm('Bạn có chắc muốn xóa ghi chú này?')) return
-    await fetch(`/api/phonghopkhonggiayto/notes/${id}`, {
-      method: 'DELETE',
-    })
-    fetchNotes(search)
   }
 
   return (
@@ -128,7 +77,7 @@ export function CabinetNotebook() {
       </div>
 
       <div className="flex items-center justify-between mb-4">
-        <div className="font-medium text-slate-800">Danh sách ghi chú ({data.length})</div>
+        <div className="font-medium text-slate-800">Danh sách ghi chú ({notes.length})</div>
         <div className="flex items-center gap-2">
           <div className="relative w-[300px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -172,7 +121,7 @@ export function CabinetNotebook() {
                   </div>
                 </TableCell>
               </TableRow>
-            ) : data.length === 0 ? (
+            ) : notes.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="h-64 text-center">
                   <div className="flex flex-col items-center justify-center text-gray-500">
@@ -182,13 +131,11 @@ export function CabinetNotebook() {
                 </TableCell>
               </TableRow>
             ) : (
-              data.map((row, idx) => {
+              notes.map((row, idx) => {
                 let attachments = []
                 try {
                   attachments = JSON.parse(row.attachmentPaths || '[]')
-                } catch (e) {
-                  console.error('Error parsing attachments', e)
-                }
+                } catch {}
                 return (
                   <TableRow key={row.id}>
                     <TableCell className="text-center">{idx + 1}</TableCell>
@@ -214,7 +161,7 @@ export function CabinetNotebook() {
                         variant="ghost"
                         size="icon"
                         className="text-red-400 hover:text-red-600"
-                        onClick={() => handleDelete(row.id)}
+                        onClick={() => deleteNote(row.id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -227,7 +174,6 @@ export function CabinetNotebook() {
         </Table>
       </div>
 
-      {/* Add Note Modal */}
       <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
@@ -250,9 +196,6 @@ export function CabinetNotebook() {
                   ))}
                 </SelectContent>
               </Select>
-              <p className="text-xs text-gray-500">
-                Danh sách phiên họp chọn để lưu ghi chú là các phiên họp cá nhân được mời
-              </p>
             </div>
             <div className="space-y-2">
               <Label>
@@ -266,17 +209,17 @@ export function CabinetNotebook() {
               />
             </div>
             <div className="space-y-2">
-              <Label>Tài liệu đính kèm ({formFiles.length}) :</Label>
+              <Label>Tài liệu đính kèm ({formFiles.length}):</Label>
               <input
                 type="file"
                 multiple
                 ref={fileInputRef}
                 className="hidden"
                 accept=".doc,.docx,.xls,.xlsx,.txt,.ppt,.pptx,.pdf"
-                onChange={handleAddFile}
+                onChange={(e) => setFormFiles((p) => [...p, ...Array.from(e.target.files)])}
               />
               <div
-                className="border-2 border-dashed border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors cursor-pointer"
+                className="border-2 border-dashed border-gray-200 rounded-lg p-8 flex flex-col items-center justify-center text-center hover:bg-gray-50 cursor-pointer"
                 onClick={() => fileInputRef.current?.click()}
               >
                 <UploadCloud className="h-8 w-8 text-red-500 mb-2" />
@@ -296,7 +239,7 @@ export function CabinetNotebook() {
                     >
                       <span className="truncate text-gray-700">{f.name}</span>
                       <button
-                        onClick={() => handleRemoveFile(i)}
+                        onClick={() => setFormFiles((p) => p.filter((_, idx) => idx !== i))}
                         className="ml-2 text-red-400 hover:text-red-600"
                       >
                         <X className="h-4 w-4" />
@@ -315,8 +258,7 @@ export function CabinetNotebook() {
                 onClick={handleCreate}
                 disabled={saving || !formMeetingId || !formContent.trim()}
               >
-                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                Lưu
+                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}Lưu
               </Button>
             </div>
           </div>

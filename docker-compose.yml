@@ -67,25 +67,7 @@ services:
       - cabinet-backend
     restart: always
 
-  ngrok:
-    image: ngrok/ngrok:alpine
-    platform: linux/amd64
-    container_name: doc-coordination-ngrok
-    restart: always
-    environment:
-      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
-      - NGROK_DOMAIN=${NGROK_DOMAIN}
-    entrypoint: /bin/sh
-    command:
-      - "-c"
-      - |
-        if [ -n "$$NGROK_DOMAIN" ]; then
-          ngrok http nginx-proxy:80 --url=$$NGROK_DOMAIN --log=stdout
-        else
-          ngrok http nginx-proxy:80 --log=stdout
-        fi
-    depends_on:
-      - nginx
+
 
 volumes:
   clamav-db:  # Named volume — ClamAV virus database tồn tại giữa các lần restart

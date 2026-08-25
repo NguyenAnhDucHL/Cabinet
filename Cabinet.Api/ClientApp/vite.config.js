@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const backendTarget = process.env.VITE_BACKEND_URL || 'http://localhost:59607'
+const backendTarget = process.env.VITE_BACKEND_URL || 'http://localhost:59609'
 
 export default defineConfig({
   publicDir: '../wwwroot',
@@ -20,12 +20,14 @@ export default defineConfig({
       injectRegister: 'auto',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        skipWaiting: true,
+        clientsClaim: true,
       },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'Hệ Thống Điều Phối Công Văn',
-        short_name: 'Lịch Công Tác',
-        description: 'Hệ thống quản lý lịch công tác và điều phối công văn',
+        name: 'Phòng họp không giấy tờ',
+        short_name: 'Phòng họp không giấy tờ',
+        description: 'Phòng họp không giấy tờ',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
@@ -62,7 +64,6 @@ export default defineConfig({
         ws: true,
       },
       '/Uploads': backendTarget,
-      '/assets': backendTarget,
       '/partials': backendTarget,
       '/sw.js': backendTarget,
     },

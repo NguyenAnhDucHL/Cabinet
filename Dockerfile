@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS base
 WORKDIR /app
 
 # Install native dependencies for PaddleOCR and SkiaSharp
-RUN apt-get update && apt-get install -y \
+RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -y \
     libgdiplus \
     libc6-dev \
     libgomp1 \
@@ -43,7 +43,7 @@ RUN dotnet publish "Cabinet.Api.csproj" -c Release -o /app/publish /p:UseAppHost
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 # Phải cài lại dependencies vì aspnet image khác với sdk image
-RUN apt-get update && apt-get install -y \
+RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -y \
     libgdiplus \
     libc6-dev \
     libgomp1 \

@@ -1,227 +1,11 @@
-/* eslint-disable */
 import React, { useState, useEffect } from 'react'
-import {
-  Video,
-  CalendarClock,
-  ChevronRight,
-  MapPin,
-  Calendar as CalendarIcon,
-  ChevronsLeft,
-  ChevronsRight,
-  X,
-} from 'lucide-react'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
 import { ATTENDANCE_STATUS } from '../../constants/meeting'
-
-function StatRow({ color, label, value, percent }) {
-  return (
-    <div className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
-      <div className="flex items-center gap-2">
-        <span className={`w-4 h-4 rounded-md ${color}`} />
-        <span className="text-sm font-medium text-gray-800">{label}</span>
-      </div>
-      <div className="flex gap-6 text-sm text-gray-800">
-        <span className="w-12 text-right font-bold">{value}</span>
-        <span className="w-16 text-right">{percent.toFixed(2)}</span>
-      </div>
-    </div>
-  )
-}
-
-function MeetingCard({ meeting, isOngoing, onJoin }) {
-  return (
-    <div
-      className={`flex items-start gap-3 p-3 rounded-lg border mb-2 last:mb-0 transition-all hover:shadow-sm ${
-        isOngoing
-          ? 'border-green-200 bg-green-50'
-          : 'border-gray-100 bg-white hover:border-gray-200'
-      }`}
-    >
-      <div
-        className={`mt-0.5 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-          isOngoing ? 'bg-green-500' : 'bg-blue-500'
-        }`}
-      >
-        {isOngoing ? (
-          <Video size={14} className="text-white" />
-        ) : (
-          <CalendarClock size={14} className="text-white" />
-        )}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-gray-800 truncate">{meeting.title}</p>
-        <div className="flex items-center gap-2 mt-0.5">
-          <MapPin size={11} className="text-gray-400 shrink-0" />
-          <span className="text-xs text-gray-500 truncate">
-            {meeting.roomName || 'Chưa xác định'}
-          </span>
-        </div>
-        <div className="flex items-center gap-1 mt-1">
-          <CalendarClock size={11} className="text-gray-400" />
-          <span className="text-xs text-gray-500">
-            {meeting.startTime
-              ? new Date(meeting.startTime).toLocaleString('vi-VN', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  day: '2-digit',
-                  month: '2-digit',
-                })
-              : '--'}
-          </span>
-        </div>
-      </div>
-      <div className="flex flex-col items-end gap-2 shrink-0">
-        {isOngoing && (
-          <span className="text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full">
-            ĐANG DIỄN RA
-          </span>
-        )}
-        <button
-          onClick={() => onJoin(meeting)}
-          className="text-xs px-3 py-1.5 bg-[#c8102e] text-white rounded-md hover:bg-[#a50e27] transition shadow-sm font-medium"
-        >
-          {isOngoing ? 'Vào họp' : 'Chi tiết'}
-        </button>
-      </div>
-    </div>
-  )
-}
-
-function EmptyState() {
-  return (
-    <div className="flex flex-col items-center justify-center py-10">
-      <div className="relative mb-3">
-        <svg
-          width="80"
-          height="80"
-          viewBox="0 0 100 100"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M20 65 L80 65 L75 85 L25 85 Z"
-            fill="#e2e8f0"
-            stroke="#64748b"
-            strokeWidth="2"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M30 45 L70 45 L70 65 L30 65 Z"
-            fill="#f8fafc"
-            stroke="#64748b"
-            strokeWidth="2"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M40 50 L60 50 M40 55 L50 55"
-            stroke="#64748b"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-          <circle cx="70" cy="35" r="10" fill="#f1f5f9" stroke="#64748b" strokeWidth="1.5" />
-          <path
-            d="M66 35 L74 35 M70 31 L70 39"
-            stroke="#64748b"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      </div>
-      <p className="text-sm font-bold text-[#1a202c]">Không có dữ liệu</p>
-    </div>
-  )
-}
-
-function SectionCard({ title, count, children, showAction = false }) {
-  return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
-      <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-        <h2 className="font-bold text-[#1a202c] text-base">
-          {title} {count !== undefined && `(${count})`}
-        </h2>
-        {showAction && (
-          <button className="text-xs text-[#c8102e] border border-[#c8102e] px-2 py-0.5 rounded flex items-center hover:bg-red-50 transition">
-            Xem tất cả <ChevronRight size={12} className="ml-0.5" />
-          </button>
-        )}
-      </div>
-      <div className="p-4">{children}</div>
-    </div>
-  )
-}
-
-function MonthPicker({ selectedMonth, selectedYear, onChange }) {
-  const [currentYear, setCurrentYear] = useState(selectedYear)
-  const [isOpen, setIsOpen] = useState(false)
-
-  const months = Array.from({ length: 12 }, (_, i) => i + 1)
-
-  const handleSelect = (m) => {
-    onChange(m, currentYear)
-    setIsOpen(false)
-  }
-
-  return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger asChild>
-        <button className="flex items-center gap-2 border border-gray-300 rounded-md px-3 py-1.5 text-sm font-medium text-[#1a202c] hover:bg-gray-50 transition outline-none">
-          {String(selectedMonth).padStart(2, '0')}/{selectedYear}
-          <div className="flex items-center gap-1.5 ml-2 border-l border-gray-300 pl-2">
-            <X
-              size={14}
-              className="text-gray-400 hover:text-red-500"
-              onClick={(e) => {
-                e.stopPropagation()
-                onChange(null, null)
-              }}
-            />
-            <CalendarIcon size={14} className="text-gray-500" />
-          </div>
-        </button>
-      </PopoverTrigger>
-      <PopoverContent className="w-64 p-0 rounded-xl shadow-xl" align="end">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-          <button
-            onClick={() => setCurrentYear((y) => y - 1)}
-            className="p-1 hover:bg-gray-100 rounded text-gray-500 transition"
-          >
-            <ChevronsLeft size={16} />
-          </button>
-          <span className="font-bold text-[#1a202c]">{currentYear}</span>
-          <button
-            onClick={() => setCurrentYear((y) => y + 1)}
-            className="p-1 hover:bg-gray-100 rounded text-gray-500 transition"
-          >
-            <ChevronsRight size={16} />
-          </button>
-        </div>
-        <div className="grid grid-cols-3 gap-2 p-4">
-          {months.map((m) => (
-            <button
-              key={m}
-              onClick={() => handleSelect(m)}
-              className={`py-2 rounded-md text-sm font-medium transition ${
-                m === selectedMonth && currentYear === selectedYear
-                  ? 'bg-[#c8102e] text-white'
-                  : 'text-[#1a202c] hover:bg-gray-100'
-              }`}
-            >
-              thg {m}
-            </button>
-          ))}
-        </div>
-      </PopoverContent>
-    </Popover>
-  )
-}
+import { StatRow } from '../features/home/components/CabinetHome/StatRow'
+import { MeetingCard } from '../features/home/components/CabinetHome/MeetingCard'
+import { EmptyState } from '../features/home/components/CabinetHome/EmptyState'
+import { SectionCard } from '../features/home/components/CabinetHome/SectionCard'
+import { MonthPicker } from '../features/home/components/CabinetHome/MonthPicker'
+import { AttendanceConfirmModal } from '../features/home/components/CabinetHome/AttendanceConfirmModal'
 
 export function CabinetHome() {
   const d = new Date()
@@ -453,7 +237,9 @@ export function CabinetHome() {
             ) : ongoingMeetings.length === 0 ? (
               <EmptyState />
             ) : (
-              ongoingMeetings.map((m) => <MeetingCard key={m.id} meeting={m} isOngoing={true} />)
+              ongoingMeetings.map((m) => (
+                <MeetingCard key={m.id} meeting={m} isOngoing={true} onJoin={handleJoinMeeting} />
+              ))
             )}
           </SectionCard>
 
@@ -467,7 +253,9 @@ export function CabinetHome() {
             ) : upcomingMeetings.length === 0 ? (
               <EmptyState />
             ) : (
-              upcomingMeetings.map((m) => <MeetingCard key={m.id} meeting={m} isOngoing={false} />)
+              upcomingMeetings.map((m) => (
+                <MeetingCard key={m.id} meeting={m} isOngoing={false} onJoin={handleJoinMeeting} />
+              ))
             )}
           </SectionCard>
 
@@ -481,34 +269,11 @@ export function CabinetHome() {
         </div>
 
         {/* Điểm danh Modal */}
-        <Dialog open={!!confirmMeeting} onOpenChange={() => setConfirmMeeting(null)}>
-          <DialogContent className="max-w-md bg-white p-0 overflow-hidden border-0 rounded-xl shadow-2xl">
-            <DialogHeader className="bg-[#c8102e] px-6 py-4">
-              <DialogTitle className="text-white text-lg font-bold">Xác nhận điểm danh</DialogTitle>
-            </DialogHeader>
-            <div className="p-6">
-              <p className="text-gray-700 text-sm mb-4">
-                Bạn có chắc chắn muốn xác nhận điểm danh và tham gia phiên họp{' '}
-                <strong>{confirmMeeting?.title}</strong> không?
-              </p>
-              <div className="flex justify-end gap-3 mt-6">
-                <Button
-                  variant="outline"
-                  className="text-gray-600 border-gray-300 hover:bg-gray-50 cursor-pointer"
-                  onClick={() => setConfirmMeeting(null)}
-                >
-                  Hủy
-                </Button>
-                <Button
-                  className="bg-[#c8102e] text-white hover:bg-[#a50e27] cursor-pointer"
-                  onClick={handleConfirmAttendance}
-                >
-                  Điểm danh & Vào họp
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <AttendanceConfirmModal
+          confirmMeeting={confirmMeeting}
+          setConfirmMeeting={setConfirmMeeting}
+          handleConfirmAttendance={handleConfirmAttendance}
+        />
       </div>
     </div>
   )

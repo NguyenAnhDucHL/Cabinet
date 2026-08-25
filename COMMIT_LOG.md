@@ -1,3 +1,58 @@
+### [2026-08-25 17:13] Refactor Cabinet FE → Feature-based Architecture (Tool-Calendar pattern)
+- **Mô tả**: Tái cấu trúc toàn bộ Frontend Cabinet từ flat-pages (file 31KB monolith) sang Feature-based architecture theo mô hình Tool-Calendar. Tách API layer, custom hooks, và slim down các page component. Đây giải quyết luôn root cause bug dropdown trống (hook dùng trực tiếp meetingApi thay vì fetch inline dễ bị 401 nuốt lặng).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/features/meetings/api/meetingApi.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/proceedings/api/proceedingApi.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/questionnaire/api/questionnaireApi.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/notes/api/noteApi.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/conclusions/api/conclusionApi.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/rooms/api/roomApi.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/schedule/api/scheduleApi.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/meetings/hooks/useMeetings.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/proceedings/hooks/useProceedings.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/rooms/hooks/useRooms.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/notes/hooks/useNotes.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/conclusions/hooks/useConclusions.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/features/questionnaire/hooks/useQuestionnaire.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetProceedings.jsx` (Sửa đổi — 526 → 255 dòng)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetNotebook.jsx` (Sửa đổi — 328 → 177 dòng)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetConclusions.jsx` (Sửa đổi — 312 → 182 dòng)
+  - `Cabinet.Api/ClientApp/vite.config.js` (Sửa đổi — thêm skipWaiting/clientsClaim cho PWA)
+- **Lệnh git commit**: `git commit -m "refactor(cabinet): tái cấu trúc FE theo Feature-based architecture với API layer và custom hooks"`
+
+### [2026-08-25 16:32] Fix dropdown "Chọn phiên họp" trống — JWT không được inject tự động
+- **Mô tả**: Root cause: Global Fetch Interceptor (`main.jsx`) CHỈ xử lý response (unwrap ApiResponse) nhưng KHÔNG inject Authorization header vào request. Mọi fetch call không truyền header thủ công → 401 Unauthorized → data trả về rỗng → dropdown trống. Fix bằng cách thêm logic tự động inject `Bearer <token>` từ localStorage vào mọi request tới `/api/`. Đây là design flaw từ ban đầu, ảnh hưởng tất cả component không thêm header thủ công.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/main.jsx` (Sửa đổi — thêm auto token injection trong interceptor)
+- **Lệnh git commit**: `git commit -m "fix(auth): tự động inject JWT Bearer token vào mọi fetch request trong interceptor"`
+
+### [2026-08-25 16:26] Tạo tables thiếu MeetingNotes và MeetingConclusions trong DB
+- **Mô tả**: Docker logs hiển thị `no such table: MeetingNotes` và `no such table: MeetingConclusions` — 2 bảng này không tồn tại dù code Repository đã sẵn sàng. Tạo thủ công bằng `sqlite3` trực tiếp trên host DB.
+- **Tệp thay đổi**:
+  - `data_dump/documents.db` (Schema migration — tạo bảng MeetingNotes, MeetingConclusions)
+- **Lệnh git commit**: `git commit -m "fix(db): tạo tables MeetingNotes và MeetingConclusions còn thiếu"`
+
+### [2026-08-25 14:26] Sửa lỗi API tạo phiên họp trả về 400 Bad Request
+
+- **Mô tả**: API `CreateMeeting` và `UpdateMeeting` ở backend yêu cầu `[FromForm] string requestJson` do có tích hợp upload file (FormData). Frontend ở component `MeetingModal.jsx` trước đó gửi dạng JSON raw (`JSON.stringify`) khiến backend không parse được và báo lỗi 400. Đã chuyển sang gói payload bằng `FormData` (`fd.append('requestJson', body)`).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/components/MeetingModal.jsx` (Sửa đổi)
+  - `.agents/rules/tc-rule-bloody-lessons.md` (Sửa đổi - ghi chú bài học)
+- **Lệnh git commit**: `git commit -m "fix(meetings): sửa lỗi gọi API tạo phiên họp bằng payload FormData"`
+
+### [2026-08-25 14:19] Thêm luật tc-rule-bloody-lessons.md vào thư mục rules
+- **Mô tả**: Dựa trên ý tưởng từ dự án Tool-Calendar, tạo thêm file rule `tc-rule-bloody-lessons.md` để ghi chép lại các lỗi ngớ ngẩn, bẫy kỹ thuật, lỗi hệ thống gặp phải trong quá trình phát triển Cabinet. Đã cập nhật `AGENTS.md` để tham chiếu đến rule này. Việc này giúp AI thế hệ sau không lặp lại lỗi cũ.
+- **Tệp thay đổi**:
+  - `.agents/rules/tc-rule-bloody-lessons.md` (Mới)
+  - `.agents/AGENTS.md` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "docs(rules): thêm luật tc-rule-bloody-lessons.md để ghi log lỗi"`
+
+### [2026-08-25 14:13] Loại bỏ cấu hình ngrok khỏi docker-compose
+- **Mô tả**: Xóa dịch vụ ngrok khỏi `docker-compose.yml` vì không sử dụng đến tính năng public URL và để tránh lỗi restart liên tục do token rác.
+- **Tệp thay đổi**:
+  - `docker-compose.yml` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(infra): loại bỏ cấu hình ngrok khỏi docker-compose"`
+
 ### [2026-08-07 01:20] Thêm luật xóa file rác vào AGENTS.md
 - **Mô tả**: Bổ sung luật số 7 (No-Temporary-Files) vào Core Principles yêu cầu AI luôn xóa sạch các file tạm thời, script kiểm tra lỗi, hay test accounts ngay sau khi sử dụng xong.
 - **Tệp thay đổi**:
@@ -1398,3 +1453,68 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Tests/BusinessFlowTests.cs` (Sửa đổi — xóa Scenario2)
 - **Lệnh git commit**: `git commit -m "refactor(notify): xóa DeadlineWorker job quét deadline công văn không còn dùng"`
 
+
+### [2026-08-14 10:19] Redesign trang đăng nhập Cabinet
+- **Mô tả**: Thiết kế lại UI trang đăng nhập theo thiết kế mới (có background công nghệ, ảnh phòng họp, và layout 2 cột).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/pages/Login.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style(auth): redesign login page UI with modern split layout"`
+
+### [2026-08-14 10:29] Thay đổi ảnh minh hoạ trang đăng nhập
+- **Mô tả**: Sử dụng ảnh `cabinet-login.png` do người dùng cung cấp thay cho ảnh mặc định trên trang đăng nhập (giao diện 2 cột).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/pages/Login.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/public/assets/cabinet-login.png` (Mới)
+- **Lệnh git commit**: `git commit -m "style(auth): update login illustration image"`
+
+### [2026-08-14 10:34] Fix lỗi không hiển thị ảnh Login và format text
+- **Mô tả**: Sửa cấu hình Vite proxy để có thể load local ảnh mà không cần phụ thuộc backend, đồng thời chỉnh lại style để text hiển thị chuẩn trên 2 dòng.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/pages/Login.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/vite.config.js` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(auth): fix login image path and adjust title wrap"`
+
+### [2026-08-14 10:46] Fix backend compilation errors (Dead Code & CS1061)
+- **Mô tả**: Xóa các file rác cũ từ dự án trước để lại gây lỗi build (DocumentRoutingRepository, IDocumentUploadService). Sửa lỗi HasColumn() không tồn tại trên SqliteDataReader trong AdminRepository.cs.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Data/Repositories/DocumentRoutingRepository.cs` (Xóa)
+  - `Cabinet.Core/Services/IDocumentUploadService.cs` (Xóa)
+  - `Cabinet.Core/Data/Repositories/AdminRepository.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(api): fix backend compilation errors by removing dead document code and fixing CS1061"`
+
+### [2026-08-14 10:46] Fix NotificationController compilation error
+- **Mô tả**: Thêm `using Cabinet.Core.Services;` vào `NotificationController.cs` để sửa lỗi không tìm thấy `IVapidService`.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/Controllers/NotificationController.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(api): add missing using directive for IVapidService in NotificationController"`
+
+### [2026-08-25 15:15] Loại bỏ hardcode tài liệu đính kèm
+- **Mô tả**: Component `MeetingProgress.jsx` bị hardcode danh sách tài liệu đính kèm và tiêu đề cuộc họp. Đã refactor để lấy dữ liệu thực từ `meeting.programFilePaths` và `meeting.invitationFilePaths` trả về từ database. Parse từ JSON string sang mảng và tách lấy tên file thật.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingProgress.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(cabinet): lấy tài liệu đính kèm và thông tin phiên họp từ DB thay vì hardcode"`
+
+### [2026-08-25 15:24] Fix lỗi không hiển thị danh sách phòng họp, người dùng, kỷ yếu khi tạo phiên họp
+- **Mô tả**: Sửa lỗi `CabinetMeetingCreate.jsx` không nhận được dữ liệu do Global Fetch Interceptor ở `main.jsx` đã tự động bóc tách (unwrap) `json.success` và `json.data` thành mảng trực tiếp, dẫn đến biểu thức `if (json.success)` bị `undefined` và bỏ qua việc cập nhật state `rooms`, `users`, `proceedings`.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetMeetingCreate.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): cập nhật logic fetch để tương thích với global interceptor unwrap"`
+
+### [2026-08-25 16:12] fix(proceedings): sửa 3 lỗi trang Kỷ yếu và bổ sung đầy đủ chức năng CRUD
+- **Mô tả**: Trang `CabinetProceedings.jsx` có 3 lỗi nghiêm trọng: (1) `json.data` bị `undefined` do Global Fetch Interceptor đã unwrap response, (2) POST tạo kỷ yếu thiếu `Content-Type: application/json` khiến server không đọc được body, (3) nút MoreVertical (⋮) không có chức năng gì. Đã sửa cả 3 và bổ sung: context menu Xóa/Gắn phiên họp, modal gắn phiên họp vào kỷ yếu đang chọn, nút Gỡ phiên họp (Unlink) hiện khi hover.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetProceedings.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(proceedings): sửa lỗi interceptor, Content-Type và bổ sung context menu CRUD"`
+
+### [2026-08-25 17:50] Tách monolithic pages thành feature-based components (Frontend)
+- **Mô tả**: Dự án bắt đầu chuyển dịch sang mô hình tính năng (feature-based). Tách các file màn hình lớn (`CabinetAppShell.jsx`, `CabinetRooms.jsx`, `CabinetQuestionnaire.jsx`, `CabinetHome.jsx`) thành các component nhỏ hơn theo thư mục tương ứng trong `features/` để dễ bảo trì, tái sử dụng và kiểm soát lỗi độc lập.
+- **Tệp thay đổi**:
+  - `src/cabinet/CabinetAppShell.jsx` (Sửa đổi)
+  - `src/cabinet/pages/CabinetRooms.jsx` (Sửa đổi)
+  - `src/cabinet/pages/CabinetQuestionnaire.jsx` (Sửa đổi)
+  - `src/cabinet/pages/CabinetHome.jsx` (Sửa đổi)
+  - `src/cabinet/features/appshell/*` (Mới)
+  - `src/cabinet/features/rooms/*` (Mới)
+  - `src/cabinet/features/questionnaires/*` (Mới)
+  - `src/cabinet/features/home/*` (Mới)
+- **Lệnh git commit**: `git commit -m "refactor(ui): tách các monolithic page thành các file nhỏ gọn theo feature"`

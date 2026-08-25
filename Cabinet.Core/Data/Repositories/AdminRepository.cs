@@ -43,7 +43,7 @@ namespace Cabinet.Core.Data.Repositories
                     Id = Convert.ToInt32(reader["Id"]),
                     Name = reader["Name"].ToString() ?? "",
                     Description = reader["Description"]?.ToString() ?? "",
-                    IsActive = reader.HasColumn("IsActive") && reader["IsActive"] != DBNull.Value ? Convert.ToInt32(reader["IsActive"]) == 1 : true
+                    IsActive = reader["IsActive"] != DBNull.Value ? Convert.ToInt32(reader["IsActive"]) == 1 : true
                 });
             }
             return list;

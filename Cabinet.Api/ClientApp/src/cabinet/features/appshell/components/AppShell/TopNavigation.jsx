@@ -1,0 +1,85 @@
+import React from 'react'
+import { Menu, ArrowLeft } from 'lucide-react'
+import { CabinetLogo } from './CabinetLogo'
+import { NotificationsPopover } from './NotificationsPopover'
+import { UserPopover } from './UserPopover'
+import { NAV_ITEMS } from '../../constants/navigation'
+
+export function TopNavigation({
+  activeNav,
+  setActiveNav,
+  setActiveSidebar,
+  notifCount,
+  notifications,
+  markAllRead,
+  markRead,
+  userName,
+  setIsProfileModalOpen,
+  setIsThemeModalOpen,
+  setIsVersionModalOpen,
+  onLogout,
+}) {
+  return (
+    <header className="bg-[#c8102e] text-white flex items-center h-14 shrink-0 shadow-md z-20">
+      <CabinetLogo
+        onClick={() => {
+          setActiveNav('home')
+          setActiveSidebar(0)
+        }}
+      />
+
+      <button className="px-3 h-full flex items-center hover:bg-[#a50e27] transition">
+        <Menu size={20} />
+      </button>
+
+      <nav className="flex items-center h-full flex-1 overflow-x-auto">
+        {NAV_ITEMS.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => {
+              setActiveNav(item.id)
+              setActiveSidebar(0)
+            }}
+            className={`flex items-center gap-1.5 px-4 h-full text-sm font-medium whitespace-nowrap transition border-b-2 shrink-0 ${
+              activeNav === item.id
+                ? 'bg-[#a50e27] border-white'
+                : 'border-transparent hover:bg-[#a50e27]/70'
+            }`}
+          >
+            <item.icon size={14} />
+            <span>{item.label}</span>
+          </button>
+        ))}
+      </nav>
+
+      <div className="flex items-center gap-0.5 px-3 shrink-0">
+        <button
+          onClick={() => (window.location.href = '/')}
+          className="flex items-center gap-1.5 px-3 py-1.5 hover:bg-[#a50e27] rounded-full transition text-sm font-medium mr-1"
+          title="Về Hệ thống chính"
+        >
+          <ArrowLeft size={16} />
+          <span className="hidden md:inline">Quay lại hệ thống chính</span>
+        </button>
+        <div className="w-px h-7 bg-[#a50e27] mx-1" />
+
+        <NotificationsPopover
+          notifCount={notifCount}
+          notifications={notifications}
+          markAllRead={markAllRead}
+          markRead={markRead}
+        />
+
+        <div className="w-px h-7 bg-[#a50e27] mx-1" />
+
+        <UserPopover
+          userName={userName}
+          setIsProfileModalOpen={setIsProfileModalOpen}
+          setIsThemeModalOpen={setIsThemeModalOpen}
+          setIsVersionModalOpen={setIsVersionModalOpen}
+          onLogout={onLogout}
+        />
+      </div>
+    </header>
+  )
+}

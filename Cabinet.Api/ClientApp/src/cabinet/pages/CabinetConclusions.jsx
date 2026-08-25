@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react'
-import { Search, Plus, FileText, Edit, Trash2, Loader2, RefreshCw } from 'lucide-react'
+/* eslint-disable */
+import React, { useState } from 'react'
+import { Search, Plus, FileText, Edit, Loader2, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -20,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { useConclusions } from '../features/conclusions/hooks/useConclusions'
 
 const STATUS_STYLES = {
   'Đã xử lý': 'bg-green-100 text-green-700',
@@ -28,54 +29,28 @@ const STATUS_STYLES = {
 }
 
 export function CabinetConclusions() {
-  const [data, setData] = useState([])
-  const [total, setTotal] = useState(0)
-  const [page, setPage] = useState(1)
-  const [search, setSearch] = useState('')
-  const [loading, setLoading] = useState(true)
+  const {
+    data,
+    total,
+    meetings,
+    loading,
+    page,
+    search,
+    pageSize,
+    setPage,
+    setSearch,
+    fetchData,
+    createConclusion,
+  } = useConclusions()
+
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [meetings, setMeetings] = useState([])
-
-  // Form state
   const [formMeetingId, setFormMeetingId] = useState('')
   const [formFileName, setFormFileName] = useState('')
   const [formStatus, setFormStatus] = useState('Chưa xử lý')
 
-  const pageSize = 10
-
-  const fetchData = (currentPage = 1, currentSearch = search) => {
-    setLoading(true)
-    const params = new URLSearchParams({
-      page: String(currentPage),
-      pageSize: String(pageSize),
-    })
-    if (currentSearch) params.append('search', currentSearch)
-
-    fetch(`/api/phonghopkhonggiayto/conclusions?${params}`)
-      .then((r) => r.json())
-      .then((json) => {
-        if (json.data) {
-          setData(json.data.items || [])
-          setTotal(json.data.total || 0)
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }
-
-  const fetchMeetings = () => {
-    fetch('/api/phonghopkhonggiayto/meetings/schedule')
-      .then((r) => r.json())
-      .then((json) => setMeetings(json.data || []))
-      .catch(() => {})
-  }
-
-  useEffect(() => {
-    fetchData()
-    fetchMeetings()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const totalPages = Math.ceil(total / pageSize)
+  const stt = (idx) => (page - 1) * pageSize + idx + 1
 
   const handleSearch = (e) => {
     const q = e.target.value
@@ -88,31 +63,20 @@ export function CabinetConclusions() {
     if (!formMeetingId) return
     setSaving(true)
     try {
-      const body = {
+      await createConclusion({
         meetingId: Number(formMeetingId),
         fileName: formFileName || null,
         status: formStatus,
         progress: 0,
-      }
-      const resp = await fetch('/api/phonghopkhonggiayto/conclusions', {
-        method: 'POST',
-        body: JSON.stringify(body),
       })
-      const json = await resp.json()
-      if (json.success) {
-        fetchData()
-        setIsAddOpen(false)
-        setFormMeetingId('')
-        setFormFileName('')
-        setFormStatus('Chưa xử lý')
-      }
+      setIsAddOpen(false)
+      setFormMeetingId('')
+      setFormFileName('')
+      setFormStatus('Chưa xử lý')
     } finally {
       setSaving(false)
     }
   }
-
-  const totalPages = Math.ceil(total / pageSize)
-  const stt = (idx) => (page - 1) * pageSize + idx + 1
 
   return (
     <div className="flex flex-col h-full bg-white rounded-lg p-6 shadow-sm">
@@ -143,7 +107,7 @@ export function CabinetConclusions() {
             variant="ghost"
             size="icon"
             className="text-gray-500"
-            onClick={() => fetchData(page)}
+            onClick={() => fetchData(page, search)}
           >
             <RefreshCw className="h-4 w-4" />
           </Button>
@@ -223,7 +187,6 @@ export function CabinetConclusions() {
         </Table>
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-end gap-2 mt-4">
           {Array.from({ length: totalPages }, (_, i) => (
@@ -231,13 +194,9 @@ export function CabinetConclusions() {
               key={i + 1}
               onClick={() => {
                 setPage(i + 1)
-                fetchData(i + 1)
+                fetchData(i + 1, search)
               }}
-              className={`w-8 h-8 rounded text-sm font-medium transition ${
-                page === i + 1
-                  ? 'bg-[#c8102e] text-white'
-                  : 'text-gray-700 hover:bg-gray-100 border border-gray-200'
-              }`}
+              className={`w-8 h-8 rounded text-sm font-medium transition ${page === i + 1 ? 'bg-[#c8102e] text-white' : 'text-gray-700 hover:bg-gray-100 border border-gray-200'}`}
             >
               {i + 1}
             </button>
@@ -245,7 +204,6 @@ export function CabinetConclusions() {
         </div>
       )}
 
-      {/* Add Modal */}
       <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
@@ -299,8 +257,7 @@ export function CabinetConclusions() {
                 onClick={handleCreate}
                 disabled={saving || !formMeetingId}
               >
-                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                Lưu
+                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}Lưu
               </Button>
             </div>
           </div>

@@ -78,6 +78,28 @@ export function MeetingProgress({ meeting, onBack }) {
 
   if (!meeting) return null
 
+  const parseFiles = (paths) => {
+    if (!paths) return []
+    try {
+      if (typeof paths === 'string') return JSON.parse(paths)
+      if (Array.isArray(paths)) return paths
+    } catch {
+      return []
+    }
+    return []
+  }
+
+  const getFileName = (path) => {
+    if (!path) return ''
+    const name = path.split('/').pop()
+    return name.replace(/^[a-f0-9]{32}_/i, '')
+  }
+
+  const allFiles = [
+    ...parseFiles(meeting.programFilePaths),
+    ...parseFiles(meeting.invitationFilePaths),
+  ]
+
   return (
     <div className="flex-1 flex flex-col bg-gray-50 h-full overflow-hidden">
       {/* Header */}
@@ -96,11 +118,11 @@ export function MeetingProgress({ meeting, onBack }) {
           <div className="bg-[#f0f4f8] rounded-xl p-6 border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left flex-1">
               <h2 className="text-[15px] md:text-base font-bold text-[#1a202c] uppercase leading-snug mb-2 max-w-4xl">
-                {meeting.title ||
-                  'HỘI NGHỊ SƠ KẾT ĐÁNH GIÁ KẾT QUẢ 6 THÁNG ĐẦU NĂM VỀ TRIỂN KHAI NGHỊ QUYẾT SỐ 57-NQ/TW, NGÀY 22/12/2024 CỦA BỘ CHÍNH TRỊ VỀ ĐỘT PHÁ PHÁT TRIỂN KHOA HỌC, CÔNG NGHỆ, ĐỔI MỚI SÁNG TẠO VÀ CHUYỂN ĐỔI SỐ QUỐC GIA VÀ QUYẾT ĐỊNH SỐ 204-QĐ/TW, NGÀY 29/11/2024 CỦA BAN BÍ THƯ VỀ PHÊ DUYỆT ĐỀ ÁN CHUYỂN ĐỔI SỐ TRONG CÁC CƠ QUAN ĐẢNG RÊN ĐỊA BÀN PHƯỜNG'}
+                {meeting.title}
               </h2>
               <div className="text-sm font-semibold text-gray-600">
-                Thời gian: 06/07/2026 08:00 - 11:30
+                Thời gian:{' '}
+                {meeting.startTime ? new Date(meeting.startTime).toLocaleString('vi-VN') : '-'}
               </div>
             </div>
             <Button className="bg-[#c8102e] hover:bg-[#a50e27] text-white shrink-0">
@@ -147,28 +169,25 @@ export function MeetingProgress({ meeting, onBack }) {
               <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 <div>
                   <h3 className="text-base font-bold text-[#1a202c] leading-snug mb-4">
-                    Hội nghị đánh giá kết quả 6 tháng đầu năm về triển khai Nghị quyết số 57-NQ/TW,
-                    ngày 22/12/2024 của Bộ Chính trị về đột phá phát triển khoa học, công nghệ, đổi
-                    mới sáng tạo và chuyển đổi số quốc gia và Quyết định số 204-QĐ/TW, ngày
-                    29/11/2024 của Ban Bí thư về phê duyệt Đề án Chuyển đổi số trong các cơ quan
-                    đảng theo giấy mời số 52-GM/VPTU ngày 02/7/2026 của Văn phòng Tỉnh ủy Quảng Ninh
-                    (bằng hình thức trực tuyến từ Tỉnh)
+                    {meeting.title}
                   </h3>
                   <div className="space-y-2 text-[13px]">
                     <div className="flex items-start gap-2">
                       <span className="text-gray-900 font-semibold w-20">Thời gian:</span>
-                      <span className="text-gray-900">-</span>
+                      <span className="text-gray-900">
+                        {meeting.startTime
+                          ? new Date(meeting.startTime).toLocaleString('vi-VN')
+                          : '-'}
+                      </span>
                     </div>
                     <div className="flex items-start gap-2">
                       <span className="text-gray-900 font-semibold w-20">Chủ trì:</span>
-                      <span className="text-gray-900">
-                        Đồng chí Phạm Lê Hưng - Chủ tịch HĐND, Bí thư Đảng ủy phường Cẩm Phả
-                      </span>
+                      <span className="text-gray-900">{meeting.presider || '-'}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-gray-900 font-semibold w-20">Trạng thái:</span>
                       <span className="px-2.5 py-0.5 bg-[#e6fcf5] text-[#059669] text-xs font-semibold rounded-md border border-[#a7f3d0]">
-                        Đang họp
+                        {meeting.status}
                       </span>
                     </div>
                   </div>
@@ -176,26 +195,36 @@ export function MeetingProgress({ meeting, onBack }) {
 
                 <div className="pt-2">
                   <Accordion title="Tài liệu đính kèm" defaultOpen={true}>
-                    <ul className="space-y-3 pt-2">
-                      <li className="flex items-center gap-2 text-[13px]">
-                        <FileText size={18} className="text-red-500 shrink-0" />
-                        <span className="font-medium text-[#1a202c] truncate flex-1">
-                          1. Báo_cáo_6 tháng 2026-3.7 VH_daky.pdf
-                        </span>
-                        <button className="text-gray-400 hover:text-[#c8102e] p-1">
-                          <Download size={16} />
-                        </button>
-                      </li>
-                      <li className="flex items-center gap-2 text-[13px]">
-                        <FileIcon size={18} className="text-blue-500 shrink-0" />
-                        <span className="font-medium text-[#1a202c] truncate flex-1">
-                          2. Phu luc kem theo Bao cao 6 thang.docx
-                        </span>
-                        <button className="text-gray-400 hover:text-[#c8102e] p-1">
-                          <Download size={16} />
-                        </button>
-                      </li>
-                    </ul>
+                    {allFiles.length > 0 ? (
+                      <ul className="space-y-3 pt-2">
+                        {allFiles.map((file, idx) => {
+                          const isPdf = file.toLowerCase().endsWith('.pdf')
+                          return (
+                            <li key={idx} className="flex items-center gap-2 text-[13px]">
+                              {isPdf ? (
+                                <FileText size={18} className="text-red-500 shrink-0" />
+                              ) : (
+                                <FileIcon size={18} className="text-blue-500 shrink-0" />
+                              )}
+                              <span className="font-medium text-[#1a202c] truncate flex-1">
+                                {idx + 1}. {getFileName(file)}
+                              </span>
+                              <a
+                                href={`/${file}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-gray-400 hover:text-[#c8102e] p-1"
+                                title="Tải xuống"
+                              >
+                                <Download size={16} />
+                              </a>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    ) : (
+                      <div className="py-2 text-sm text-gray-500">Không có tài liệu đính kèm</div>
+                    )}
                   </Accordion>
 
                   <Accordion title="File ghi âm" defaultOpen={false}>

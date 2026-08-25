@@ -5,6 +5,7 @@ using System.Text.Json;
 using Cabinet.Core.Models;
 using Cabinet.Models;
 using Cabinet.Core.Data.Interfaces;
+using Cabinet.Services;
 
 namespace Cabinet.Api.Controllers
 {

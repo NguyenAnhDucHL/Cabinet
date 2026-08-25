@@ -154,8 +154,11 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
       : '/api/phonghopkhonggiayto/meetings'
     const method = isEdit ? 'PUT' : 'POST'
 
+    const fd = new FormData()
+    fd.append('requestJson', JSON.stringify(body))
+
     try {
-      const res = await fetch(url, { method, body: JSON.stringify(body) })
+      const res = await fetch(url, { method, body: fd })
       const json = await res.json()
       if (!res.ok || json.success === false) {
         setError(json.message || 'Có lỗi xảy ra, vui lòng thử lại.')
