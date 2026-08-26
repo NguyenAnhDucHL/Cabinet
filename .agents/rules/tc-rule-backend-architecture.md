@@ -89,14 +89,21 @@ return StatusCode(500, ex.Message);
 
 ---
 
-## 4. Business Rules — 7-3-1 Algorithm
+## 4. Business Rules — Meeting Status
 
-Khi cần logic liên quan đến deadline công văn:
-- **Đến hạn hôm nay (1 ngày)**: `ThoiHan.Date == DateTime.Today`
-- **Sắp đến hạn (3-7 ngày)**: `ThoiHan.Date` trong khoảng `[Today+1, Today+7]`
-- **Quá hạn**: `ThoiHan < DateTime.Today && Status != "Hoàn thành"`
+Trạng thái phiên họp (`Meetings.Status`):
+- **`Sắp diễn ra`** — `StartTime > DateTime.Now`
+- **`Đang diễn ra`** — `StartTime <= DateTime.Now && EndTime >= DateTime.Now`
+- **`Hoàn thành`** — `EndTime < DateTime.Now` hoặc cập nhật thủ công
+- **`Hủy`** — cập nhật thủ công bởi người tạo hoặc Admin
 
-Background job quét lúc **08:30** mỗi ngày — không thay đổi giờ này mà không hỏi.
+Trạng thái điểm danh (`MeetingParticipants.AttendanceStatus`):
+- `Chưa xác nhận` — mặc định khi mới được mời
+- `Tham gia` — đã xác nhận tham dự
+- `Vắng mặt` — báo vắng
+
+> Không thay đổi enum status string này mà không hỏi Developer — frontend đang so sánh string trực tiếp.
+
 
 ---
 

@@ -1590,3 +1590,12 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `src/cabinet/pages/CabinetHome.jsx` (Sửa — thin page)
   - `src/cabinet/pages/CabinetQuestionnaireCreate.jsx` (Sửa — thin page ~90 dòng)
 - **Lệnh git commit**: `git commit -m "refactor(arch): tách CabinetHome và QuestionnaireCreate thành thin pages"`
+
+### [2026-08-26 08:59] Cập nhật AGENTS.md và sửa tc-rule-backend-architecture.md
+- **Mô tả**: 
+  1. AGENTS.md: Mở rộng Section III với cấu trúc thư mục đầy đủ cả Backend (Controllers, Repositories, Services) và Frontend (features/, cabinet/pages/).
+  2. tc-rule-backend-architecture.md: Xóa mục "7-3-1 Algorithm" sai dự án (logic văn bản), thay bằng business rules đúng của Cabinet: Meeting Status và Attendance Status strings.
+- **Tệp thay đổi**:
+  - `.agents/AGENTS.md` (Sửa — v2.2, cấu trúc đầy đủ)
+  - `.agents/rules/tc-rule-backend-architecture.md` (Sửa — xóa 7-3-1 algorithm sai)
+- **Lệnh git commit**: `git commit -m "docs(agents): cập nhật cấu trúc thư mục đầy đủ và sửa business rules Cabinet"`
