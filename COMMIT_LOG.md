@@ -1518,3 +1518,12 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `src/cabinet/features/questionnaires/*` (Mới)
   - `src/cabinet/features/home/*` (Mới)
 - **Lệnh git commit**: `git commit -m "refactor(ui): tách các monolithic page thành các file nhỏ gọn theo feature"`
+
+
+### [2026-08-26 08:14] Xóa file tạm và ảnh trùng lặp
+- **Mô tả**: Xóa các file tạm test API (`test_api.js`, `test_api2.js`) được tạo trong quá trình debug, và xóa ảnh `assets/cabinet-login.png` bị trùng lặp (đã tồn tại đúng vị trí tại `Cabinet.Api/wwwroot/assets/`).
+- **Tệp thay đổi**:
+  - `test_api.js` (Xóa)
+  - `test_api2.js` (Xóa)
+  - `assets/cabinet-login.png` (Xóa — trùng với `Cabinet.Api/wwwroot/assets/cabinet-login.png`)
+- **Lệnh git commit**: `git commit -m "chore: xóa các file tạm và ảnh trùng lặp khỏi root"`
