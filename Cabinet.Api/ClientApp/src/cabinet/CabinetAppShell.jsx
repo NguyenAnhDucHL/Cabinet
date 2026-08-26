@@ -12,6 +12,7 @@ import { AppSidebar } from '../features/appshell/components/AppShell/AppSidebar'
 import { ProfileModal } from '../features/appshell/components/AppShell/ProfileModal'
 import { ThemeModal } from '../features/appshell/components/AppShell/ThemeModal'
 import { VersionModal } from '../features/appshell/components/AppShell/VersionModal'
+import { Users } from '../pages/Users'
 
 export function CabinetAppShell({ children }) {
   const [activeNav, setActiveNav] = useState('home')
@@ -117,6 +118,8 @@ export function CabinetAppShell({ children }) {
         return <CabinetQuestionnaire />
       case 'library':
         return <CabinetLibrary activeTab={activeSidebar} />
+      case 'admin':
+        return <Users />
       default:
         return (
           <div className="flex-1 flex flex-col items-center justify-center text-gray-400">

@@ -1207,6 +1207,12 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingList.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "feat(cabinet): thêm màn hình diễn biến phiên họp và xử lý chuyển trang từ thông tin phiên họp"`
 
+### [2026-08-26 16:42] Enable User Management UI for Admin Tab
+- **Mô tả**: Hiển thị component `Users` cho tab Phân quyền (admin) trong `CabinetAppShell.jsx` để hỗ trợ thêm/sửa/xóa người dùng.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/CabinetAppShell.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(admin): enable user management UI for admin tab"`
+
 ### [2026-08-26 16:39] Remove "Quay lại hệ thống chính" button
 - **Mô tả**: Xóa nút "Quay lại hệ thống chính" trên thanh điều hướng TopNavigation theo yêu cầu.
 - **Tệp thay đổi**:
