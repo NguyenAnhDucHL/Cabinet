@@ -15,8 +15,16 @@ namespace Cabinet.Core.Data.Repositories
 
         public DocumentRepository(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection") 
-                ?? "Data Source=/app/data/documents.db";
+            string? configConnString = configuration.GetConnectionString("DefaultConnection");
+            if (!string.IsNullOrEmpty(configConnString)) 
+            { 
+                _connectionString = configConnString; 
+            }
+            else
+            {
+                string? envPath = Environment.GetEnvironmentVariable("DB_PATH");
+                _connectionString = !string.IsNullOrEmpty(envPath) ? $"Data Source={envPath}" : "Data Source=/app/data/documents.db";
+            }
         }
 
         public async Task<List<DocumentFolder>> GetFoldersAsync(string type, int? creatorId = null, int? parentId = null)

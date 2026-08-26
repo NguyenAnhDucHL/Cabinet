@@ -1696,3 +1696,10 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `.agents/AGENTS.md` (Sửa — v2.2, cấu trúc đầy đủ)
   - `.agents/rules/tc-rule-backend-architecture.md` (Sửa — xóa 7-3-1 algorithm sai)
 - **Lệnh git commit**: `git commit -m "docs(agents): cập nhật cấu trúc thư mục đầy đủ và sửa business rules Cabinet"`
+
+### [2026-08-26 16:50] Fix Document Upload bug and Async Architecture
+- **Mô tả**: Sửa lỗi 400 Bad Request và 500 khi upload tài liệu do: (1) `documentType` và `issuingAuthority` trong API nhận giá trị chuỗi rỗng gây lỗi model validation (đã đổi sang nullable string `?`). (2) `DocumentRepository` không fallback đúng sang `DB_PATH` khi `DefaultConnection` trong `appsettings.json` là chuỗi rỗng. Giải thích thêm cho user lý do không chuyển đổi một số Repositories sang `async` vì vướng quy tắc `tc-rule-backend-architecture.md` cấm dùng hàm async bên trong Transaction của SQLite.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/Controllers/Cabinet/DocumentsController.cs` (Sửa đổi)
+  - `Cabinet.Core/Data/Repositories/DocumentRepository.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(api): fix document upload 400 bad request and 500 db connection string"`

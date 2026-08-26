@@ -120,7 +120,7 @@ namespace Cabinet.Api.Controllers.Cabinet
 
         [HttpPost("upload")]
         [RequestSizeLimit(100_000_000)] // 100MB
-        public async Task<IActionResult> UploadDocument([FromForm] IFormFile file, [FromForm] string name, [FromForm] string documentType, [FromForm] string issuingAuthority, [FromForm] int? folderId, [FromForm] string type)
+        public async Task<IActionResult> UploadDocument([FromForm] IFormFile file, [FromForm] string? name, [FromForm] string? documentType, [FromForm] string? issuingAuthority, [FromForm] int? folderId, [FromForm] string? type)
         {
             if (file == null || file.Length == 0) return BadRequest(ApiResponse.Fail("Chưa chọn file"));
             if (string.IsNullOrEmpty(type)) return BadRequest(ApiResponse.Fail("Type is required"));
