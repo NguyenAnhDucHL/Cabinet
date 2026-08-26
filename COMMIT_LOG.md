@@ -1720,3 +1720,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/features/appshell/components/AppShell/AppSidebar.jsx` (Sửa đổi)
   - `Cabinet.Api/ClientApp/src/features/documents/components/LibraryLayout.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "style(appshell): make sidebar collapsible via top nav and add folder view for shared docs"`
+
+### [2026-08-26 17:23] Format code
+- **Mô tả**: Định dạng lại code cho file AppSidebar.jsx (tự động qua IDE).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/appshell/components/AppShell/AppSidebar.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style(appshell): format AppSidebar.jsx"`
