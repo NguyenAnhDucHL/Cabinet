@@ -1207,6 +1207,12 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingList.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "feat(cabinet): thêm màn hình diễn biến phiên họp và xử lý chuyển trang từ thông tin phiên họp"`
 
+### [2026-08-26 16:39] Remove "Quay lại hệ thống chính" button
+- **Mô tả**: Xóa nút "Quay lại hệ thống chính" trên thanh điều hướng TopNavigation theo yêu cầu.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/appshell/components/AppShell/TopNavigation.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style(appshell): remove return to main system button"`
+
 ### [2026-08-26 16:22] Implement Document Library Feature (Frontend + Backend)
 - **Mô tả**: Phát triển tính năng thư viện văn bản (Dùng chung, Cá nhân, Chia sẻ, Quan trọng) hỗ trợ upload/xem tài liệu, cấu hình ẩn hiện cột. Bổ sung các controller và repository sử dụng ADO.NET thô bất đồng bộ.
 - **Tệp thay đổi**:

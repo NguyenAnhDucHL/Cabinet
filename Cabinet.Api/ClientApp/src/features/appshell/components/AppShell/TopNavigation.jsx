@@ -53,16 +53,6 @@ export function TopNavigation({
       </nav>
 
       <div className="flex items-center gap-0.5 px-3 shrink-0">
-        <button
-          onClick={() => (window.location.href = '/')}
-          className="flex items-center gap-1.5 px-3 py-1.5 hover:bg-[#a50e27] rounded-full transition text-sm font-medium mr-1"
-          title="Về Hệ thống chính"
-        >
-          <ArrowLeft size={16} />
-          <span className="hidden md:inline">Quay lại hệ thống chính</span>
-        </button>
-        <div className="w-px h-7 bg-[#a50e27] mx-1" />
-
         <NotificationsPopover
           notifCount={notifCount}
           notifications={notifications}
