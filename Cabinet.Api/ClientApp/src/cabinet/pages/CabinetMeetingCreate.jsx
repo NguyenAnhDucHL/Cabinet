@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { ArrowLeft, Check, Calendar, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-import { Step1Details } from '../features/meetings/components/MeetingCreate/Step1Details'
-import { Step2Participants } from '../features/meetings/components/MeetingCreate/Step2Participants'
-import { Step3Contents } from '../features/meetings/components/MeetingCreate/Step3Contents'
+import { Step1Details } from '../../features/meetings/components/MeetingCreate/Step1Details'
+import { Step2Participants } from '../../features/meetings/components/MeetingCreate/Step2Participants'
+import { Step3Contents } from '../../features/meetings/components/MeetingCreate/Step3Contents'
 
 export function CabinetMeetingCreate({ onBack, onSaved }) {
   const [step, setStep] = useState(1)

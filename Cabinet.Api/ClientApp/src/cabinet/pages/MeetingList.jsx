@@ -6,12 +6,12 @@ import { MeetingDetail } from './MeetingDetail'
 import { MeetingProgress } from './MeetingProgress'
 import { MeetingModal } from '../components/MeetingModal'
 import { CabinetMeetingCreate } from './CabinetMeetingCreate'
-import { useMeetingList } from '../features/meetings/hooks/useMeetingList'
+import { useMeetingList } from '../../features/meetings/hooks/useMeetingList'
 
-import { MeetingStats } from '../features/meetings/components/MeetingList/MeetingStats'
-import { MeetingFilters } from '../features/meetings/components/MeetingList/MeetingFilters'
-import { MeetingTable } from '../features/meetings/components/MeetingList/MeetingTable'
-import { MeetingPagination } from '../features/meetings/components/MeetingList/MeetingPagination'
+import { MeetingStats } from '../../features/meetings/components/MeetingList/MeetingStats'
+import { MeetingFilters } from '../../features/meetings/components/MeetingList/MeetingFilters'
+import { MeetingTable } from '../../features/meetings/components/MeetingList/MeetingTable'
+import { MeetingPagination } from '../../features/meetings/components/MeetingList/MeetingPagination'
 
 export function MeetingList() {
   const { meetings, loading, activeTab, setActiveTab, isAdmin, fetchMeetings, deleteMeeting } =

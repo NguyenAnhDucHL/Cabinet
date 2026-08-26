@@ -1527,3 +1527,21 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `test_api2.js` (Xóa)
   - `assets/cabinet-login.png` (Xóa — trùng với `Cabinet.Api/wwwroot/assets/cabinet-login.png`)
 - **Lệnh git commit**: `git commit -m "chore: xóa các file tạm và ảnh trùng lặp khỏi root"`
+
+
+### [2026-08-26 08:31] Hợp nhất duplicate features/ theo Bulletproof-React architecture
+- **Mô tả**: Dự án có 2 thư mục features/ song song gây nhầm lẫn (`src/cabinet/features/` và `src/features/`). Di chuyển toàn bộ `src/cabinet/features/*` vào `src/features/`, merge `schedule/api/` vào `src/features/schedule/`, hợp nhất `questionnaire/` và `questionnaires/` thành một. Cập nhật tất cả import paths. Xóa `src/cabinet/features/` (thư mục cũ). Cấu trúc mới theo chuẩn Bulletproof-React: một thư mục `features/` duy nhất ở root `src/`.
+- **Tệp thay đổi**:
+  - `src/cabinet/CabinetAppShell.jsx` (Sửa đổi — cập nhật imports)
+  - `src/cabinet/pages/*.jsx` (Sửa đổi — cập nhật imports 16 files)
+  - `src/features/appshell/` (Mới — từ cabinet/features/appshell/)
+  - `src/features/home/` (Mới — từ cabinet/features/home/)
+  - `src/features/meetings/` (Mới — từ cabinet/features/meetings/)
+  - `src/features/rooms/` (Mới — từ cabinet/features/rooms/)
+  - `src/features/questionnaires/` (Mới — merge questionnaire + questionnaires)
+  - `src/features/proceedings/` (Mới)
+  - `src/features/notes/` (Mới)
+  - `src/features/conclusions/` (Mới)
+  - `src/features/schedule/api/scheduleApi.js` (Mới — merge vào schedule feature)
+  - `src/cabinet/features/` (Xóa — thư mục cũ)
+- **Lệnh git commit**: `git commit -m "refactor(arch): hợp nhất duplicate features/ theo chuẩn Bulletproof-React"`

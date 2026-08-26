@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { RoomModal } from '../features/rooms/components/RoomModal'
-import { DeleteConfirm } from '../features/rooms/components/DeleteConfirm'
-import { Toast } from '../features/rooms/components/CabinetRooms/Toast'
-import { RoomHeader } from '../features/rooms/components/CabinetRooms/RoomHeader'
-import { RoomTable } from '../features/rooms/components/CabinetRooms/RoomTable'
+import { RoomModal } from '../../features/rooms/components/RoomModal'
+import { DeleteConfirm } from '../../features/rooms/components/DeleteConfirm'
+import { Toast } from '../../features/rooms/components/CabinetRooms/Toast'
+import { RoomHeader } from '../../features/rooms/components/CabinetRooms/RoomHeader'
+import { RoomTable } from '../../features/rooms/components/CabinetRooms/RoomTable'
 
 export function CabinetRooms() {
   const [rooms, setRooms] = useState([])

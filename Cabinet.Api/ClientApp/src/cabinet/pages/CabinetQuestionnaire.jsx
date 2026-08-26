@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { CabinetQuestionnaireTemplates } from './CabinetQuestionnaireTemplates'
 import { CabinetQuestionnaireCreate } from './CabinetQuestionnaireCreate'
-import { QuestionnaireSidebar } from '../features/questionnaires/components/QuestionnaireList/QuestionnaireSidebar'
-import { QuestionnaireHeader } from '../features/questionnaires/components/QuestionnaireList/QuestionnaireHeader'
-import { QuestionnaireTabs } from '../features/questionnaires/components/QuestionnaireList/QuestionnaireTabs'
-import { QuestionnaireTable } from '../features/questionnaires/components/QuestionnaireList/QuestionnaireTable'
+import { QuestionnaireSidebar } from '../../features/questionnaires/components/QuestionnaireList/QuestionnaireSidebar'
+import { QuestionnaireHeader } from '../../features/questionnaires/components/QuestionnaireList/QuestionnaireHeader'
+import { QuestionnaireTabs } from '../../features/questionnaires/components/QuestionnaireList/QuestionnaireTabs'
+import { QuestionnaireTable } from '../../features/questionnaires/components/QuestionnaireList/QuestionnaireTable'
 
 export function CabinetQuestionnaire() {
   const [activeTab, setActiveTab] = useState('pending')

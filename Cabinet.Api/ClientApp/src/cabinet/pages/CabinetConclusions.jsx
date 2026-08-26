@@ -20,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { useConclusions } from '../features/conclusions/hooks/useConclusions'
+import { useConclusions } from '../../features/conclusions/hooks/useConclusions'
 
 const STATUS_STYLES = {
   'Đã xử lý': 'bg-green-100 text-green-700',

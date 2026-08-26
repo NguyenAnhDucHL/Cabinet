@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { ATTENDANCE_STATUS } from '../../constants/meeting'
-import { StatRow } from '../features/home/components/CabinetHome/StatRow'
-import { MeetingCard } from '../features/home/components/CabinetHome/MeetingCard'
-import { EmptyState } from '../features/home/components/CabinetHome/EmptyState'
-import { SectionCard } from '../features/home/components/CabinetHome/SectionCard'
-import { MonthPicker } from '../features/home/components/CabinetHome/MonthPicker'
-import { AttendanceConfirmModal } from '../features/home/components/CabinetHome/AttendanceConfirmModal'
+import { StatRow } from '../../features/home/components/CabinetHome/StatRow'
+import { MeetingCard } from '../../features/home/components/CabinetHome/MeetingCard'
+import { EmptyState } from '../../features/home/components/CabinetHome/EmptyState'
+import { SectionCard } from '../../features/home/components/CabinetHome/SectionCard'
+import { MonthPicker } from '../../features/home/components/CabinetHome/MonthPicker'
+import { AttendanceConfirmModal } from '../../features/home/components/CabinetHome/AttendanceConfirmModal'
 
 export function CabinetHome() {
   const d = new Date()

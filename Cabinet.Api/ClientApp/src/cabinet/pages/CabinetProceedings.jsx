@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useProceedings } from '../features/proceedings/hooks/useProceedings'
+import { useProceedings } from '../../features/proceedings/hooks/useProceedings'
 
 const fmt = (dt) => {
   if (!dt) return ''

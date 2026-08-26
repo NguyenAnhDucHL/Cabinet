@@ -9,8 +9,8 @@ import {
   getDynamicStatus,
   getStatusColor,
   getRemainingTimeText,
-} from '../features/meetings/components/MeetingDetail/MeetingDetailComponents'
-import { NotebookModal } from '../features/meetings/components/MeetingDetail/NotebookModal'
+} from '../../features/meetings/components/MeetingDetail/MeetingDetailComponents'
+import { NotebookModal } from '../../features/meetings/components/MeetingDetail/NotebookModal'
 
 export function MeetingDetail({ meeting, onBack, onViewProgress }) {
   const [isNotebookOpen, setIsNotebookOpen] = useState(false)

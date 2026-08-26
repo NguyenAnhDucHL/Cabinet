@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { useNotes } from '../features/notes/hooks/useNotes'
+import { useNotes } from '../../features/notes/hooks/useNotes'
 
 const fmt = (dt) => {
   if (!dt) return ''
