@@ -1,16 +1,11 @@
 import React from 'react'
 import { Search, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 
 export function Step2Participants({
   users,
+  usersInSelectedDept,
+  departments,
   participantTab,
   setParticipantTab,
   groupType,
@@ -26,15 +21,8 @@ export function Step2Participants({
     { id: 'NhomThanhVien', label: 'Nhóm thành viên' },
     { id: 'KhachMoi', label: 'Khách mời' },
   ]
-  const mockGroups = [
-    'Ban Giám đốc',
-    'Ban Thường vụ Đảng ủy các cơ quan Đảng tỉnh Quảng Ninh',
-    'Ban Thường vụ Đảng ủy phường Cẩm Phả, Tỉnh Quảng Ninh',
-    'Ban Thường vụ Đảng ủy UBND tỉnh Quảng Ninh',
-    'Ban Thường vụ Tỉnh ủy',
-    'BCĐ phát triển khoa học, công nghệ, đổi mới và sáng tạo phường Cẩm Phả',
-  ]
-  const filteredUsers = users.filter(
+
+  const filteredUsers = (usersInSelectedDept || users).filter(
     (u) =>
       (u.fullName || '').toLowerCase().includes(participantSearch.toLowerCase()) ||
       (u.username || '').toLowerCase().includes(participantSearch.toLowerCase())
@@ -57,19 +45,19 @@ export function Step2Participants({
         <div className="space-y-4">
           <div className="flex gap-4">
             <div className="flex-1">
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Loại nhóm</label>
-              <Select value={groupType} onValueChange={setGroupType}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Chọn loại nhóm" />
-                </SelectTrigger>
-                <SelectContent>
-                  {mockGroups.map((g, idx) => (
-                    <SelectItem key={idx} value={g}>
-                      {g}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Phòng ban</label>
+              <select
+                value={groupType}
+                onChange={(e) => setGroupType(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white"
+              >
+                <option value="">-- Tất cả thành viên --</option>
+                {departments.map((d) => (
+                  <option key={d.id} value={String(d.id)}>
+                    {d.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="flex-1">
               <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -91,7 +79,11 @@ export function Step2Participants({
           </div>
           <div>
             <h4 className="text-sm font-semibold text-gray-800 mb-3">
-              Danh sách thành viên trong nhóm
+              Danh sách thành viên
+              {groupType && departments.length > 0
+                ? ` — ${departments.find((d) => String(d.id) === groupType)?.name || ''}`
+                : ' — Tất cả'}
+              <span className="ml-2 text-gray-400 font-normal">({filteredUsers.length} người)</span>
             </h4>
             <div className="border border-gray-200 rounded-lg overflow-hidden">
               <table className="w-full text-sm text-left">
@@ -106,36 +98,44 @@ export function Step2Participants({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 bg-white">
-                  {filteredUsers.map((row, index) => {
-                    const isPresiding = presidingUsers.includes(row.id)
-                    return (
-                      <tr
-                        key={row.id}
-                        className={`hover:bg-gray-50 transition-colors ${isPresiding ? 'bg-red-50 hover:bg-red-50' : ''}`}
-                      >
-                        <td className="px-4 py-3 text-center text-gray-500">{index + 1}</td>
-                        <td className="px-4 py-3 font-medium text-gray-900">{row.fullName}</td>
-                        <td className="px-4 py-3 text-gray-600">{row.username}</td>
-                        <td className="px-4 py-3 text-gray-500">{row.role}</td>
-                        <td className="px-4 py-3 text-center">
-                          <input
-                            type="checkbox"
-                            checked={isPresiding}
-                            onChange={(e) => {
-                              if (e.target.checked) setPresidingUsers((prev) => [...prev, row.id])
-                              else setPresidingUsers((prev) => prev.filter((id) => id !== row.id))
-                            }}
-                            className="rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer w-4 h-4"
-                          />
-                        </td>
-                        <td className="px-4 py-3 text-center">
-                          <button className="p-1 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors">
-                            <X size={16} />
-                          </button>
-                        </td>
-                      </tr>
-                    )
-                  })}
+                  {filteredUsers.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
+                        Không có thành viên nào trong phòng ban này
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredUsers.map((row, index) => {
+                      const isPresiding = presidingUsers.includes(row.id)
+                      return (
+                        <tr
+                          key={row.id}
+                          className={`hover:bg-gray-50 transition-colors ${isPresiding ? 'bg-red-50 hover:bg-red-50' : ''}`}
+                        >
+                          <td className="px-4 py-3 text-center text-gray-500">{index + 1}</td>
+                          <td className="px-4 py-3 font-medium text-gray-900">{row.fullName}</td>
+                          <td className="px-4 py-3 text-gray-600">{row.username}</td>
+                          <td className="px-4 py-3 text-gray-500">{row.role}</td>
+                          <td className="px-4 py-3 text-center">
+                            <input
+                              type="checkbox"
+                              checked={isPresiding}
+                              onChange={(e) => {
+                                if (e.target.checked) setPresidingUsers((prev) => [...prev, row.id])
+                                else setPresidingUsers((prev) => prev.filter((id) => id !== row.id))
+                              }}
+                              className="rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer w-4 h-4"
+                            />
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <button className="p-1 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+                              <X size={16} />
+                            </button>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  )}
                 </tbody>
               </table>
             </div>

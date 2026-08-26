@@ -5,10 +5,9 @@ namespace Cabinet.Core.Data.Interfaces
 {
     public interface IAdminRepository
     {
-        List<Department> GetDepartments();
-        int InsertDepartment(Department dept);
-        void UpdateDepartment(Department dept);
-        void DeleteDepartment(int id);
-
+        Task<List<Department>> GetDepartmentsAsync();
+        Task<int> InsertDepartmentAsync(Department dept);
+        Task UpdateDepartmentAsync(Department dept);
+        Task DeleteDepartmentAsync(int id);
     }
 }

@@ -6,6 +6,7 @@ export function useMeetingCreate({ onSaved }) {
   const [rooms, setRooms] = useState([])
   const [proceedings, setProceedings] = useState([])
   const [users, setUsers] = useState([])
+  const [departments, setDepartments] = useState([])
   const [formData, setFormData] = useState({
     title: '',
     proceedingId: '',
@@ -21,9 +22,7 @@ export function useMeetingCreate({ onSaved }) {
   const [programFiles, setProgramFiles] = useState([])
   const [invitationFiles, setInvitationFiles] = useState([])
   const [participantTab, setParticipantTab] = useState('NhomThanhVien')
-  const [groupType, setGroupType] = useState(
-    'Ban Thường vụ Đảng ủy phường Cẩm Phả, Tỉnh Quảng Ninh'
-  )
+  const [groupType, setGroupType] = useState('')
   const [participantSearch, setParticipantSearch] = useState('')
   const [presidingUsers, setPresidingUsers] = useState([])
   const [contentTabs, setContentTabs] = useState([
@@ -51,7 +50,16 @@ export function useMeetingCreate({ onSaved }) {
       .then((r) => r.json())
       .then((json) => setUsers(Array.isArray(json) ? json : json.data || []))
       .catch(() => {})
+
+    fetch('/api/users/departments')
+      .then((r) => r.json())
+      .then((json) => setDepartments(Array.isArray(json) ? json : json.data || []))
+      .catch(() => {})
   }, [])
+
+  const usersInSelectedDept = groupType
+    ? users.filter((u) => u.departmentId === Number(groupType))
+    : users
 
   const handleFileChange = (e, setFiles) => {
     if (e.target.files) setFiles((prev) => [...prev, ...Array.from(e.target.files)])
@@ -98,6 +106,8 @@ export function useMeetingCreate({ onSaved }) {
     rooms,
     proceedings,
     users,
+    departments,
+    usersInSelectedDept,
     formData,
     setFormData,
     selectedUsers,

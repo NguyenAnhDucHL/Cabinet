@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
-import { ROLES } from '../../../../constants/roles'
-import { ATTENDANCE_STATUS } from '../../../../constants/meeting'
+import { ROLES } from '../../../constants/roles'
+import { ATTENDANCE_STATUS } from '../../../constants/meeting'
 
 function getRole() {
   try {

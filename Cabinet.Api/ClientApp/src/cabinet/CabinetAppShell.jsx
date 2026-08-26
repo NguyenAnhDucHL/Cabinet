@@ -5,12 +5,12 @@ import { CabinetSchedule } from './pages/CabinetSchedule'
 import { CabinetRooms } from './pages/CabinetRooms'
 import { CabinetQuestionnaire } from './pages/CabinetQuestionnaire'
 import { CabinetMeetings } from './pages/CabinetMeetings'
-import { NAV_ITEMS, SCHEDULE_SIDEBAR } from '../../features/appshell/constants/navigation'
-import { TopNavigation } from '../../features/appshell/components/AppShell/TopNavigation'
-import { AppSidebar } from '../../features/appshell/components/AppShell/AppSidebar'
-import { ProfileModal } from '../../features/appshell/components/AppShell/ProfileModal'
-import { ThemeModal } from '../../features/appshell/components/AppShell/ThemeModal'
-import { VersionModal } from '../../features/appshell/components/AppShell/VersionModal'
+import { NAV_ITEMS, SCHEDULE_SIDEBAR } from '../features/appshell/constants/navigation'
+import { TopNavigation } from '../features/appshell/components/AppShell/TopNavigation'
+import { AppSidebar } from '../features/appshell/components/AppShell/AppSidebar'
+import { ProfileModal } from '../features/appshell/components/AppShell/ProfileModal'
+import { ThemeModal } from '../features/appshell/components/AppShell/ThemeModal'
+import { VersionModal } from '../features/appshell/components/AppShell/VersionModal'
 
 export function CabinetAppShell({ children }) {
   const [activeNav, setActiveNav] = useState('home')

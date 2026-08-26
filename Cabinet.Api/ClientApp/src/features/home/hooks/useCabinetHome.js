@@ -78,13 +78,13 @@ export function useCabinetHome(selectedMonth, selectedYear) {
 
   const handleJoinMeeting = (meeting) => setConfirmMeeting(meeting)
 
-  const handleConfirmAttendance = async () => {
+  const handleConfirmAttendance = async (status = ATTENDANCE_STATUS.JOINED) => {
     if (!confirmMeeting) return
     try {
       await fetch(`${BASE}/meetings/${confirmMeeting.id}/attendance`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: ATTENDANCE_STATUS.JOINED }),
+        body: JSON.stringify({ status }),
       })
       setConfirmMeeting(null)
       fetchDashboardData()

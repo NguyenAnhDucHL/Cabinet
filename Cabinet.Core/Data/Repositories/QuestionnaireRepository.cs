@@ -94,11 +94,11 @@ namespace Cabinet.Core.Data.Repositories
 
             string sql = @"
                 INSERT INTO Questionnaires (MeetingId, Title, TemplateId, Type, AttachmentPaths, Content, AssignedUserIds, Deadline, Status, CreatedAt, AssignedTo) 
-                VALUES (@MeetingId, @Title, @TemplateId, @Type, @AttachmentPaths, @Content, @AssignedUserIds, @Deadline, 'Chưa trả lời', @CreatedAt, 0);
+                VALUES (@MeetingId, @Title, @TemplateId, @Type, @AttachmentPaths, @Content, @AssignedUserIds, @Deadline, 'Chưa trả lời', @CreatedAt, NULL);
                 SELECT last_insert_rowid();";
 
             using var cmd = new SqliteCommand(sql, connection);
-            cmd.Parameters.AddWithValue("@MeetingId", req.MeetingId);
+            cmd.Parameters.AddWithValue("@MeetingId", req.MeetingId > 0 ? (object)req.MeetingId : DBNull.Value);
             cmd.Parameters.AddWithValue("@Title", req.Title);
             cmd.Parameters.AddWithValue("@TemplateId", req.TemplateId.HasValue ? (object)req.TemplateId.Value : DBNull.Value);
             cmd.Parameters.AddWithValue("@Type", req.Type ?? (object)DBNull.Value);

@@ -31,7 +31,7 @@ namespace Cabinet.Api.Controllers
         }
 
         [HttpPost("subscribe")]
-        public IActionResult Subscribe([FromBody] PushSubscriptionRequest request)
+        public async Task<IActionResult> Subscribe([FromBody] PushSubscriptionRequest request)
         {
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (!int.TryParse(userIdStr, out int userId)) 
@@ -45,7 +45,7 @@ namespace Cabinet.Api.Controllers
                 Auth = request.Auth
             };
 
-            _notificationRepo.InsertPushSubscription(subscription);
+            await _notificationRepo.InsertPushSubscriptionAsync(subscription);
             return Ok(ApiResponse.Ok("Subscribed successfully"));
         }
 
@@ -56,7 +56,7 @@ namespace Cabinet.Api.Controllers
             if (!int.TryParse(userIdStr, out int userId)) 
                 return Unauthorized(ApiResponse.Fail("Không tìm thấy người dùng."));
 
-            var subscriptions = _notificationRepo.GetPushSubscriptions(userId);
+            var subscriptions = await _notificationRepo.GetPushSubscriptionsAsync(userId);
             if (!subscriptions.Any()) 
                 return BadRequest(ApiResponse.Fail("Không tìm thấy đăng ký thông báo đẩy cho người dùng này."));
 
@@ -76,31 +76,31 @@ namespace Cabinet.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetMyNotifications()
+        public async Task<IActionResult> GetMyNotifications()
         {
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (!int.TryParse(userIdStr, out int userId)) 
                 return Unauthorized(ApiResponse.Fail("Không tìm thấy người dùng."));
 
-            var list = _notificationRepo.GetNotifications(userId);
+            var list = await _notificationRepo.GetNotificationsAsync(userId);
             return Ok(ApiResponse.Ok(list));
         }
 
         [HttpPost("mark-read/{id}")]
-        public IActionResult MarkRead(int id)
+        public async Task<IActionResult> MarkRead(int id)
         {
-            _notificationRepo.MarkNotificationAsRead(id);
+            await _notificationRepo.MarkNotificationAsReadAsync(id);
             return Ok(ApiResponse.Ok("Đã đánh dấu đã đọc."));
         }
 
         [HttpPost("mark-all-read")]
-        public IActionResult MarkAllRead()
+        public async Task<IActionResult> MarkAllRead()
         {
             var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (!int.TryParse(userIdStr, out int userId)) 
                 return Unauthorized(ApiResponse.Fail("Không tìm thấy người dùng."));
 
-            _notificationRepo.MarkAllNotificationsAsRead(userId);
+            await _notificationRepo.MarkAllNotificationsAsReadAsync(userId);
             return Ok(ApiResponse.Ok("Đã đánh dấu đã đọc toàn bộ thông báo."));
         }
     }

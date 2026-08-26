@@ -1,5 +1,14 @@
-import React, { useState } from 'react'
-import { ArrowLeft, ChevronUp, ChevronDown, Download, FileText, Book } from 'lucide-react'
+import React, { useState, useRef } from 'react'
+import {
+  ArrowLeft,
+  ChevronUp,
+  ChevronDown,
+  Download,
+  FileText,
+  Book,
+  X,
+  Upload,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   AccordionSection,
@@ -14,6 +23,50 @@ import { NotebookModal } from '../../features/meetings/components/MeetingDetail/
 
 export function MeetingDetail({ meeting, onBack, onViewProgress }) {
   const [isNotebookOpen, setIsNotebookOpen] = useState(false)
+  const [isGopYOpen, setIsGopYOpen] = useState(false)
+  const [gopYContent, setGopYContent] = useState('')
+  const [gopYDetail, setGopYDetail] = useState('')
+  const [gopYDoc, setGopYDoc] = useState('')
+  const [gopYFiles, setGopYFiles] = useState([])
+  const [gopYSaving, setGopYSaving] = useState(false)
+  const gopYFileRef = useRef(null)
+
+  const handleGopYSubmit = async () => {
+    if (!gopYDetail.trim()) return
+    setGopYSaving(true)
+
+    try {
+      const formData = new FormData()
+      formData.append('detail', gopYDetail)
+      if (gopYContent) formData.append('contentRef', gopYContent)
+      if (gopYDoc) formData.append('documentRef', gopYDoc)
+
+      gopYFiles.forEach((file) => {
+        formData.append('attachments', file)
+      })
+
+      const response = await fetch(`/api/phonghopkhonggiayto/meetings/${meeting.id}/feedbacks`, {
+        method: 'POST',
+        body: formData,
+      })
+      const data = await response.json()
+
+      if (response.ok) {
+        setIsGopYOpen(false)
+        setGopYDetail('')
+        setGopYContent('')
+        setGopYDoc('')
+        setGopYFiles([])
+        alert(data.message || 'Góp ý đã được ghi nhận thành công.')
+      } else {
+        alert(data.message || 'Lỗi khi gửi góp ý')
+      }
+    } catch (err) {
+      alert('Có lỗi xảy ra khi kết nối máy chủ')
+    } finally {
+      setGopYSaving(false)
+    }
+  }
 
   if (!meeting) return null
 
@@ -119,7 +172,10 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                       {meeting.content || meeting.title || 'Chưa cập nhật nội dung'}
                     </h4>
                     <div className="flex items-center gap-2 shrink-0">
-                      <Button className="bg-[#c8102e] hover:bg-[#a50e27] text-white h-8 text-xs font-semibold px-4 rounded-md">
+                      <Button
+                        className="bg-[#c8102e] hover:bg-[#a50e27] text-white h-8 text-xs font-semibold px-4 rounded-md"
+                        onClick={() => setIsGopYOpen(true)}
+                      >
                         Thêm góp ý
                       </Button>
                       <button className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded text-gray-500 hover:bg-gray-50">
@@ -282,6 +338,153 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
       </div>
 
       <NotebookModal isOpen={isNotebookOpen} setIsOpen={setIsNotebookOpen} meeting={meeting} />
+
+      {/* Modal Thêm góp ý */}
+      {isGopYOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setIsGopYOpen(false)}
+          />
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <h2 className="text-base font-bold text-gray-900">Thêm mới góp ý</h2>
+              <button
+                onClick={() => setIsGopYOpen(false)}
+                className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-1 transition"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="px-6 py-5 space-y-4">
+              {/* Góp ý cho nội dung */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Góp ý cho nội dung <span className="text-[#c8102e]">*</span>
+                </label>
+                <select
+                  value={gopYContent}
+                  onChange={(e) => setGopYContent(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white"
+                >
+                  <option value="">-- Chọn nội dung --</option>
+                  <option value={meeting.content || meeting.title}>
+                    {meeting.content || meeting.title || 'Nội dung họp'}
+                  </option>
+                </select>
+              </div>
+
+              {/* Tài liệu cần góp ý */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Tài liệu cần góp ý
+                </label>
+                <select
+                  value={gopYDoc}
+                  onChange={(e) => setGopYDoc(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white"
+                >
+                  <option value="">Chọn tài liệu</option>
+                  {(meeting.documents || []).map((doc, idx) => (
+                    <option key={idx} value={doc.name || doc}>
+                      {doc.name || doc}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Chi tiết góp ý */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Chi tiết góp ý <span className="text-[#c8102e]">*</span>
+                </label>
+                <textarea
+                  rows={4}
+                  placeholder="Nhập nội dung góp ý"
+                  value={gopYDetail}
+                  onChange={(e) => setGopYDetail(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition resize-none"
+                />
+              </div>
+
+              {/* Tài liệu đính kèm */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Tài liệu đính kèm
+                </label>
+                <div
+                  className="border-2 border-dashed border-gray-300 rounded-lg px-4 py-5 text-center cursor-pointer hover:border-[#c8102e] hover:bg-red-50/30 transition"
+                  onClick={() => gopYFileRef.current?.click()}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault()
+                    const files = Array.from(e.dataTransfer.files)
+                    setGopYFiles((prev) => [...prev, ...files])
+                  }}
+                >
+                  <Upload size={20} className="mx-auto text-[#c8102e] mb-1" />
+                  <p className="text-sm">
+                    <span className="text-[#c8102e] font-semibold">Chọn file</span>
+                    <span className="text-gray-500"> hoặc Kéo thả từ máy tính</span>
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Tối đa 50MB, định dạng .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf
+                  </p>
+                </div>
+                <input
+                  ref={gopYFileRef}
+                  type="file"
+                  multiple
+                  accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf"
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files)
+                      setGopYFiles((prev) => [...prev, ...Array.from(e.target.files)])
+                  }}
+                />
+                {gopYFiles.length > 0 && (
+                  <ul className="mt-2 space-y-1">
+                    {gopYFiles.map((f, i) => (
+                      <li
+                        key={i}
+                        className="flex items-center justify-between text-xs text-gray-600 bg-gray-50 px-3 py-1.5 rounded"
+                      >
+                        <span className="truncate">{f.name}</span>
+                        <button
+                          onClick={() => setGopYFiles((prev) => prev.filter((_, idx) => idx !== i))}
+                          className="text-gray-400 hover:text-red-500 ml-2 shrink-0"
+                        >
+                          <X size={13} />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-100">
+              <button
+                onClick={() => setIsGopYOpen(false)}
+                className="px-5 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition"
+              >
+                Hủy bỏ
+              </button>
+              <button
+                onClick={handleGopYSubmit}
+                disabled={gopYSaving || !gopYDetail.trim()}
+                className="px-5 py-2 text-sm bg-[#c8102e] hover:bg-[#a50e27] text-white rounded-lg font-semibold transition disabled:opacity-60"
+              >
+                {gopYSaving ? 'Đang gửi...' : 'Góp ý'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 using Cabinet.Core.Data.Interfaces;
 using Cabinet.Core.Models;
 using Cabinet.Models;
@@ -14,11 +15,32 @@ namespace Cabinet.Api.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly UserManager<User> _userManager;
+        private readonly string _connectionString;
 
-        public UsersController(IUserRepository userRepository, UserManager<User> userManager)
+        public UsersController(IUserRepository userRepository, UserManager<User> userManager, IConfiguration configuration)
         {
             _userRepository = userRepository;
             _userManager    = userManager;
+            var dbPath = Environment.GetEnvironmentVariable("DB_PATH")
+                ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Cabinet", "documents.db");
+            _connectionString = $"Data Source={dbPath};Pooling=True;Default Timeout=30;Cache=Shared";
+        }
+
+        [Authorize(Roles = "Admin,VanThu,LanhDao,CanBo")]
+        [HttpGet("departments")]
+        public async Task<IActionResult> GetDepartments()
+        {
+            var departments = new List<object>();
+            using var conn = new SqliteConnection(_connectionString);
+            await conn.OpenAsync();
+            using var cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT Id, Name FROM Departments ORDER BY Name";
+            using var reader = await cmd.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                departments.Add(new { id = reader.GetInt32(0), name = reader.GetString(1) });
+            }
+            return Ok(ApiResponse.Ok(departments));
         }
 
         // ─── Quy tắc mật khẩu (chuẩn NIST 800-63B + thực tiễn) ─────────────────
@@ -50,9 +72,9 @@ namespace Cabinet.Api.Controllers
 
         [Authorize(Roles = "Admin,VanThu,LanhDao,CanBo")]
         [HttpGet]
-        public IActionResult Get([FromQuery] int? departmentId = null)
+        public async Task<IActionResult> Get([FromQuery] int? departmentId = null)
         {
-            var users = _userRepository.GetUsers();
+            var users = await _userRepository.GetUsersAsync();
             if (departmentId.HasValue)
             {
                 users = users.Where(user => user.DepartmentId == departmentId.Value).ToList();
@@ -63,9 +85,9 @@ namespace Cabinet.Api.Controllers
 
         [Authorize(Roles = "Admin,VanThu")]
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var user = _userRepository.GetUserById(id);
+            var user = await _userRepository.GetUserByIdAsync(id);
             if (user == null) 
                 return NotFound(ApiResponse.Fail("Không tìm thấy người dùng."));
             return Ok(ApiResponse.Ok(user));
@@ -102,7 +124,7 @@ namespace Cabinet.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UserUpdateRequest request)
         {
-            var user = _userRepository.GetUserById(id);
+            var user = await _userRepository.GetUserByIdAsync(id);
             if (user == null) 
                 return NotFound(ApiResponse.Fail("Không tìm thấy người dùng."));
 
@@ -131,8 +153,8 @@ namespace Cabinet.Api.Controllers
                 else
                 {
                     // Fallback về UserRepository nếu Identity không tìm thấy
-                    _userRepository.UpdateUserPassword(id, request.PasswordHash);
-                    var updatedUser = _userRepository.GetUserById(id);
+                    await _userRepository.UpdateUserPasswordAsync(id, request.PasswordHash);
+                    var updatedUser = await _userRepository.GetUserByIdAsync(id);
                     if (updatedUser != null)
                     {
                         user.PasswordHash = updatedUser.PasswordHash;
@@ -147,19 +169,19 @@ namespace Cabinet.Api.Controllers
             user.Role        = request.Role;
             user.DepartmentId = request.DepartmentId;
 
-            _userRepository.UpdateUser(user);
+            await _userRepository.UpdateUserAsync(user);
             return Ok(ApiResponse.Ok("Cập nhật người dùng thành công."));
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var user = _userRepository.GetUserById(id);
+            var user = await _userRepository.GetUserByIdAsync(id);
             if (user == null)
                 return NotFound(ApiResponse.Fail("Không tìm thấy người dùng."));
 
-            _userRepository.DeleteUser(id);
+            await _userRepository.DeleteUserAsync(id);
             return Ok(ApiResponse.Ok("Xóa người dùng thành công."));
         }
     }

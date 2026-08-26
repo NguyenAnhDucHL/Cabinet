@@ -12,6 +12,7 @@ export function CabinetMeetingCreate({ onBack, onSaved }) {
   const [rooms, setRooms] = useState([])
   const [proceedings, setProceedings] = useState([])
   const [users, setUsers] = useState([])
+  const [departments, setDepartments] = useState([])
 
   const [formData, setFormData] = useState({
     title: '',
@@ -30,9 +31,7 @@ export function CabinetMeetingCreate({ onBack, onSaved }) {
   const [invitationFiles, setInvitationFiles] = useState([])
 
   const [participantTab, setParticipantTab] = useState('NhomThanhVien')
-  const [groupType, setGroupType] = useState(
-    'Ban Thường vụ Đảng ủy phường Cẩm Phả, Tỉnh Quảng Ninh'
-  )
+  const [groupType, setGroupType] = useState('')
   const [participantSearch, setParticipantSearch] = useState('')
   const [presidingUsers, setPresidingUsers] = useState([])
 
@@ -52,7 +51,14 @@ export function CabinetMeetingCreate({ onBack, onSaved }) {
     fetch('/api/users')
       .then((r) => r.json())
       .then((j) => setUsers(j.data || j || []))
+    fetch('/api/users/departments')
+      .then((r) => r.json())
+      .then((j) => setDepartments(j.data || j || []))
   }, [])
+
+  const usersInSelectedDept = groupType
+    ? users.filter((u) => u.departmentId === Number(groupType))
+    : users
 
   const handleSubmit = async () => {
     if (!formData.title || !formData.startTime || !formData.endTime) {
@@ -165,6 +171,8 @@ export function CabinetMeetingCreate({ onBack, onSaved }) {
             {step === 2 && (
               <Step2Participants
                 users={users}
+                usersInSelectedDept={usersInSelectedDept}
+                departments={departments}
                 participantTab={participantTab}
                 setParticipantTab={setParticipantTab}
                 groupType={groupType}

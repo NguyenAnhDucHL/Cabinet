@@ -23,32 +23,32 @@ namespace Cabinet.Api.Controllers
         // --- DEPARTMENTS ---
         [Authorize(Roles = "Admin,VanThu,LanhDao,CanBo")]
         [HttpGet("departments")]
-        public IActionResult GetDepartments() => Ok(ApiResponse.Ok(_adminRepo.GetDepartments()));
+        public async Task<IActionResult> GetDepartments() => Ok(ApiResponse.Ok(await _adminRepo.GetDepartmentsAsync()));
 
         [Authorize(Roles = "Admin")]
         [HttpPost("departments")]
-        public IActionResult AddDepartment([FromBody] Department dept)
+        public async Task<IActionResult> AddDepartment([FromBody] Department dept)
         {
             if (dept == null) return BadRequest(ApiResponse.Fail("Dữ liệu phòng ban không hợp lệ."));
-            int id = _adminRepo.InsertDepartment(dept);
+            int id = await _adminRepo.InsertDepartmentAsync(dept);
             dept.Id = id;
             return Ok(ApiResponse.Ok(dept));
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("departments")]
-        public IActionResult UpdateDepartment([FromBody] Department dept)
+        public async Task<IActionResult> UpdateDepartment([FromBody] Department dept)
         {
             if (dept == null) return BadRequest(ApiResponse.Fail("Dữ liệu phòng ban không hợp lệ."));
-            _adminRepo.UpdateDepartment(dept);
+            await _adminRepo.UpdateDepartmentAsync(dept);
             return Ok(ApiResponse.Ok(dept));
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("departments/{id}")]
-        public IActionResult DeleteDepartment(int id)
+        public async Task<IActionResult> DeleteDepartment(int id)
         {
-            _adminRepo.DeleteDepartment(id);
+            await _adminRepo.DeleteDepartmentAsync(id);
             return Ok(ApiResponse.Ok("Xóa phòng ban thành công."));
         }
 
@@ -56,18 +56,18 @@ namespace Cabinet.Api.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("audit-logs")]
-        public IActionResult GetAuditLogs([FromQuery] int page = 1, [FromQuery] int pageSize = 20)
+        public async Task<IActionResult> GetAuditLogs([FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
-            var result = _auditLogRepo.GetAuditLogs(page, pageSize);
+            var result = await _auditLogRepo.GetAuditLogsAsync(page, pageSize);
             return Ok(ApiResponse.Ok(new { items = result.items, total = result.total }));
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost("clear-audit-logs")]
-        public IActionResult ClearAuditLogs()
+        public async Task<IActionResult> ClearAuditLogs()
         {
-            _auditLogRepo.ClearAuditLogs();
-            _auditLogRepo.InsertAuditLog(null, "Quản trị viên đã dọn sạch toàn bộ nhật ký hệ thống.");
+            await _auditLogRepo.ClearAuditLogsAsync();
+            await _auditLogRepo.InsertAuditLogAsync(null, "Quản trị viên đã dọn sạch toàn bộ nhật ký hệ thống.");
             return Ok(ApiResponse.Ok("Đã dọn sạch nhật ký hệ thống."));
         }
     }

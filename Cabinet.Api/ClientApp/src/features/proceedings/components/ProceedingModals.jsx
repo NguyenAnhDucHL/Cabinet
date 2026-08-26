@@ -4,13 +4,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 
 export function ProceedingCreateModal({
   open,
@@ -44,18 +37,18 @@ export function ProceedingCreateModal({
           </div>
           <div className="space-y-2">
             <Label>Gắn phiên họp (tùy chọn)</Label>
-            <Select value={formMeetingId} onValueChange={setFormMeetingId}>
-              <SelectTrigger>
-                <SelectValue placeholder="Chọn phiên họp" />
-              </SelectTrigger>
-              <SelectContent>
-                {allMeetings.map((m) => (
-                  <SelectItem key={m.id} value={String(m.id)}>
-                    {m.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <select
+              value={formMeetingId}
+              onChange={(e) => setFormMeetingId(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white"
+            >
+              <option value="">-- Chọn phiên họp --</option>
+              {allMeetings.map((m) => (
+                <option key={m.id} value={String(m.id)}>
+                  {m.title}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="space-y-2">
             <Label>Mô tả</Label>
@@ -108,24 +101,22 @@ export function ProceedingAddMeetingModal({
             <Label>
               Chọn phiên họp <span className="text-red-500">*</span>
             </Label>
-            <Select value={addMeetingId} onValueChange={setAddMeetingId}>
-              <SelectTrigger>
-                <SelectValue placeholder="Chọn phiên họp cần gắn" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableMeetings.length === 0 ? (
-                  <SelectItem value="__none__" disabled>
-                    Không còn phiên họp nào để gắn
-                  </SelectItem>
-                ) : (
-                  availableMeetings.map((m) => (
-                    <SelectItem key={m.id} value={String(m.id)}>
-                      {m.title}
-                    </SelectItem>
-                  ))
-                )}
-              </SelectContent>
-            </Select>
+            <select
+              value={addMeetingId}
+              onChange={(e) => setAddMeetingId(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white"
+            >
+              <option value="">-- Chọn phiên họp cần gắn --</option>
+              {availableMeetings.length === 0 ? (
+                <option disabled>Không còn phiên họp nào để gắn</option>
+              ) : (
+                availableMeetings.map((m) => (
+                  <option key={m.id} value={String(m.id)}>
+                    {m.title}
+                  </option>
+                ))
+              )}
+            </select>
           </div>
           <div className="flex justify-end gap-3 mt-6">
             <Button
@@ -140,7 +131,7 @@ export function ProceedingAddMeetingModal({
             <Button
               className="bg-blue-600 hover:bg-blue-700 text-white"
               onClick={onSubmit}
-              disabled={saving || !addMeetingId || addMeetingId === '__none__'}
+              disabled={saving || !addMeetingId}
             >
               {saving ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />

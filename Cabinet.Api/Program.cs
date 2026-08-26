@@ -83,10 +83,11 @@ builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IRoomRepository, Cabin
 builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IMeetingRepository, Cabinet.Core.Data.Repositories.MeetingRepository>();
 builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IQuestionnaireRepository, Cabinet.Core.Data.Repositories.QuestionnaireRepository>();
 builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IQuestionnaireTemplateRepository, Cabinet.Core.Data.Repositories.QuestionnaireTemplateRepository>();
-// Cabinet — Kỷ yếu, Kết luận, Sổ tay
+// Cabinet — Kỷ yếu, Kết luận, Sổ tay, Góp ý
 builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IMeetingProceedingRepository, Cabinet.Core.Data.Repositories.MeetingProceedingRepository>();
 builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IMeetingConclusionRepository, Cabinet.Core.Data.Repositories.MeetingConclusionRepository>();
 builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IMeetingNoteRepository, Cabinet.Core.Data.Repositories.MeetingNoteRepository>();
+builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IMeetingFeedbackRepository, Cabinet.Core.Data.Repositories.MeetingFeedbackRepository>();
 
 // Refactored Repositories
 builder.Services.AddScoped<ISettingRepository, SettingRepository>();
@@ -184,7 +185,7 @@ builder.Services.AddAuthentication(x =>
             }
             return Task.CompletedTask;
         },
-        OnTokenValidated = context =>
+        OnTokenValidated = async context =>
         {
             try
             {
@@ -204,7 +205,7 @@ builder.Services.AddAuthentication(x =>
                 if (string.IsNullOrEmpty(userIdStr))
                 {
                     Console.WriteLine("[AuthWarning] Thiếu UserId/uid claim trong token.");
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 if (int.TryParse(userIdStr, out int userId))
@@ -216,12 +217,12 @@ builder.Services.AddAuthentication(x =>
                     if (string.IsNullOrEmpty(cachedSecStamp))
                     {
                         var userRepo = context.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
-                        var user     = userRepo.GetUserById(userId);
+                        var user     = await userRepo.GetUserByIdAsync(userId);
                         if (user == null)
                         {
                             Console.WriteLine($"[AuthError] Không tìm thấy User ID {userId} trong cơ sở dữ liệu.");
                             context.Fail("Tài khoản không tồn tại.");
-                            return Task.CompletedTask;
+                            return;
                         }
 
                         // Ưu tiên kiểm tra SecurityStamp (Identity) trước, fallback về SessionId cũ
@@ -245,7 +246,6 @@ builder.Services.AddAuthentication(x =>
             {
                 Console.WriteLine($"[AuthFatalError] {ex.Message}\n{ex.StackTrace}");
             }
-            return Task.CompletedTask;
         },
         OnChallenge = context =>
         {
@@ -303,7 +303,7 @@ var forwardedOptions = new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 };
-forwardedOptions.KnownNetworks.Clear(); // Tin tưởng mọi mạng (cần thiết cho ngrok/proxy bên ngoài)
+forwardedOptions.KnownIPNetworks.Clear(); // Tin tưởng mọi mạng (cần thiết cho ngrok/proxy bên ngoài)
 forwardedOptions.KnownProxies.Clear();   // Tin tưởng mọi proxy
 app.UseForwardedHeaders(forwardedOptions);
 

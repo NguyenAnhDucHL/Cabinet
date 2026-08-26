@@ -1,4 +1,62 @@
+### [2026-08-26 16:00] Refactor toàn bộ Repository và Controller sang bất đồng bộ (Async)
+- **Mô tả**: Nâng cấp toàn bộ phương thức truy vấn CSDL thủ công (ADO.NET) trong các Repositories sang bất đồng bộ (`await ExecuteReaderAsync`, v.v.) nhằm tối ưu hóa hiệu năng và tăng cường khả năng chịu tải. Các interfaces (`IUserRepository`, `IAdminRepository`, `ISettingRepository`, `IAuditLogRepository`, `INotificationRepository`) và các implement đều đã chuyển về `Task<T>`. Kéo theo đó, `UsersController`, `AuthController`, `CustomUserStore` và các Services liên đới (`NotificationManager`, `VapidService`, `Program.cs`) cũng đã được refactor để `await` đúng chuẩn. Đã verify docker build thành công.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Data/Interfaces/IUserRepository.cs` (Sửa đổi)
+  - `Cabinet.Core/Data/Repositories/UserRepository.cs` (Sửa đổi)
+  - `Cabinet.Api/Security/CustomUserStore.cs` (Sửa đổi)
+  - `Cabinet.Api/Controllers/AuthController.cs` (Sửa đổi)
+  - `Cabinet.Api/Controllers/UsersController.cs` (Sửa đổi)
+  - `Cabinet.Core/Services/VapidService.cs` (Sửa đổi)
+  - `Cabinet.Core/Services/NotificationManager.cs` (Sửa đổi)
+  - `Cabinet.Api/Program.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "refactor(core): chuyển toàn bộ kết nối csdl và api nội bộ sang bất đồng bộ"`
+
+### [2026-08-26 15:40] Cập nhật UI modal Xác nhận tham gia điểm danh
+- **Mô tả**: Thay đổi UI của modal Xác nhận tham gia (ở trang Dashboard) sang dạng Radio button ("Tham gia" và "Báo vắng") theo đúng thiết kế mới. Không cần sửa DB do API `PUT /api/phonghopkhonggiayto/meetings/{id}/attendance` và cột `AttendanceStatus` của bảng `MeetingParticipants` đã hỗ trợ sẵn các trạng thái ("Có tham gia", "Vắng mặt").
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/home/components/CabinetHome/AttendanceConfirmModal.jsx` (Sửa đổi — thêm radio buttons, state `selectedStatus`)
+  - `Cabinet.Api/ClientApp/src/features/home/hooks/useCabinetHome.js` (Sửa đổi — truyền biến `status` động thay vì fix cứng)
+- **Lệnh git commit**: `git commit -m "feat(meetings): cập nhật UI xác nhận tham gia điểm danh cho phép chọn tham gia hoặc báo vắng"`
+
+### [2026-08-26 15:35] Thực hiện tính năng gửi Góp ý trong phiên họp
+- **Tệp thay đổi**:
+  - `data_dump/documents.db` (Thay đổi schema — thêm `MeetingFeedbacks`)
+  - `Cabinet.Core/Models/MeetingFeedback.cs` (Mới)
+  - `Cabinet.Core/Data/Repositories/MeetingFeedbackRepository.cs` (Mới)
+  - `Cabinet.Api/Controllers/Cabinet/MeetingFeedbacksController.cs` (Mới)
+  - `Cabinet.Api/Program.cs` (Sửa đổi — AddScoped `IMeetingFeedbackRepository`)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi — call fetch API submit form data)
+- **Lệnh git commit**: `git commit -m "feat(meetings): thêm api và tích hợp tính năng gửi góp ý phiên họp"`
+
+### [2026-08-26 15:25] Thay mockGroups bằng dữ liệu Departments thật từ DB
+- **Tệp thay đổi**:
+  - `Cabinet.Api/Controllers/UsersController.cs` (Sửa đổi — thêm endpoint `GET /api/users/departments`)
+  - `Cabinet.Api/ClientApp/src/features/meetings/hooks/useMeetingCreate.js` (Sửa đổi — thêm fetch departments + usersInSelectedDept)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingCreate/Step2Participants.jsx` (Sửa đổi — dùng departments prop thay mockGroups, native select, filter theo dept)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetMeetingCreate.jsx` (Sửa đổi — thêm departments state + fetch + usersInSelectedDept)
+- **Lệnh git commit**: `git commit -m "feat(meetings): thay mockGroups bằng dữ liệu Departments thật, thêm API GET /api/users/departments"`
+
+### [2026-08-26 15:10] Fix lỗi FOREIGN KEY constraint khi tạo phiếu lấy ý kiến
+
+- **Mô tả**: API POST `/api/phonghopkhonggiayto/questionnaires` trả về 500 do insert `MeetingId=0` và `AssignedTo=0` — vi phạm FK constraint. Sửa bằng cách dùng `DBNull.Value` khi MeetingId không có, và đổi `AssignedTo=0` thành `NULL` trong câu INSERT.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Data/Repositories/QuestionnaireRepository.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(questionnaires): thay MeetingId=0 và AssignedTo=0 bằng NULL để tránh FK constraint failed"`
+
+### [2026-08-26 15:07] Thay shadcn Select bằng native select trong ProceedingModals
+- **Mô tả**: Dropdown "Gắn phiên họp" trong modal kỷ yếu bị hiển thị đằng sau Dialog do z-index conflict giữa Radix UI SelectContent và DialogContent. Thay toàn bộ shadcn `<Select>` bằng native `<select>` HTML (giống pattern RoomModal) để tránh vấn đề z-index hoàn toàn.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/proceedings/components/ProceedingModals.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(proceedings): thay shadcn Select bằng native select trong ProceedingModals để fix z-index dropdown"`
+
+### [2026-08-26 15:00] Fix dropdown SelectContent bị che khuất bởi Dialog (z-index)
+- **Mô tả**: SelectContent trong ProceedingCreateModal bị render đằng sau DialogContent. Thêm `className="z-[9999]"` làm bước đầu, sau đó refactor hoàn toàn sang native select.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/proceedings/components/ProceedingModals.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(proceedings): fix z-index SelectContent bị che bởi Dialog"`
+
 ### [2026-08-25 17:13] Refactor Cabinet FE → Feature-based Architecture (Tool-Calendar pattern)
+
 - **Mô tả**: Tái cấu trúc toàn bộ Frontend Cabinet từ flat-pages (file 31KB monolith) sang Feature-based architecture theo mô hình Tool-Calendar. Tách API layer, custom hooks, và slim down các page component. Đây giải quyết luôn root cause bug dropdown trống (hook dùng trực tiếp meetingApi thay vì fetch inline dễ bị 401 nuốt lặng).
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/cabinet/features/meetings/api/meetingApi.js` (Mới)
