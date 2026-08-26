@@ -1,12 +1,12 @@
-/* eslint-disable */
-import React, { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { ChevronLeft, ChevronRight, Search, Filter, ChevronDown, ChevronUp } from 'lucide-react'
 import { MeetingModal } from '../components/MeetingModal'
+import { useSchedule } from '../../features/schedule/hooks/useSchedule'
 
 const getStartOfWeek = (date) => {
   const d = new Date(date)
   const day = d.getDay()
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1) // adjust when day is sunday
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1)
   d.setDate(diff)
   d.setHours(0, 0, 0, 0)
   return d
@@ -31,30 +31,11 @@ const formatTime = (dateStr) => {
 }
 
 export function CabinetLeaderSchedule() {
+  const { meetings, loading, fetchMeetings } = useSchedule('leader')
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [meetings, setMeetings] = useState([])
-  const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const [modal, setModal] = useState(null) // null | { mode: 'add' } | { mode: 'edit', meeting }
-  const [expandedDays, setExpandedDays] = useState([0, 1, 2, 3, 4, 5, 6]) // 0 = Mon, 6 = Sun
-
-  const fetchMeetings = () => {
-    setLoading(true)
-    fetch('/api/phonghopkhonggiayto/meetings/schedule')
-      .then((r) => r.json())
-      .then((json) => {
-        const data = json.data || json
-        if (Array.isArray(data)) {
-          setMeetings(data)
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }
-
-  useEffect(() => {
-    fetchMeetings()
-  }, [])
+  const [modal, setModal] = useState(null)
+  const [expandedDays, setExpandedDays] = useState([0, 1, 2, 3, 4, 5, 6])
 
   const handlePrevWeek = () => setCurrentDate((d) => addDays(d, -7))
   const handleNextWeek = () => setCurrentDate((d) => addDays(d, 7))

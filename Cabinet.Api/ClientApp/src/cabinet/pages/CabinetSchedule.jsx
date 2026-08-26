@@ -1,5 +1,4 @@
-/* eslint-disable */
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -8,56 +7,14 @@ import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { MeetingModal } from '../components/MeetingModal'
 import { CabinetLeaderSchedule } from './CabinetLeaderSchedule'
 import { CabinetUnitSchedule } from './CabinetUnitSchedule'
-
-const statusColor = (status) => {
-  switch (status) {
-    case 'Đang diễn ra':
-      return '#16a34a'
-    case 'Sắp diễn ra':
-      return '#2563eb'
-    case 'Hoàn thành':
-      return '#6b7280'
-    case 'Hủy':
-      return '#dc2626'
-    default:
-      return '#c8102e'
-  }
-}
+import { useSchedule } from '../../features/schedule/hooks/useSchedule'
 
 export function CabinetSchedule({ scheduleType = 'personal' }) {
-  const [meetings, setMeetings] = useState([])
+  const { calendarEvents: meetings, loading, fetchMeetings } = useSchedule('leader')
   const [viewMode, setViewMode] = useState('timeGridWeek')
   const [calendarTitle, setCalendarTitle] = useState('')
-  const [loading, setLoading] = useState(true)
   const [modal, setModal] = useState(null) // null | { mode: 'add' } | { mode: 'edit', meeting }
   const calendarRef = useRef(null)
-
-  const fetchMeetings = useCallback(() => {
-    setLoading(true)
-    fetch('/api/phonghopkhonggiayto/meetings/schedule')
-      .then((r) => r.json())
-      .then((json) => {
-        const data = json.data || json
-        if (Array.isArray(data)) {
-          const events = data.map((m) => ({
-            id: m.id,
-            title: m.title,
-            start: m.startTime,
-            end: m.endTime,
-            backgroundColor: statusColor(m.status),
-            borderColor: 'transparent',
-            extendedProps: { room: m.roomName, status: m.status, meeting: m },
-          }))
-          setMeetings(events)
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }, [])
-
-  useEffect(() => {
-    fetchMeetings()
-  }, [scheduleType, fetchMeetings])
 
   const calendarApi = () => calendarRef.current?.getApi()
 

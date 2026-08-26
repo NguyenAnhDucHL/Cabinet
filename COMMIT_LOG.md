@@ -1562,3 +1562,20 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `src/cabinet/pages/CabinetNotebook.jsx` (Sửa — thin page ~70 dòng)
   - `src/cabinet/pages/CabinetProceedings.jsx` (Sửa — thin page ~120 dòng)
 - **Lệnh git commit**: `git commit -m "refactor(arch): tách UI monolithic của Conclusions, Notes, Proceedings thành feature components"`
+
+### [2026-08-26 08:46] Tạo hooks cho Questionnaires + Schedule, cập nhật rule FE architecture
+- **Mô tả**: 
+  1. Tách inline fetch khỏi CabinetQuestionnaireTemplates → useQuestionnaireTemplates hook.
+  2. Tạo useQuestionnaireCreate hook cho CabinetQuestionnaireCreate.
+  3. Tạo useSchedule hook dùng chung cho 3 schedule pages (CabinetSchedule, CabinetLeaderSchedule, CabinetUnitSchedule) — xóa statusColor helper khỏi từng page.
+  4. Cập nhật tc-rule-frontend-architecture.md theo chuẩn Bulletproof React, phản ánh đúng cấu trúc thực tế Cabinet.
+- **Tệp thay đổi**:
+  - `.agents/rules/tc-rule-frontend-architecture.md` (Sửa — chuẩn hóa theo Tool-Calendar)
+  - `src/features/questionnaires/hooks/useQuestionnaireCreate.js` (Mới)
+  - `src/features/questionnaires/hooks/useQuestionnaireTemplates.js` (Mới)
+  - `src/features/schedule/hooks/useSchedule.js` (Mới — dùng chung)
+  - `src/cabinet/pages/CabinetQuestionnaireTemplates.jsx` (Sửa — dùng hook)
+  - `src/cabinet/pages/CabinetSchedule.jsx` (Sửa — dùng useSchedule)
+  - `src/cabinet/pages/CabinetLeaderSchedule.jsx` (Sửa — dùng useSchedule)
+  - `src/cabinet/pages/CabinetUnitSchedule.jsx` (Sửa — dùng useSchedule)
+- **Lệnh git commit**: `git commit -m "refactor(arch): tạo hooks questionnaires/schedule, cập nhật rule FE architecture"`

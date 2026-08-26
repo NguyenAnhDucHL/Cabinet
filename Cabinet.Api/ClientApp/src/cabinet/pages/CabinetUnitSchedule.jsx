@@ -1,26 +1,11 @@
-/* eslint-disable */
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { MeetingModal } from '../components/MeetingModal'
-
-const statusColor = (status) => {
-  switch (status) {
-    case 'Đang diễn ra':
-      return '#16a34a'
-    case 'Sắp diễn ra':
-      return '#2563eb'
-    case 'Hoàn thành':
-      return '#6b7280'
-    case 'Hủy':
-      return '#dc2626'
-    default:
-      return '#c8102e'
-  }
-}
+import { useSchedule } from '../../features/schedule/hooks/useSchedule'
 
 const getVietnameseDay = (dayIndex) => {
   const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy']
@@ -28,35 +13,11 @@ const getVietnameseDay = (dayIndex) => {
 }
 
 export function CabinetUnitSchedule() {
-  const [meetings, setMeetings] = useState([])
+  const { calendarEvents: meetings, loading, fetchMeetings } = useSchedule('unit')
   const [viewMode, setViewMode] = useState('dayGridWeek')
   const [calendarTitle, setCalendarTitle] = useState('')
-  const [loading, setLoading] = useState(true)
   const [modal, setModal] = useState(null)
   const calendarRef = useRef(null)
-
-  const fetchMeetings = useCallback(() => {
-    setLoading(true)
-    fetch('/api/phonghopkhonggiayto/meetings/schedule')
-      .then((r) => r.json())
-      .then((json) => {
-        const data = json.data || json
-        if (Array.isArray(data)) {
-          const events = data.map((m) => ({
-            id: m.id,
-            title: m.title,
-            start: m.startTime,
-            end: m.endTime,
-            backgroundColor: statusColor(m.status),
-            borderColor: 'transparent',
-            extendedProps: { room: m.roomName, status: m.status, meeting: m },
-          }))
-          setMeetings(events)
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }, [])
 
   useEffect(() => {
     fetchMeetings()
