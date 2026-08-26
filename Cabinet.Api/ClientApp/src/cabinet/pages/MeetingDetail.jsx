@@ -1,13 +1,16 @@
 import React, { useState, useRef } from 'react'
 import {
   ArrowLeft,
-  ChevronUp,
+  Plus,
   ChevronDown,
-  Download,
+  ChevronUp,
+  Clock,
   FileText,
-  Book,
+  CheckCircle2,
+  Circle,
+  AlertCircle,
   X,
-  Upload,
+  Download,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,7 +25,22 @@ import {
 import { NotebookModal } from '../../features/meetings/components/MeetingDetail/NotebookModal'
 
 export function MeetingDetail({ meeting, onBack, onViewProgress }) {
-  const [isNotebookOpen, setIsNotebookOpen] = useState(false)
+  const [isNoteModalOpen, setIsNoteModalOpen] = useState(false)
+  const [isParticipantsModalOpen, setIsParticipantsModalOpen] = useState(false)
+
+  // Parse file paths safely
+  const parseFiles = (jsonString) => {
+    try {
+      if (!jsonString || jsonString === 'null') return []
+      return JSON.parse(jsonString)
+    } catch {
+      return []
+    }
+  }
+
+  const programFiles = parseFiles(meeting.programFilePaths)
+  const invitationFiles = parseFiles(meeting.invitationFilePaths)
+
   const [isGopYOpen, setIsGopYOpen] = useState(false)
   const [gopYContent, setGopYContent] = useState('')
   const [gopYDetail, setGopYDetail] = useState('')
@@ -128,22 +146,60 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-gray-500 w-[140px] shrink-0">Thành phần tham gia:</span>
-                  <button className="font-semibold text-[#c8102e] hover:underline">
+                  <button 
+                    onClick={() => setIsParticipantsModalOpen(true)}
+                    className="font-semibold text-[#c8102e] hover:underline"
+                  >
                     Xem thành phần tham gia
                   </button>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-gray-500 w-[140px] shrink-0">Giấy mời họp:</span>
-                  <a
-                    href="#"
-                    className="font-semibold text-[#c8102e] hover:underline truncate max-w-[250px]"
-                  >
-                    A49.50.01-VBNB_2026-GM-0197-2026_dak...
-                  </a>
+                  <div className="flex flex-col gap-1">
+                    {invitationFiles.length > 0 ? (
+                      invitationFiles.map((file, i) => (
+                        <div key={i} className="flex items-center gap-2 group">
+                          <a
+                            href={file}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold text-[#c8102e] hover:underline truncate max-w-[250px]"
+                          >
+                            {file.split('/').pop()}
+                          </a>
+                          <a href={file} download className="text-gray-400 hover:text-[#c8102e] transition-colors" title="Tải xuống">
+                            <Download className="w-4 h-4" />
+                          </a>
+                        </div>
+                      ))
+                    ) : (
+                      <span className="font-semibold text-gray-900">-</span>
+                    )}
+                  </div>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-gray-500 w-[140px] shrink-0">Chương trình họp:</span>
-                  <span className="font-semibold text-gray-900">-</span>
+                  <span className="text-gray-500 w-[140px] shrink-0">Tài liệu họp:</span>
+                  <div className="flex flex-col gap-1">
+                    {programFiles.length > 0 ? (
+                      programFiles.map((file, i) => (
+                        <div key={i} className="flex items-center gap-2 group">
+                          <a
+                            href={file}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold text-[#c8102e] hover:underline truncate max-w-[250px]"
+                          >
+                            {file.split('/').pop()}
+                          </a>
+                          <a href={file} download className="text-gray-400 hover:text-[#c8102e] transition-colors" title="Tải xuống">
+                            <Download className="w-4 h-4" />
+                          </a>
+                        </div>
+                      ))
+                    ) : (
+                      <span className="font-semibold text-gray-900">-</span>
+                    )}
+                  </div>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-gray-500 w-[140px] shrink-0">Phiếu mời:</span>
@@ -206,7 +262,10 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-gray-500 w-[130px]">Thành phần tham gia:</span>
-                      <button className="font-semibold text-[#c8102e] hover:underline">
+                      <button 
+                        onClick={() => setIsParticipantsModalOpen(true)}
+                        className="font-semibold text-[#c8102e] hover:underline"
+                      >
                         Xem thành phần tham gia
                       </button>
                     </div>

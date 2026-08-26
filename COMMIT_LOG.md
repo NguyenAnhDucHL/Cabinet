@@ -1703,3 +1703,11 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/Controllers/Cabinet/DocumentsController.cs` (Sửa đổi)
   - `Cabinet.Core/Data/Repositories/DocumentRepository.cs` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(api): fix document upload 400 bad request and 500 db connection string"`
+
+### [2026-08-26 16:59] Advance meeting UI and auto-notifications
+- **Mô tả**: Phát triển các ý tưởng cho màn hình phiên họp: (1) Lọc tab "Cần chuẩn bị tài liệu" tại frontend, (2) Tạo chức năng tự động gửi push notification khi kết luận phiên họp cập nhật qua SignalR/WebPush, (3) Modal phân nhóm thành phần tham gia (Lãnh đạo chủ trì, Trong đơn vị, Khách mời ngoài), (4) Thêm nút download cho tài liệu họp.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingList.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi)
+  - `Cabinet.Api/Controllers/Cabinet/MeetingConclusionsController.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(meetings): implement advanced meeting features like doc preparation filter, participant groups, conclusion auto-notify"`

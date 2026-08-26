@@ -25,9 +25,18 @@ export function MeetingList() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
 
-  const filteredMeetings = meetings.filter((m) =>
-    m.title?.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredMeetings = meetings.filter((m) => {
+    const matchSearch = m.title?.toLowerCase().includes(searchQuery.toLowerCase())
+    if (!matchSearch) return false
+
+    if (activeTab === 'prepare') {
+      const noDocs = !m.programFilePaths || m.programFilePaths === '[]' || m.programFilePaths === 'null'
+      return m.status === 'Sắp diễn ra' && noDocs
+    }
+    
+    // For 'invited' tab, filter out 'all' logic if admin wants only invited (handled by backend though)
+    return true
+  })
   const paginatedMeetings = filteredMeetings.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize

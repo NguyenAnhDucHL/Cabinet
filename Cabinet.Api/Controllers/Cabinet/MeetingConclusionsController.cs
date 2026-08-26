@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Cabinet.Core.Data.Repositories;
 using Cabinet.Core.Models;
 using Cabinet.Models;
+using Cabinet.Services;
 
 namespace Cabinet.Api.Controllers.Cabinet
 {
@@ -13,10 +14,17 @@ namespace Cabinet.Api.Controllers.Cabinet
     public class MeetingConclusionsController : ControllerBase
     {
         private readonly IMeetingConclusionRepository _repo;
+        private readonly IMeetingRepository _meetingRepo;
+        private readonly INotificationManager _notificationManager;
 
-        public MeetingConclusionsController(IMeetingConclusionRepository repo)
+        public MeetingConclusionsController(
+            IMeetingConclusionRepository repo, 
+            IMeetingRepository meetingRepo,
+            INotificationManager notificationManager)
         {
             _repo = repo;
+            _meetingRepo = meetingRepo;
+            _notificationManager = notificationManager;
         }
 
         // GET /api/phonghopkhonggiayto/conclusions?search=...&page=1&pageSize=10
@@ -59,6 +67,21 @@ namespace Cabinet.Api.Controllers.Cabinet
             var success = await _repo.UpdateAsync(id, request);
             if (!success) return NotFound(ApiResponse.Fail("Không tìm thấy kết luận."));
             var updated = await _repo.GetByIdAsync(id);
+
+            // Send notification
+            if (updated != null && (request.Status == "Đã xử lý" || request.Progress == 100))
+            {
+                var meeting = await _meetingRepo.GetByIdAsync(updated.MeetingId);
+                if (meeting != null && meeting.Participants != null)
+                {
+                    var msg = $"Kết luận của phiên họp '{meeting.Title}' đã được cập nhật.";
+                    foreach (var p in meeting.Participants)
+                    {
+                        await _notificationManager.SendToUserAsync(p.UserId, "Kết luận phiên họp", msg, new { meetingId = meeting.Id });
+                    }
+                }
+            }
+
             return Ok(ApiResponse.Ok(updated, "Cập nhật kết luận thành công."));
         }
 
