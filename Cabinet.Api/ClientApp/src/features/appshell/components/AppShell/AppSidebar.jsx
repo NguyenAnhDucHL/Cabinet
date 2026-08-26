@@ -1,11 +1,19 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
-import { SCHEDULE_SIDEBAR, ROOMS_SIDEBAR, MEETINGS_SIDEBAR } from '../../constants/navigation'
+import {
+  SCHEDULE_SIDEBAR,
+  ROOMS_SIDEBAR,
+  MEETINGS_SIDEBAR,
+  LIBRARY_SIDEBAR,
+} from '../../constants/navigation'
 
 export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar }) {
   const hasSidebar =
-    activeNav === 'schedule' || activeNav === 'rooms' || activeNav === 'manage_meetings'
+    activeNav === 'schedule' ||
+    activeNav === 'rooms' ||
+    activeNav === 'manage_meetings' ||
+    activeNav === 'library'
 
   if (!hasSidebar) return null
 
@@ -45,6 +53,22 @@ export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar }) {
 
       {activeNav === 'manage_meetings' &&
         MEETINGS_SIDEBAR.map((item, i) => (
+          <button
+            key={item.label}
+            onClick={() => setActiveSidebar(i)}
+            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${
+              activeSidebar === i
+                ? 'bg-[#c8102e] text-white'
+                : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
+            }`}
+          >
+            <item.icon size={16} className="shrink-0" />
+            <span>{item.label}</span>
+          </button>
+        ))}
+
+      {activeNav === 'library' &&
+        LIBRARY_SIDEBAR.map((item, i) => (
           <button
             key={item.label}
             onClick={() => setActiveSidebar(i)}

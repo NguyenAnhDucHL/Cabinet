@@ -5,6 +5,7 @@ import { CabinetSchedule } from './pages/CabinetSchedule'
 import { CabinetRooms } from './pages/CabinetRooms'
 import { CabinetQuestionnaire } from './pages/CabinetQuestionnaire'
 import { CabinetMeetings } from './pages/CabinetMeetings'
+import { CabinetLibrary } from './pages/CabinetLibrary'
 import { NAV_ITEMS, SCHEDULE_SIDEBAR } from '../features/appshell/constants/navigation'
 import { TopNavigation } from '../features/appshell/components/AppShell/TopNavigation'
 import { AppSidebar } from '../features/appshell/components/AppShell/AppSidebar'
@@ -114,6 +115,8 @@ export function CabinetAppShell({ children }) {
         return <CabinetRooms />
       case 'questionnaire':
         return <CabinetQuestionnaire />
+      case 'library':
+        return <CabinetLibrary activeTab={activeSidebar} />
       default:
         return (
           <div className="flex-1 flex flex-col items-center justify-center text-gray-400">

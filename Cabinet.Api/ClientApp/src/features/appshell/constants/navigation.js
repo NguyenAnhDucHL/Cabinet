@@ -21,7 +21,7 @@ export const NAV_ITEMS = [
   { id: 'manage_meetings', icon: MessageSquare, label: 'Quản lý họp' },
   { id: 'rooms', icon: MapPin, label: 'Phòng họp' },
   { id: 'questionnaire', icon: ClipboardList, label: 'Phiếu lấy ý kiến' },
-  { id: 'library', icon: BookOpen, label: 'Thư viện' },
+  { id: 'library', icon: BookOpen, label: 'Thư viện văn bản' },
   { id: 'admin', icon: ShieldCheck, label: 'Phân quyền' },
 ]
 
@@ -43,4 +43,11 @@ export const MEETINGS_SIDEBAR = [
   { icon: FileText, label: 'Kỷ yếu phiên họp' },
   { icon: Search, label: 'Tra cứu kết luận phiên họp' },
   { icon: BookOpen, label: 'Quản lý sổ tay' },
+]
+
+export const LIBRARY_SIDEBAR = [
+  { label: 'Thư viện dùng chung', type: 'DungChung', icon: BookOpen },
+  { label: 'Thư viện cá nhân', type: 'CaNhan', icon: FileText },
+  { label: 'Tài liệu được chia sẻ', type: 'DuocChiaSe', icon: Users },
+  { label: 'Tài liệu quan trọng', type: 'QuanTrong', icon: ShieldCheck },
 ]

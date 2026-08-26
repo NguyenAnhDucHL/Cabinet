@@ -1207,6 +1207,33 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingList.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "feat(cabinet): thêm màn hình diễn biến phiên họp và xử lý chuyển trang từ thông tin phiên họp"`
 
+### [2026-08-26 16:22] Implement Document Library Feature (Frontend + Backend)
+- **Mô tả**: Phát triển tính năng thư viện văn bản (Dùng chung, Cá nhân, Chia sẻ, Quan trọng) hỗ trợ upload/xem tài liệu, cấu hình ẩn hiện cột. Bổ sung các controller và repository sử dụng ADO.NET thô bất đồng bộ.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Models/Document.cs` (Mới)
+  - `Cabinet.Core/Data/Interfaces/IDocumentRepository.cs` (Mới)
+  - `Cabinet.Core/Data/Repositories/DocumentRepository.cs` (Mới)
+  - `Cabinet.Api/Controllers/Cabinet/DocumentsController.cs` (Mới)
+  - `Cabinet.Api/Program.cs` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/documents/api/documentApi.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/documents/hooks/useDocuments.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/documents/components/LibraryLayout.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/documents/components/FolderTree.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/documents/components/DocumentTable.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/documents/components/DocumentUploadModal.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetLibrary.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/CabinetAppShell.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/appshell/components/AppShell/AppSidebar.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/appshell/constants/navigation.js` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(library): implement document library feature (FE + BE async)"`
+
+### [2026-08-26 15:58] Create Database Schema for Document Library Pattern
+- **Mô tả**: Hoàn tất quá trình refactor hệ thống sang sử dụng Repository Pattern. Chuyển tất cả các phương thức truy xuất database tĩnh từ `DatabaseService` vào các Repositories tương ứng (`ISettingRepository`, `IAdminRepository`, `IUserRepository`, `INotificationRepository`, `IAuditLogRepository`, `IStatsRepository`). Tiêm các repositories này vào Controllers và Services (`DocumentsController`, `OcrTextProcessingService`) thông qua Dependency Injection. Dọn dẹp hoàn toàn `DatabaseService.cs` chỉ còn lại phương thức `Initialize()`.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/Controllers/DocumentsController.cs` (Sửa đổi)
+  - `Cabinet.Core/Services/OcrTextProcessingService.cs` (Sửa đổi)
+  - `Cabinet.Core/Data/DatabaseService.cs` (Sửa đổi)
+
 ### [2026-07-11 09:21] Refactor DatabaseService to Repository Pattern
 - **Mô tả**: Hoàn tất quá trình refactor hệ thống sang sử dụng Repository Pattern. Chuyển tất cả các phương thức truy xuất database tĩnh từ `DatabaseService` vào các Repositories tương ứng (`ISettingRepository`, `IAdminRepository`, `IUserRepository`, `INotificationRepository`, `IAuditLogRepository`, `IStatsRepository`). Tiêm các repositories này vào Controllers và Services (`DocumentsController`, `OcrTextProcessingService`) thông qua Dependency Injection. Dọn dẹp hoàn toàn `DatabaseService.cs` chỉ còn lại phương thức `Initialize()`.
 - **Tệp thay đổi**:

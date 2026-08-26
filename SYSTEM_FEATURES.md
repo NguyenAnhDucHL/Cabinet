@@ -65,6 +65,18 @@ Tài liệu này chứa các thông tin thiết yếu nhất về kiến trúc, 
 - `Id`, `MeetingId` (FK → Meetings), `UserId` (FK → Users)
 - `Content`, `AttachmentPaths` (JSON array of file paths), `CreatedAt`
 
+### `DocumentFolders` (Thư mục tài liệu)
+- `Id`, `Name`, `ParentId`, `Type` (DungChung | CaNhan), `CreatorId`, `CreatedAt`
+
+### `Documents` (Tài liệu)
+- `Id`, `Name`, `FileType`, `FilePath`, `DocumentType`, `IssuingAuthority`, `FolderId`, `CreatorId`, `Type` (DungChung | CaNhan), `CreatedAt`
+
+### `UserImportantDocuments` (Tài liệu quan trọng)
+- `UserId`, `DocumentId` (PRIMARY KEY kép)
+
+### `DocumentShares` (Tài liệu được chia sẻ)
+- `DocumentId`, `SharedWithUserId` (PRIMARY KEY kép), `SharedByUserId`
+
 ### Các bảng phụ khác
 - `PushSubscriptions` (Đăng ký Web Push), `Notifications` (Thông báo in-app).
 - `AuditLogs` & `LoginAuditLog` (Nhật ký hệ thống/đăng nhập).
