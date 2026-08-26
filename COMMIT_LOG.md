@@ -1,3 +1,9 @@
+### [2026-08-26 17:24] Fix Prettier formatting in AppSidebar
+- **Mô tả**: Sửa đổi format tự động bằng Prettier cho AppSidebar.jsx theo yêu cầu của user.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/appshell/components/AppShell/AppSidebar.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style(appshell): fix formatting in AppSidebar.jsx"`
+
 ### [2026-08-26 16:00] Refactor toàn bộ Repository và Controller sang bất đồng bộ (Async)
 - **Mô tả**: Nâng cấp toàn bộ phương thức truy vấn CSDL thủ công (ADO.NET) trong các Repositories sang bất đồng bộ (`await ExecuteReaderAsync`, v.v.) nhằm tối ưu hóa hiệu năng và tăng cường khả năng chịu tải. Các interfaces (`IUserRepository`, `IAdminRepository`, `ISettingRepository`, `IAuditLogRepository`, `INotificationRepository`) và các implement đều đã chuyển về `Task<T>`. Kéo theo đó, `UsersController`, `AuthController`, `CustomUserStore` và các Services liên đới (`NotificationManager`, `VapidService`, `Program.cs`) cũng đã được refactor để `await` đúng chuẩn. Đã verify docker build thành công.
 - **Tệp thay đổi**:

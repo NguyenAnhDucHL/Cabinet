@@ -26,11 +26,10 @@ export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSideb
           <button
             key={item.label}
             onClick={() => setActiveSidebar(i)}
-            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${
-              activeSidebar === i
-                ? 'bg-[#c8102e] text-white'
-                : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
-            } ${isSidebarCollapsed ? 'justify-center' : ''}`}
+            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${activeSidebar === i
+              ? 'bg-[#c8102e] text-white'
+              : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
+              } ${isSidebarCollapsed ? 'justify-center' : ''}`}
             title={isSidebarCollapsed ? item.label : undefined}
           >
             <item.icon size={20} className="shrink-0" />
@@ -43,11 +42,10 @@ export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSideb
           <button
             key={item.label}
             onClick={() => setActiveSidebar(i)}
-            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${
-              activeSidebar === i
-                ? 'bg-[#c8102e] text-white'
-                : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
-            } ${isSidebarCollapsed ? 'justify-center' : ''}`}
+            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${activeSidebar === i
+              ? 'bg-[#c8102e] text-white'
+              : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
+              } ${isSidebarCollapsed ? 'justify-center' : ''}`}
             title={isSidebarCollapsed ? item.label : undefined}
           >
             <item.icon size={20} className="shrink-0" />
@@ -60,11 +58,10 @@ export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSideb
           <button
             key={item.label}
             onClick={() => setActiveSidebar(i)}
-            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${
-              activeSidebar === i
-                ? 'bg-[#c8102e] text-white'
-                : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
-            } ${isSidebarCollapsed ? 'justify-center' : ''}`}
+            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${activeSidebar === i
+              ? 'bg-[#c8102e] text-white'
+              : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
+              } ${isSidebarCollapsed ? 'justify-center' : ''}`}
             title={isSidebarCollapsed ? item.label : undefined}
           >
             <item.icon size={20} className="shrink-0" />
@@ -77,11 +74,10 @@ export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSideb
           <button
             key={item.label}
             onClick={() => setActiveSidebar(i)}
-            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${
-              activeSidebar === i
-                ? 'bg-[#c8102e] text-white'
-                : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
-            } ${isSidebarCollapsed ? 'justify-center' : ''}`}
+            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${activeSidebar === i
+              ? 'bg-[#c8102e] text-white'
+              : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
+              } ${isSidebarCollapsed ? 'justify-center' : ''}`}
             title={isSidebarCollapsed ? item.label : undefined}
           >
             <item.icon size={20} className="shrink-0" />
