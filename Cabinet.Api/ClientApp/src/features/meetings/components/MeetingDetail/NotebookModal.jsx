@@ -66,7 +66,7 @@ export const NotebookModal = ({ isOpen, setIsOpen, meeting }) => {
               <label className="text-sm font-bold text-[#1a202c]">
                 Ghi chú <span className="text-red-500">*</span>
               </label>
-              <textarea className="w-full h-48 border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#c8102e] resize-none"></textarea>
+              <textarea className="w-full h-48 border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#c8102e] resize-none" />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-bold text-[#1a202c]">Tài liệu đính kèm (0):</label>

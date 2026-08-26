@@ -146,7 +146,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-gray-500 w-[140px] shrink-0">Thành phần tham gia:</span>
-                  <button 
+                  <button
                     onClick={() => setIsParticipantsModalOpen(true)}
                     className="font-semibold text-[#c8102e] hover:underline"
                   >
@@ -167,7 +167,12 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                           >
                             {file.split('/').pop()}
                           </a>
-                          <a href={file} download className="text-gray-400 hover:text-[#c8102e] transition-colors" title="Tải xuống">
+                          <a
+                            href={file}
+                            download
+                            className="text-gray-400 hover:text-[#c8102e] transition-colors"
+                            title="Tải xuống"
+                          >
                             <Download className="w-4 h-4" />
                           </a>
                         </div>
@@ -191,7 +196,12 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                           >
                             {file.split('/').pop()}
                           </a>
-                          <a href={file} download className="text-gray-400 hover:text-[#c8102e] transition-colors" title="Tải xuống">
+                          <a
+                            href={file}
+                            download
+                            className="text-gray-400 hover:text-[#c8102e] transition-colors"
+                            title="Tải xuống"
+                          >
                             <Download className="w-4 h-4" />
                           </a>
                         </div>
@@ -262,7 +272,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-gray-500 w-[130px]">Thành phần tham gia:</span>
-                      <button 
+                      <button
                         onClick={() => setIsParticipantsModalOpen(true)}
                         className="font-semibold text-[#c8102e] hover:underline"
                       >
@@ -384,7 +394,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
 
       <div className="fixed right-0 top-[40%] z-40 flex items-center group cursor-pointer transition-transform translate-x-[calc(100%-3rem)] hover:translate-x-0">
         <button
-          onClick={() => setIsNotebookOpen(true)}
+          onClick={() => setIsNoteModalOpen(true)}
           className="bg-white border-y border-l border-[#c8102e] rounded-l-full flex items-center shadow-md overflow-hidden h-12"
         >
           <div className="bg-[#c8102e] text-white w-9 h-9 flex items-center justify-center rounded-md ml-1.5 shrink-0">
@@ -396,7 +406,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
         </button>
       </div>
 
-      <NotebookModal isOpen={isNotebookOpen} setIsOpen={setIsNotebookOpen} meeting={meeting} />
+      <NotebookModal isOpen={isNoteModalOpen} setIsOpen={setIsNoteModalOpen} meeting={meeting} />
 
       {/* Modal Thêm góp ý */}
       {isGopYOpen && (

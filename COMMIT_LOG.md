@@ -1711,3 +1711,12 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi)
   - `Cabinet.Api/Controllers/Cabinet/MeetingConclusionsController.cs` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "feat(meetings): implement advanced meeting features like doc preparation filter, participant groups, conclusion auto-notify"`
+
+### [2026-08-26 17:03] UI enhancements for Sidebar and Document Library
+- **Mô tả**: Làm mịn trải nghiệm người dùng theo UI mẫu: (1) Hỗ trợ thu gọn/mở rộng AppSidebar khi bấm nút Hamburger ở Header, (2) Kích hoạt hiển thị sơ đồ cây thư mục (Danh sách thư mục) bên trái của mục "Tài liệu được chia sẻ".
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/CabinetAppShell.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/appshell/components/AppShell/TopNavigation.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/appshell/components/AppShell/AppSidebar.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/documents/components/LibraryLayout.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style(appshell): make sidebar collapsible via top nav and add folder view for shared docs"`

@@ -22,7 +22,7 @@ export function LibraryLayout({ type, label }) {
   const [isFolderModalOpen, setIsFolderModalOpen] = useState(false)
   const [newFolderName, setNewFolderName] = useState('')
 
-  const hasFolderSidebar = type === 'DungChung' || type === 'CaNhan'
+  const hasFolderSidebar = type === 'DungChung' || type === 'CaNhan' || type === 'DuocChiaSe'
   const canCreateFolder = type === 'CaNhan' // DungChung usually restricted, assuming Cá nhân for now
 
   const handleCreateFolder = async () => {

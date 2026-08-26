@@ -18,6 +18,8 @@ export function TopNavigation({
   setIsThemeModalOpen,
   setIsVersionModalOpen,
   onLogout,
+  isSidebarCollapsed,
+  setIsSidebarCollapsed,
 }) {
   return (
     <header className="bg-[#c8102e] text-white flex items-center h-14 shrink-0 shadow-md z-20">
@@ -28,7 +30,10 @@ export function TopNavigation({
         }}
       />
 
-      <button className="px-3 h-full flex items-center hover:bg-[#a50e27] transition">
+      <button
+        className="px-3 h-full flex items-center hover:bg-[#a50e27] transition"
+        onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+      >
         <Menu size={20} />
       </button>
 

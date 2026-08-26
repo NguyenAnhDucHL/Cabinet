@@ -17,7 +17,7 @@ export function QuestionnaireTabs({ activeTab, setActiveTab }) {
           >
             {tab.label}
             {activeTab === tab.id && (
-              <span className="absolute -bottom-[2px] left-0 w-full h-[2px] bg-[#c8102e] rounded-t-full shadow-[0_-2px_8px_rgba(200,16,46,0.5)]"></span>
+              <span className="absolute -bottom-[2px] left-0 w-full h-[2px] bg-[#c8102e] rounded-t-full shadow-[0_-2px_8px_rgba(200,16,46,0.5)]" />
             )}
           </button>
         ))}

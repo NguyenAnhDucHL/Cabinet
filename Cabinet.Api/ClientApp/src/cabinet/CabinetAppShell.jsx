@@ -18,6 +18,7 @@ export function CabinetAppShell({ children }) {
   const [activeNav, setActiveNav] = useState('home')
   const [activeSidebar, setActiveSidebar] = useState(0)
 
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [userName, setUserName] = useState('Người dùng')
   const [userLoginName, setUserLoginName] = useState('022182002686')
   const [userLastLogin, setUserLastLogin] = useState('Lần đầu đăng nhập')
@@ -151,6 +152,8 @@ export function CabinetAppShell({ children }) {
         setIsThemeModalOpen={setIsThemeModalOpen}
         setIsVersionModalOpen={setIsVersionModalOpen}
         onLogout={handleLogout}
+        isSidebarCollapsed={isSidebarCollapsed}
+        setIsSidebarCollapsed={setIsSidebarCollapsed}
       />
 
       <div className="flex flex-1 overflow-hidden">
@@ -158,6 +161,7 @@ export function CabinetAppShell({ children }) {
           activeNav={activeNav}
           activeSidebar={activeSidebar}
           setActiveSidebar={setActiveSidebar}
+          isSidebarCollapsed={isSidebarCollapsed}
         />
 
         <main className="flex-1 bg-gray-50 overflow-hidden relative flex flex-col">
