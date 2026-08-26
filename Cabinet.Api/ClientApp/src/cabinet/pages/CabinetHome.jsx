@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { ATTENDANCE_STATUS } from '../../constants/meeting'
 import { StatRow } from '../../features/home/components/CabinetHome/StatRow'
 import { MeetingCard } from '../../features/home/components/CabinetHome/MeetingCard'
@@ -6,117 +6,25 @@ import { EmptyState } from '../../features/home/components/CabinetHome/EmptyStat
 import { SectionCard } from '../../features/home/components/CabinetHome/SectionCard'
 import { MonthPicker } from '../../features/home/components/CabinetHome/MonthPicker'
 import { AttendanceConfirmModal } from '../../features/home/components/CabinetHome/AttendanceConfirmModal'
+import { useCabinetHome } from '../../features/home/hooks/useCabinetHome'
 
 export function CabinetHome() {
   const d = new Date()
   const [selectedMonth, setSelectedMonth] = useState(d.getMonth() + 1)
   const [selectedYear, setSelectedYear] = useState(d.getFullYear())
 
-  const [ongoingMeetings, setOngoingMeetings] = useState([])
-  const [upcomingMeetings, setUpcomingMeetings] = useState([])
-  const [unconfirmedMeetings, setUnconfirmedMeetings] = useState([])
-  const [unansweredQuestions, setUnansweredQuestions] = useState([])
-
-  const [stats, setStats] = useState({
-    attended: 0,
-    pending: 0,
-    absent: 0,
-    total: 0,
-  })
-
-  const [loading, setLoading] = useState(true)
-  const [confirmMeeting, setConfirmMeeting] = useState(null)
-
-  const fetchDashboardData = () => {
-    setLoading(true)
-    const promises = [
-      fetch('/api/phonghopkhonggiayto/meetings/schedule')
-        .then((r) => r.json())
-        .catch(() => null),
-      fetch('/api/phonghopkhonggiayto/meetings/my-meetings')
-        .then((r) => r.json())
-        .catch(() => null),
-    ]
-    Promise.all(promises).then(([scheduleData, myMeetingsData]) => {
-      if (scheduleData && scheduleData.data) {
-        const now = new Date()
-        const all = scheduleData.data
-        let filtered = all
-        if (selectedMonth && selectedYear) {
-          filtered = all.filter((m) => {
-            const date = new Date(m.startTime)
-            return date.getMonth() + 1 === selectedMonth && date.getFullYear() === selectedYear
-          })
-        }
-        setOngoingMeetings(
-          filtered.filter((m) => {
-            const s = new Date(m.startTime)
-            const e = new Date(m.endTime)
-            return s <= now && e >= now
-          })
-        )
-        setUpcomingMeetings(
-          filtered
-            .filter((m) => new Date(m.startTime) > now)
-            .sort((a, b) => new Date(a.startTime) - new Date(b.startTime))
-            .slice(0, 5)
-        )
-      }
-
-      if (myMeetingsData && myMeetingsData.data) {
-        let myMeetings = myMeetingsData.data
-        if (selectedMonth && selectedYear) {
-          myMeetings = myMeetings.filter((m) => {
-            const date = new Date(m.startTime)
-            return date.getMonth() + 1 === selectedMonth && date.getFullYear() === selectedYear
-          })
-        }
-        const attended = myMeetings.filter((m) => {
-          const status = m.participants?.[0]?.attendanceStatus
-          return status === ATTENDANCE_STATUS.JOINED
-        }).length
-        const pending = myMeetings.filter((m) => {
-          const status = m.participants?.[0]?.attendanceStatus
-          return status === 'Chưa xác nhận' || !status
-        }).length
-        const absent = myMeetings.filter((m) => {
-          const status = m.participants?.[0]?.attendanceStatus
-          return status === 'Vắng mặt'
-        }).length
-        setStats({ attended, pending, absent, total: myMeetings.length })
-      }
-      setLoading(false)
-    })
-  }
-
-  useEffect(() => {
-    fetchDashboardData()
-  }, [selectedMonth, selectedYear])
-
-  const handleJoinMeeting = (meeting) => {
-    setConfirmMeeting(meeting)
-  }
-
-  const handleConfirmAttendance = async () => {
-    if (!confirmMeeting) return
-    try {
-      const response = await fetch(
-        `/api/phonghopkhonggiayto/meetings/${confirmMeeting.id}/attendance`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ status: ATTENDANCE_STATUS.JOINED }),
-        }
-      )
-      setConfirmMeeting(null)
-      fetchDashboardData()
-    } catch (error) {
-      console.error(error)
-      setConfirmMeeting(null)
-    }
-  }
+  const {
+    ongoingMeetings,
+    upcomingMeetings,
+    unconfirmedMeetings,
+    unansweredQuestions,
+    stats,
+    loading,
+    confirmMeeting,
+    setConfirmMeeting,
+    handleJoinMeeting,
+    handleConfirmAttendance,
+  } = useCabinetHome(selectedMonth, selectedYear)
 
   const attended = stats.total > 0 ? (stats.attended / stats.total) * 100 : 0
   const pending = stats.total > 0 ? (stats.pending / stats.total) * 100 : 0
@@ -157,12 +65,10 @@ export function CabinetHome() {
                       cy="18"
                       r="15.9"
                       fill="none"
-                      stroke="#22d3ee" // Use primary color from the screenshot - bright green/cyan
                       strokeWidth="6"
                       strokeDasharray={`${attended} ${100 - attended}`}
                       strokeLinecap="butt"
-                      className="text-[#2dd4bf]"
-                      style={{ stroke: '#2dd4bf' }} // Bright green/cyan ring
+                      style={{ stroke: '#2dd4bf' }}
                     />
                   )}
                 </svg>
@@ -199,7 +105,7 @@ export function CabinetHome() {
           </div>
 
           {/* Phiên họp cần chuẩn bị tài liệu */}
-          <div className="mt-6">
+          <div>
             <h3 className="font-bold text-[#1a202c] mb-3">Phiên họp cần chuẩn bị tài liệu (0)</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-[#e6fbf1] rounded-lg p-5 text-center shadow-sm">
@@ -214,7 +120,7 @@ export function CabinetHome() {
           </div>
 
           {/* Tổng số phiếu lấy ý kiến */}
-          <div className="mt-6">
+          <div>
             <h3 className="font-bold text-[#1a202c] mb-3">Tổng số phiếu lấy ý kiến (0)</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-[#e6fbf1] rounded-lg p-5 text-center shadow-sm">

@@ -1579,3 +1579,14 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `src/cabinet/pages/CabinetLeaderSchedule.jsx` (Sửa — dùng useSchedule)
   - `src/cabinet/pages/CabinetUnitSchedule.jsx` (Sửa — dùng useSchedule)
 - **Lệnh git commit**: `git commit -m "refactor(arch): tạo hooks questionnaires/schedule, cập nhật rule FE architecture"`
+
+### [2026-08-26 08:49] Tách CabinetHome và CabinetQuestionnaireCreate thành thin pages
+- **Mô tả**: 
+  1. CabinetHome (281 dòng): Tách toàn bộ fetch logic + state sang useCabinetHome hook. Page giờ chỉ còn JSX thuần.
+  2. CabinetQuestionnaireCreate (361 dòng → 90 dòng): Tách 3 bước vào QuestionnaireStep1/2/3 + QuestionnaireStepper components. Dùng useQuestionnaireCreate hook.
+- **Tệp thay đổi**:
+  - `src/features/home/hooks/useCabinetHome.js` (Mới)
+  - `src/features/questionnaires/components/QuestionnaireSteps.jsx` (Mới — Step1, Step2, Step3, Stepper)
+  - `src/cabinet/pages/CabinetHome.jsx` (Sửa — thin page)
+  - `src/cabinet/pages/CabinetQuestionnaireCreate.jsx` (Sửa — thin page ~90 dòng)
+- **Lệnh git commit**: `git commit -m "refactor(arch): tách CabinetHome và QuestionnaireCreate thành thin pages"`
