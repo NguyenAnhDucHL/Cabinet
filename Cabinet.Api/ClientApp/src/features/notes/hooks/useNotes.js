@@ -6,11 +6,12 @@ export function useNotes() {
   const [notes, setNotes] = useState([])
   const [meetings, setMeetings] = useState([])
   const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
 
-  const fetchNotes = useCallback(async (search = '') => {
+  const fetchNotes = useCallback(async (q = '') => {
     setLoading(true)
     try {
-      const json = await noteApi.getByUser(search)
+      const json = await noteApi.getByUser(q)
       const data = Array.isArray(json) ? json : json.data || []
       setNotes(data)
     } catch {
@@ -33,15 +34,15 @@ export function useNotes() {
   useEffect(() => {
     fetchNotes()
     fetchMeetings()
-  }, [])
+  }, [fetchNotes, fetchMeetings])
 
   const createNote = useCallback(
     async (formData) => {
       const json = await noteApi.create(formData)
-      await fetchNotes()
+      await fetchNotes(search)
       return json
     },
-    [fetchNotes]
+    [fetchNotes, search]
   )
 
   const deleteNote = useCallback(async (id) => {
@@ -51,5 +52,5 @@ export function useNotes() {
     return true
   }, [])
 
-  return { notes, meetings, loading, fetchNotes, createNote, deleteNote }
+  return { notes, meetings, loading, search, setSearch, fetchNotes, createNote, deleteNote }
 }

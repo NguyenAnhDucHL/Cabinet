@@ -1545,3 +1545,20 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `src/features/schedule/api/scheduleApi.js` (Mới — merge vào schedule feature)
   - `src/cabinet/features/` (Xóa — thư mục cũ)
 - **Lệnh git commit**: `git commit -m "refactor(arch): hợp nhất duplicate features/ theo chuẩn Bulletproof-React"`
+
+
+### [2026-08-26 08:39] Tách UI monolithic từ pages vào features components (Conclusions, Notes, Proceedings)
+- **Mô tả**: Các page CabinetConclusions (268 dòng), CabinetNotebook (269 dòng), CabinetProceedings (413 dòng) chứa toàn bộ UI inline. Tách UI thành components con trong features/ tương ứng. Các page giờ chỉ chứa state + handlers, delegate rendering về components.
+- **Tệp thay đổi**:
+  - `src/features/conclusions/components/ConclusionTable.jsx` (Mới)
+  - `src/features/conclusions/components/ConclusionFormModal.jsx` (Mới)
+  - `src/features/notes/components/NoteTable.jsx` (Mới)
+  - `src/features/notes/components/NoteFormModal.jsx` (Mới)
+  - `src/features/notes/hooks/useNotes.js` (Sửa — thêm search/setSearch)
+  - `src/features/proceedings/components/ProceedingSidebar.jsx` (Mới)
+  - `src/features/proceedings/components/ProceedingDetail.jsx` (Mới)
+  - `src/features/proceedings/components/ProceedingModals.jsx` (Mới — 2 modals)
+  - `src/cabinet/pages/CabinetConclusions.jsx` (Sửa — thin page ~60 dòng)
+  - `src/cabinet/pages/CabinetNotebook.jsx` (Sửa — thin page ~70 dòng)
+  - `src/cabinet/pages/CabinetProceedings.jsx` (Sửa — thin page ~120 dòng)
+- **Lệnh git commit**: `git commit -m "refactor(arch): tách UI monolithic của Conclusions, Notes, Proceedings thành feature components"`

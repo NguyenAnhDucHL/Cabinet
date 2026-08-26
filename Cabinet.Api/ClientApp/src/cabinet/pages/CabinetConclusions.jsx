@@ -1,32 +1,10 @@
-/* eslint-disable */
-import React, { useState } from 'react'
-import { Search, Plus, FileText, Edit, Loader2, RefreshCw } from 'lucide-react'
+import { useState } from 'react'
+import { Search, Plus, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 import { useConclusions } from '../../features/conclusions/hooks/useConclusions'
-
-const STATUS_STYLES = {
-  'Đã xử lý': 'bg-green-100 text-green-700',
-  'Đang xử lý': 'bg-blue-100 text-blue-700',
-  'Chưa xử lý': 'bg-orange-100 text-orange-700',
-}
+import { ConclusionTable } from '../../features/conclusions/components/ConclusionTable'
+import { ConclusionFormModal } from '../../features/conclusions/components/ConclusionFormModal'
 
 export function CabinetConclusions() {
   const {
@@ -50,7 +28,6 @@ export function CabinetConclusions() {
   const [formStatus, setFormStatus] = useState('Chưa xử lý')
 
   const totalPages = Math.ceil(total / pageSize)
-  const stt = (idx) => (page - 1) * pageSize + idx + 1
 
   const handleSearch = (e) => {
     const q = e.target.value
@@ -114,78 +91,7 @@ export function CabinetConclusions() {
         </div>
       </div>
 
-      <div className="border rounded-md flex-1 overflow-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[60px] text-center">STT</TableHead>
-              <TableHead>Phiên họp</TableHead>
-              <TableHead>File kết luận</TableHead>
-              <TableHead className="text-center">Tiến độ</TableHead>
-              <TableHead>Người xử lý</TableHead>
-              <TableHead className="text-center">Trạng thái</TableHead>
-              <TableHead className="text-right">Hành động</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={7} className="h-64 text-center">
-                  <div className="flex items-center justify-center gap-2 text-gray-500">
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    Đang tải dữ liệu...
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : data.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={7} className="h-64 text-center">
-                  <div className="flex flex-col items-center justify-center text-gray-500">
-                    <FileText className="h-12 w-12 text-gray-300 mb-4" />
-                    <p>Không có dữ liệu</p>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : (
-              data.map((row, idx) => (
-                <TableRow key={row.id}>
-                  <TableCell className="text-center">{stt(idx)}</TableCell>
-                  <TableCell className="font-medium text-gray-900">{row.meetingTitle}</TableCell>
-                  <TableCell className="text-gray-600">{row.fileName || '—'}</TableCell>
-                  <TableCell className="text-center">
-                    <div className="flex items-center gap-2 justify-center">
-                      <div className="w-20 bg-gray-200 rounded-full h-1.5">
-                        <div
-                          className="bg-[#c8102e] h-1.5 rounded-full"
-                          style={{ width: `${row.progress || 0}%` }}
-                        />
-                      </div>
-                      <span className="text-xs text-gray-500">{row.progress || 0}%</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-gray-600">{row.lastHandlerName || '—'}</TableCell>
-                  <TableCell className="text-center">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${STATUS_STYLES[row.status] || 'bg-gray-100 text-gray-600'}`}
-                    >
-                      {row.status}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-gray-400 hover:text-gray-700"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
+      <ConclusionTable data={data} loading={loading} page={page} pageSize={pageSize} />
 
       {totalPages > 1 && (
         <div className="flex items-center justify-end gap-2 mt-4">
@@ -204,65 +110,19 @@ export function CabinetConclusions() {
         </div>
       )}
 
-      <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Thêm kết luận sau phiên họp</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 mt-4">
-            <div className="space-y-2">
-              <Label>
-                Phiên họp <span className="text-red-500">*</span>
-              </Label>
-              <Select value={formMeetingId} onValueChange={setFormMeetingId}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Chọn phiên họp" />
-                </SelectTrigger>
-                <SelectContent>
-                  {meetings.map((m) => (
-                    <SelectItem key={m.id} value={String(m.id)}>
-                      {m.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label>Tên file kết luận</Label>
-              <Input
-                placeholder="Tên file kết luận (ví dụ: KL_2025_01.pdf)"
-                value={formFileName}
-                onChange={(e) => setFormFileName(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Trạng thái</Label>
-              <Select value={formStatus} onValueChange={setFormStatus}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Chưa xử lý">Chưa xử lý</SelectItem>
-                  <SelectItem value="Đang xử lý">Đang xử lý</SelectItem>
-                  <SelectItem value="Đã xử lý">Đã xử lý</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline" onClick={() => setIsAddOpen(false)}>
-                Hủy
-              </Button>
-              <Button
-                className="bg-[#c8102e] hover:bg-[#a50e27] text-white"
-                onClick={handleCreate}
-                disabled={saving || !formMeetingId}
-              >
-                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}Lưu
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <ConclusionFormModal
+        open={isAddOpen}
+        onOpenChange={setIsAddOpen}
+        meetings={meetings}
+        formMeetingId={formMeetingId}
+        setFormMeetingId={setFormMeetingId}
+        formFileName={formFileName}
+        setFormFileName={setFormFileName}
+        formStatus={formStatus}
+        setFormStatus={setFormStatus}
+        onSubmit={handleCreate}
+        saving={saving}
+      />
     </div>
   )
 }
