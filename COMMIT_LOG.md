@@ -1,3 +1,9 @@
+### [2026-08-26 17:28] Update AppSidebar.jsx formatting
+- **Mô tả**: Format lại AppSidebar.jsx theo yêu cầu của user.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/appshell/components/AppShell/AppSidebar.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style(appshell): manually format AppSidebar.jsx"`
+
 ### [2026-08-26 17:24] Fix Prettier formatting in AppSidebar
 - **Mô tả**: Sửa đổi format tự động bằng Prettier cho AppSidebar.jsx theo yêu cầu của user.
 - **Tệp thay đổi**:
