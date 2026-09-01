@@ -15,6 +15,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - DB_PATH=/app/data/documents.db
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/documents.db
       - TZ=Asia/Ho_Chi_Minh
       - JWT_SECRET=${JWT_SECRET}
       - PUBLIC_ID_SECRET=${PUBLIC_ID_SECRET}

@@ -1,3 +1,10 @@
+### [2026-09-01 15:37] Fix DefaultConnection issue for repositories
+- **Mô tả**: Sửa lỗi `no such table: Questionnaires` khi kết nối tới SQLite Database. Nguyên nhân do `appsettings.json` định nghĩa thuộc tính `"DefaultConnection": ""` gây ra việc các repositories (như `QuestionnaireRepository`) không chịu fallback sang giá trị biến môi trường `DB_PATH`, mà đi tạo database tạm trong memory.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/appsettings.json` (Sửa đổi)
+  - `docker-compose.yml` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(db): xóa chuỗi rỗng DefaultConnection để SQLite fallback đúng sang DB_PATH"`
+
 ### [2026-09-01 11:05] Hoàn thành báo cáo phiên họp và tra cứu nghị quyết nâng cao
 - **Mô tả**: Hoàn thiện Phase 3 từ tài liệu HDSD:
   1. Xuất báo cáo phiên họp: Thêm API `/meetings/{id}/export` trả về Excel, và nút Xuất báo cáo trong màn hình chi tiết phiên họp.

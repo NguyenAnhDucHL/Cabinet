@@ -3,6 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS base
 WORKDIR /app
 
 # Install native dependencies for PaddleOCR and SkiaSharp
+RUN sed -i 's|http://ports.ubuntu.com/ubuntu-ports/|https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/|g' /etc/apt/sources.list.d/ubuntu.sources || true
 RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -y \
     libgdiplus \
     libc6-dev \
@@ -43,6 +44,7 @@ RUN dotnet publish "Cabinet.Api.csproj" -c Release -o /app/publish /p:UseAppHost
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 # Phải cài lại dependencies vì aspnet image khác với sdk image
+RUN sed -i 's|http://ports.ubuntu.com/ubuntu-ports/|https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/|g' /etc/apt/sources.list.d/ubuntu.sources || true
 RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get install -y \
     libgdiplus \
     libc6-dev \
