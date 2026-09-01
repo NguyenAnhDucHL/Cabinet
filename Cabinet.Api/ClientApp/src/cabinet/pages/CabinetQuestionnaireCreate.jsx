@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { useQuestionnaireCreate } from '../../features/questionnaires/hooks/useQuestionnaireCreate'
+import { questionnaireApi } from '../../features/questionnaires/api/questionnaireApi'
 import {
   QuestionnaireStepper,
   QuestionnaireStep1,
@@ -9,7 +10,7 @@ import {
 } from '../../features/questionnaires/components/QuestionnaireSteps'
 
 export function CabinetQuestionnaireCreate({ onBack, onSaved }) {
-  const { templates, users, create } = useQuestionnaireCreate()
+  const { templates, users } = useQuestionnaireCreate()
 
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -44,11 +45,7 @@ export function CabinetQuestionnaireCreate({ onBack, onSaved }) {
     files.forEach((file) => fd.append('files', file))
 
     try {
-      const res = await fetch('/api/phonghopkhonggiayto/questionnaires', {
-        method: 'POST',
-        body: fd,
-      })
-      const json = await res.json()
+      const json = await questionnaireApi.create(fd)
       if (json.success) onSaved()
       else window.alert(json.message || 'Có lỗi xảy ra')
     } catch (_e) {

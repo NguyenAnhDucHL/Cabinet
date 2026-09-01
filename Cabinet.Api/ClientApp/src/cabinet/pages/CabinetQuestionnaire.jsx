@@ -6,6 +6,7 @@ import { QuestionnaireHeader } from '../../features/questionnaires/components/Qu
 import { QuestionnaireTabs } from '../../features/questionnaires/components/QuestionnaireList/QuestionnaireTabs'
 import { QuestionnaireTable } from '../../features/questionnaires/components/QuestionnaireList/QuestionnaireTable'
 import { QuestionnaireMyList } from '../../features/questionnaires/components/QuestionnaireList/QuestionnaireMyList'
+import { questionnaireApi } from '../../features/questionnaires/api/questionnaireApi'
 
 export function CabinetQuestionnaire() {
   const [activeTab, setActiveTab] = useState('pending')
@@ -20,8 +21,8 @@ export function CabinetQuestionnaire() {
   const fetchQuestionnaires = () => {
     setLoading(true)
     setPage(1)
-    fetch('/api/phonghopkhonggiayto/questionnaires')
-      .then((res) => res.json())
+    questionnaireApi
+      .getAll()
       .then((json) => {
         if (json.success) {
           const data = Array.isArray(json.data) ? json.data : []

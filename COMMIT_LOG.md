@@ -1840,3 +1840,10 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/features/meetings/hooks/useMeetingList.js` (Sửa đổi)
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/SaveToLibraryModal.jsx` (Mới)
 - **Lệnh git commit**: `git commit -am "feat(meetings): thêm tính năng xác nhận tham gia và lưu tài liệu vào thư viện"`
+### [2026-09-01 14:05] Tách API fetch() ở module Questionnaires
+- **Mô tả**: Tuân thủ chuẩn Bulletproof React, chuyển toàn bộ các hàm gọi API fetch() trực tiếp từ `CabinetQuestionnaire.jsx`, `CabinetQuestionnaireCreate.jsx`, và `useQuestionnaireCreate.js` vào file tập trung `questionnaireApi.js`. Xoá các hàm không được sử dụng.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetQuestionnaire.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetQuestionnaireCreate.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/questionnaires/hooks/useQuestionnaireCreate.js` (Sửa đổi)
+- **Lệnh git commit**: `git commit -am "refactor(questionnaires): tách fetch call ra questionnaireApi"`
