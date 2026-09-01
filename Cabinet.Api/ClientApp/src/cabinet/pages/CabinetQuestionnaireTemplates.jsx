@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
+import { ConfirmationModal } from '@/components/ui/confirmation-modal'
 import {
   Plus,
   Search,
@@ -31,6 +32,7 @@ export function CabinetQuestionnaireTemplates() {
   const [isSaving, setIsSaving] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [templateName, setTemplateName] = useState('')
+  const [deletingId, setDeletingId] = useState(null)
 
   useEffect(() => {
     fetchTemplates()
@@ -67,7 +69,6 @@ export function CabinetQuestionnaireTemplates() {
   }
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Bạn có chắc chắn muốn xóa mẫu phiếu này không?')) return
     await remove(id)
   }
 
@@ -170,7 +171,7 @@ export function CabinetQuestionnaireTemplates() {
                           <Edit size={16} />
                         </button>
                         <button
-                          onClick={() => handleDelete(t.id)}
+                          onClick={() => setDeletingId(t.id)}
                           className="hover:text-red-600 transition"
                           title="Xóa"
                         >
@@ -281,6 +282,17 @@ export function CabinetQuestionnaireTemplates() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <ConfirmationModal
+        open={!!deletingId}
+        onOpenChange={(open) => !open && setDeletingId(null)}
+        title="Xóa mẫu phiếu"
+        description="Bạn có chắc chắn muốn xóa mẫu phiếu này không? Hành động này không thể hoàn tác."
+        onConfirm={() => {
+          handleDelete(deletingId)
+          setDeletingId(null)
+        }}
+      />
     </div>
   )
 }

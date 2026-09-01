@@ -1,9 +1,10 @@
 import React from 'react'
-import { FileText } from 'lucide-react'
+import { FileText, Inbox } from 'lucide-react'
 
 export function QuestionnaireSidebar({ activeSidebar, setActiveSidebar, setMode }) {
   const sideNavItems = [
     { id: 'list', label: 'Danh sách phiếu', icon: FileText },
+    { id: 'my', label: 'Phiếu nhận được', icon: Inbox },
     { id: 'template', label: 'Mẫu phiếu lấy ý kiến', icon: FileText },
   ]
 

@@ -79,5 +79,64 @@ namespace Cabinet.Api.Controllers.Cabinet
             var newId = await _repo.CreateAsync(req);
             return Ok(ApiResponse.Ok(newId, "Tạo phiếu lấy ý kiến thành công."));
         }
+
+        // POST /api/phonghopkhonggiayto/questionnaires/{id}/send
+        [HttpPost("{id}/send")]
+        public async Task<IActionResult> Send(int id)
+        {
+            var success = await _repo.SendAsync(id);
+            if (!success)
+                return BadRequest(ApiResponse.Fail("Không thể gửi phiếu. Phiếu có thể đã được gửi trước đó."));
+            return Ok(ApiResponse.Ok(null, "Đã gửi phiếu lấy ý kiến đến các thành viên."));
+        }
+
+        // GET /api/phonghopkhonggiayto/questionnaires/my
+        [HttpGet("my")]
+        public async Task<IActionResult> GetMyAssigned()
+        {
+            var userId = GetCurrentUserId();
+            var data = await _repo.GetMyAssignedAsync(userId);
+            return Ok(ApiResponse.Ok(data));
+        }
+
+        // GET /api/phonghopkhonggiayto/questionnaires/{id}/detail
+        [HttpGet("{id}/detail")]
+        public async Task<IActionResult> GetDetail(int id)
+        {
+            var userId = GetCurrentUserId();
+            var detail = await _repo.GetDetailAsync(id, userId);
+            if (detail == null)
+                return NotFound(ApiResponse.Fail("Không tìm thấy phiếu lấy ý kiến."));
+            return Ok(ApiResponse.Ok(detail));
+        }
+
+        // POST /api/phonghopkhonggiayto/questionnaires/{id}/respond
+        [HttpPost("{id}/respond")]
+        public async Task<IActionResult> Respond(int id, [FromBody] SubmitResponseRequest req)
+        {
+            var userId = GetCurrentUserId();
+            var success = await _repo.SubmitResponseAsync(id, userId, req.Responses);
+            if (!success)
+                return BadRequest(ApiResponse.Fail("Không thể lưu câu trả lời."));
+            return Ok(ApiResponse.Ok(null, "Đã gửi câu trả lời thành công."));
+        }
+
+        // DELETE /api/phonghopkhonggiayto/questionnaires/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var success = await _repo.DeleteAsync(id);
+            if (!success)
+                return NotFound(ApiResponse.Fail("Không tìm thấy phiếu lấy ý kiến."));
+            return Ok(ApiResponse.Ok(null, "Đã xóa phiếu lấy ý kiến."));
+        }
+
+        private int GetCurrentUserId()
+        {
+            var claim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)
+                ?? User.FindFirst("sub")
+                ?? User.FindFirst("id");
+            return int.TryParse(claim?.Value, out var id) ? id : 0;
+        }
     }
 }

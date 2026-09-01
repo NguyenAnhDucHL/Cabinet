@@ -1,4 +1,6 @@
+import React, { useState } from 'react'
 import { FileText, Loader2, Trash2 } from 'lucide-react'
+import { ConfirmationModal } from '@/components/ui/confirmation-modal'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -16,6 +18,8 @@ const fmt = (dt) => {
 }
 
 export function NoteTable({ notes, loading, onDelete }) {
+  const [deletingId, setDeletingId] = useState(null)
+
   if (loading) {
     return (
       <div className="flex items-center justify-center gap-2 text-gray-500 h-64">
@@ -81,7 +85,7 @@ export function NoteTable({ notes, loading, onDelete }) {
                       variant="ghost"
                       size="icon"
                       className="text-red-400 hover:text-red-600"
-                      onClick={() => onDelete(row.id)}
+                      onClick={() => setDeletingId(row.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -92,6 +96,16 @@ export function NoteTable({ notes, loading, onDelete }) {
           )}
         </TableBody>
       </Table>
+      <ConfirmationModal
+        open={!!deletingId}
+        onOpenChange={(open) => !open && setDeletingId(null)}
+        title="Xóa ghi chú"
+        description="Bạn có chắc chắn muốn xóa ghi chú này không? Hành động này không thể hoàn tác."
+        onConfirm={() => {
+          onDelete(deletingId)
+          setDeletingId(null)
+        }}
+      />
     </div>
   )
 }

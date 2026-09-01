@@ -1,5 +1,7 @@
+import React, { useState } from 'react'
 import { ChevronRight, FileText, Folder, Loader2, Unlink, Link } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ConfirmationModal } from '@/components/ui/confirmation-modal'
 
 const fmt = (dt) => {
   if (!dt) return ''
@@ -14,6 +16,8 @@ export function ProceedingDetail({
   onRemoveMeeting,
   onAddMeeting,
 }) {
+  const [removingId, setRemovingId] = useState(null)
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -70,12 +74,22 @@ export function ProceedingDetail({
             size="icon"
             className="h-8 w-8 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
             title="Gỡ phiên họp khỏi kỷ yếu"
-            onClick={() => onRemoveMeeting(m.id)}
+            onClick={() => setRemovingId(m.id)}
           >
             <Unlink className="h-4 w-4" />
           </Button>
         </div>
       ))}
+      <ConfirmationModal
+        open={!!removingId}
+        onOpenChange={(open) => !open && setRemovingId(null)}
+        title="Gỡ phiên họp"
+        description="Bạn có chắc chắn muốn gỡ phiên họp này khỏi kỷ yếu không?"
+        onConfirm={() => {
+          onRemoveMeeting(removingId)
+          setRemovingId(null)
+        }}
+      />
     </div>
   )
 }

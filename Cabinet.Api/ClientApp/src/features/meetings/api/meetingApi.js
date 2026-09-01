@@ -17,4 +17,18 @@ export const meetingApi = {
       body: JSON.stringify({ status }),
     }).then((r) => r.json()),
   getParticipants: (meetingId) => fetch(`${BASE}/${meetingId}/participants`).then((r) => r.json()),
+  sendInvitation: (meetingId) =>
+    fetch(`${BASE}/${meetingId}/send-invitation`, { method: 'POST' }).then((r) => r.json()),
+  reportAbsence: (meetingId, reason, substituteUserId) =>
+    fetch(`${BASE}/${meetingId}/report-absence`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason, substituteUserId }),
+    }).then((r) => r.json()),
+  approveAbsence: (meetingId, targetUserId, approve) =>
+    fetch(`${BASE}/${meetingId}/approve-absence/${targetUserId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ approve }),
+    }).then((r) => r.json()),
 }

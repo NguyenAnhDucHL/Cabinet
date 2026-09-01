@@ -77,7 +77,6 @@ export function useProceedings() {
 
   const deleteProceeding = useCallback(
     async (id) => {
-      if (!window.confirm('Xóa kỷ yếu này?')) return false
       await proceedingApi.delete(id)
       setProceedings((prev) => prev.filter((p) => p.id !== id))
       if (selectedId === id) {
@@ -100,7 +99,6 @@ export function useProceedings() {
 
   const removeMeeting = useCallback(
     async (meetingId) => {
-      if (!window.confirm('Gỡ phiên họp này khỏi kỷ yếu?')) return
       await proceedingApi.removeMeeting(selectedId, meetingId)
       fetchDetail(selectedId)
     },

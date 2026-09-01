@@ -1,6 +1,8 @@
-import React from 'react'
-import { FileText, ChevronRight, Search, Filter } from 'lucide-react'
+import React, { useState } from 'react'
+import { FileText, ChevronRight, Search, Filter, Send } from 'lucide-react'
 import { STATUS_BADGE } from '../../constants/questionnaire'
+import { questionnaireApi } from '../../api/questionnaireApi'
+import { ConfirmationModal } from '@/components/ui/confirmation-modal'
 
 export function QuestionnaireTable({
   loading,
@@ -13,7 +15,10 @@ export function QuestionnaireTable({
   filteredLength,
   totalPages,
   activeTab,
+  onRefresh,
 }) {
+  const [sendingId, setSendingId] = useState(null)
+  const [sendConfirmId, setSendConfirmId] = useState(null)
   return (
     <div className="flex-1 overflow-auto p-6">
       {/* Table controls */}
@@ -123,9 +128,22 @@ export function QuestionnaireTable({
                       </span>
                     </td>
                     <td className="px-5 py-3 text-center">
-                      <button className="text-xs text-[#c8102e] hover:underline flex items-center gap-0.5 mx-auto">
-                        Chi tiết <ChevronRight size={11} />
-                      </button>
+                      <div className="flex items-center justify-center gap-2">
+                        {!q.sentAt && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setSendConfirmId(q.id)
+                            }}
+                            className="text-xs text-blue-600 hover:text-blue-800 border border-blue-200 hover:bg-blue-50 px-2 py-1 rounded-md flex items-center gap-1 transition"
+                          >
+                            <Send size={11} /> Gửi
+                          </button>
+                        )}
+                        <button className="text-xs text-[#c8102e] hover:underline flex items-center gap-0.5">
+                          Chi tiết <ChevronRight size={11} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 )
@@ -135,6 +153,31 @@ export function QuestionnaireTable({
         </table>
       </div>
 
+      {/* Send Confirmation Modal */}
+      <ConfirmationModal
+        open={!!sendConfirmId}
+        onOpenChange={(open) => !open && setSendConfirmId(null)}
+        title="Gửi Phữu lấy ý kiến"
+        description="Sau khi gửi, phiếu sẽ được gửi đến toàn bộ thành viên và không thể xóa. Bạn có chắc chắn muốn gửi không?"
+        onConfirm={async () => {
+          if (!sendConfirmId) return
+          setSendingId(sendConfirmId)
+          setSendConfirmId(null)
+          try {
+            const res = await questionnaireApi.send(sendConfirmId)
+            if (res.success) {
+              alert(res.message || 'Đã gửi phiếu lấy ý kiến thành công.')
+              if (onRefresh) onRefresh()
+            } else {
+              alert(res.message || 'Không thể gửi phiếu.')
+            }
+          } catch {
+            alert('Lỗi kết nối máy chủ.')
+          } finally {
+            setSendingId(null)
+          }
+        }}
+      />
       {/* Pagination */}
       {!loading && filteredLength > 0 && (
         <div className="px-5 py-3 border-t border-gray-100 flex items-center justify-between text-sm text-gray-500">

@@ -54,7 +54,6 @@ export function useMeetingList() {
 
   const deleteMeeting = useCallback(
     async (id) => {
-      if (!window.confirm('Bạn có chắc chắn muốn xóa phiên họp này không?')) return
       try {
         const res = await fetch(`/api/phonghopkhonggiayto/meetings/${id}`, { method: 'DELETE' })
         const json = await res.json()

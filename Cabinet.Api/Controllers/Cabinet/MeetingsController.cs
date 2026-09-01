@@ -13,6 +13,8 @@ using Cabinet.Hubs;
 namespace Cabinet.Api.Controllers.Cabinet
 {
     public record UpdateAttendanceRequest(string Status);
+    public record ReportAbsenceRequest(string Reason, int? SubstituteUserId);
+    public record ApproveAbsenceRequest(bool Approve);
 
     [Route("api/phonghopkhonggiayto/meetings")]
     [ApiController]
@@ -262,6 +264,45 @@ namespace Cabinet.Api.Controllers.Cabinet
             return Ok(ApiResponse.Ok(null, "Đã hủy phiên họp."));
         }
 
+        // POST /api/phonghopkhonggiayto/meetings/{id}/send-invitation
+        [HttpPost("{id}/send-invitation")]
+        public async Task<IActionResult> SendInvitation(int id)
+        {
+            var meeting = await _meetingRepo.GetByIdAsync(id);
+            if (meeting == null)
+                return NotFound(ApiResponse.Fail("Không tìm thấy phiên họp."));
+
+            var success = await _meetingRepo.SendInvitationAsync(id);
+            if (!success)
+                return BadRequest(ApiResponse.Fail("Không thể gửi lịch họp."));
+
+            // Gửi thông báo SignalR đến tất cả thành viên được mời
+            await _hubContext.Clients.All.SendAsync("MeetingUpdated");
+            return Ok(ApiResponse.Ok(null, $"Đã gửi lịch họp '{meeting.Title}' đến {meeting.Participants.Count} thành viên."));
+        }
+
+        // PUT /api/phonghopkhonggiayto/meetings/{id}/report-absence
+        [HttpPut("{id}/report-absence")]
+        public async Task<IActionResult> ReportAbsence(int id, [FromBody] ReportAbsenceRequest req)
+        {
+            var userId = GetCurrentUserId();
+            var success = await _meetingRepo.ReportAbsenceAsync(id, userId, req.Reason, req.SubstituteUserId);
+            if (!success)
+                return BadRequest(ApiResponse.Fail("Không thể báo vắng. Bạn có thể không trong danh sách tham dự."));
+            return Ok(ApiResponse.Ok(null, "Đã gửi báo cáo vắng mặt. Chờ chủ trì phê duyệt."));
+        }
+
+        // PUT /api/phonghopkhonggiayto/meetings/{id}/approve-absence/{userId}
+        [HttpPut("{id}/approve-absence/{targetUserId}")]
+        public async Task<IActionResult> ApproveAbsence(int id, int targetUserId, [FromBody] ApproveAbsenceRequest req)
+        {
+            var success = await _meetingRepo.ApproveAbsenceAsync(id, targetUserId, req.Approve);
+            if (!success)
+                return BadRequest(ApiResponse.Fail("Không thể cập nhật trạng thái."));
+            var msg = req.Approve ? "Đã phê duyệt báo vắng." : "Đã từ chối báo vắng.";
+            return Ok(ApiResponse.Ok(null, msg));
+        }
+
         // DELETE /api/phonghopkhonggiayto/meetings/{id}
         [HttpDelete("{id}")]
         [Authorize(Policy = "RequireAdminOrLanhDao")]
@@ -270,7 +311,7 @@ namespace Cabinet.Api.Controllers.Cabinet
             var success = await _meetingRepo.DeleteAsync(id);
             if (!success)
                 return NotFound(ApiResponse.Fail("Không tìm thấy phiên họp."));
-                
+
             await _hubContext.Clients.All.SendAsync("MeetingUpdated");
             return Ok(ApiResponse.Ok(null, "Đã xóa phiên họp."));
         }

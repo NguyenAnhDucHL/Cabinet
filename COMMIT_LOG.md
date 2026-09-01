@@ -1,3 +1,52 @@
+### [2026-09-01 10:59] Hoàn thành tính năng gửi lịch họp, báo vắng và phiếu lấy ý kiến
+- **Mô tả**: Đã hoàn thiện toàn bộ luồng nghiệp vụ Phase 1 và 2 từ tài liệu HDSD:
+  1. Gửi lịch họp / Thông báo mời họp (MeetingDetail)
+  2. Báo vắng + Cử người đi thay (MeetingDetail)
+  3. Phê duyệt / Từ chối báo vắng (dành cho Admin/Chủ trì)
+  4. Gửi Phiếu lấy ý kiến (QuestionnaireTable)
+  5. Trả lời Phiếu lấy ý kiến (Thành viên - QuestionnaireMyList)
+  Cập nhật đầy đủ schema DB (`InvitationSentAt`, `AbsenceReason`, `SubstituteUserId`, `AbsenceStatus`, `SentAt`, `QuestionnaireItems`, `QuestionnaireResponses`). Đã áp dụng `ConfirmationModal` cho hành động xóa.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Models/Meeting.cs` (Sửa đổi)
+  - `Cabinet.Core/Models/Questionnaire.cs` (Sửa đổi)
+  - `Cabinet.Core/Data/Repositories/MeetingRepository.cs` (Sửa đổi)
+  - `Cabinet.Core/Data/Repositories/QuestionnaireRepository.cs` (Sửa đổi)
+  - `Cabinet.Api/Controllers/Cabinet/MeetingsController.cs` (Sửa đổi)
+  - `Cabinet.Api/Controllers/Cabinet/QuestionnairesController.cs` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/api/meetingApi.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/questionnaires/api/questionnaireApi.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/questionnaires/components/QuestionnaireList/QuestionnaireSidebar.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/questionnaires/components/QuestionnaireList/QuestionnaireTable.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/questionnaires/components/QuestionnaireList/QuestionnaireMyList.jsx` (Mới)
+- **Lệnh git commit**: `git commit -m "feat(cabinet): hoàn thiện luồng gửi lịch họp, báo vắng và trả lời phiếu lấy ý kiến"`
+
+### [2026-09-01 10:15] Synchronize all deletions to use ConfirmationModal
+- **Mô tả**: Thay thế toàn bộ `window.confirm` còn sót lại bằng `ConfirmationModal` để đồng bộ UI trên toàn hệ thống (Ghi chú, Kỷ yếu, Mẫu phiếu lấy ý kiến, Phòng họp).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/notes/hooks/useNotes.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/notes/components/NoteTable.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetQuestionnaireTemplates.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/proceedings/hooks/useProceedings.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/proceedings/components/ProceedingSidebar.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/proceedings/components/ProceedingDetail.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/rooms/hooks/useRooms.js` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style: replace all window.confirm with ConfirmationModal across modules"`
+
+### [2026-09-01 10:09] Refactor delete meeting to use ConfirmationModal
+- **Mô tả**: Thay thế `window.confirm` gốc của trình duyệt bằng component `ConfirmationModal` chuẩn của hệ thống (UI đẹp hơn) cho chức năng xoá phiên họp.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/meetings/hooks/useMeetingList.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/hooks/useMeetings.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingTable.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(meetings): replace native confirm with ConfirmationModal for meeting deletion"`
+
+### [2026-09-01 10:05] Fix missing Book icon import in MeetingDetail
+- **Mô tả**: Sửa lỗi "Book is not defined" khi người dùng click vào icon con mắt (xem chi tiết phiên họp). Đã thêm import `Book` từ `lucide-react`.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): import missing Book icon in MeetingDetail"`
+
 ### [2026-08-26 17:28] Update AppSidebar.jsx formatting
 - **Mô tả**: Format lại AppSidebar.jsx theo yêu cầu của user.
 - **Tệp thay đổi**:

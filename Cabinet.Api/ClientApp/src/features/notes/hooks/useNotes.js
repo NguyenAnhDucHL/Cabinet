@@ -46,10 +46,13 @@ export function useNotes() {
   )
 
   const deleteNote = useCallback(async (id) => {
-    if (!window.confirm('Xóa ghi chú này?')) return false
-    await noteApi.delete(id)
-    setNotes((prev) => prev.filter((n) => n.id !== id))
-    return true
+    try {
+      await noteApi.delete(id)
+      setNotes((prev) => prev.filter((n) => n.id !== id))
+      return true
+    } catch {
+      return false
+    }
   }, [])
 
   return { notes, meetings, loading, search, setSearch, fetchNotes, createNote, deleteNote }

@@ -56,7 +56,6 @@ export function useMeetings(initialTab = 'invited') {
   }, [activeTab])
 
   const deleteMeeting = useCallback(async (id) => {
-    if (!window.confirm('Bạn có chắc chắn muốn xóa phiên họp này?')) return false
     try {
       await meetingApi.delete(id)
       setMeetings((prev) => prev.filter((m) => m.id !== id))

@@ -27,6 +27,7 @@ namespace Cabinet.Models
         public string? OnlineMeetingUrl { get; set; } // Link họp trực tuyến
         public string? ProgramFilePaths { get; set; } // JSON array of paths
         public string? InvitationFilePaths { get; set; } // JSON array of paths
+        public DateTime? InvitationSentAt { get; set; } // Thời điểm gửi lịch họp
 
         public List<MeetingParticipant> Participants { get; set; } = new();
     }
@@ -37,7 +38,11 @@ namespace Cabinet.Models
         public int UserId { get; set; }
         public string? UserFullName { get; set; }
         public string? DepartmentName { get; set; }
-        public string AttendanceStatus { get; set; } = "Chưa xác nhận"; // Chưa xác nhận, Có tham gia, Vắng mặt
+        public string AttendanceStatus { get; set; } = "Chưa xác nhận"; // Chưa xác nhận, Có tham gia, Vắng mặt, Báo vắng
+        public string? AbsenceReason { get; set; }     // Lý do vắng mặt
+        public int? SubstituteUserId { get; set; }     // Người đi thay
+        public string? SubstituteUserName { get; set; }// Tên người đi thay (join)
+        public string? AbsenceStatus { get; set; }     // Chờ duyệt | Được chấp thuận | Bị từ chối
     }
 
     // Request DTO để tạo/cập nhật phiên họp

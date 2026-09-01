@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Eye, MoreVertical, CheckCircle2, FolderPlus, Trash2, Inbox } from 'lucide-react'
+import { ConfirmationModal } from '@/components/ui/confirmation-modal'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,6 +51,8 @@ export function MeetingTable({
   setSelectedMeeting,
   deleteMeeting,
 }) {
+  const [deletingMeetingId, setDeletingMeetingId] = useState(null)
+
   return (
     <div className="border border-gray-200 rounded-lg overflow-hidden">
       <table className="w-full text-sm text-left text-gray-600">
@@ -151,7 +154,7 @@ export function MeetingTable({
                           {isAdmin && (
                             <DropdownMenuItem
                               className="gap-2 cursor-pointer rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 py-2 outline-none"
-                              onClick={() => deleteMeeting(m.id)}
+                              onClick={() => setDeletingMeetingId(m.id)}
                             >
                               <Trash2 size={16} />
                               <span>Xóa phiên họp</span>
@@ -167,6 +170,16 @@ export function MeetingTable({
           )}
         </tbody>
       </table>
+      <ConfirmationModal
+        open={!!deletingMeetingId}
+        onOpenChange={(open) => !open && setDeletingMeetingId(null)}
+        title="Xóa phiên họp"
+        description="Bạn có chắc chắn muốn xóa phiên họp này không? Hành động này không thể hoàn tác."
+        onConfirm={() => {
+          deleteMeeting(deletingMeetingId)
+          setDeletingMeetingId(null)
+        }}
+      />
     </div>
   )
 }

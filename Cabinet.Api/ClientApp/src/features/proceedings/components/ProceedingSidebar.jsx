@@ -1,5 +1,7 @@
+import React, { useState } from 'react'
 import { FileText, Folder, Loader2, MoreVertical, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ConfirmationModal } from '@/components/ui/confirmation-modal'
 
 export function ProceedingSidebar({
   proceedings,
@@ -11,6 +13,8 @@ export function ProceedingSidebar({
   onMenuToggle,
   onDelete,
 }) {
+  const [deletingId, setDeletingId] = useState(null)
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
@@ -67,7 +71,7 @@ export function ProceedingSidebar({
               >
                 <button
                   className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-50"
-                  onClick={() => onDelete(item.id)}
+                  onClick={() => setDeletingId(item.id)}
                 >
                   <Trash2 className="h-4 w-4" />
                   Xóa kỷ yếu
@@ -77,6 +81,16 @@ export function ProceedingSidebar({
           </div>
         </div>
       ))}
+      <ConfirmationModal
+        open={!!deletingId}
+        onOpenChange={(open) => !open && setDeletingId(null)}
+        title="Xóa kỷ yếu"
+        description="Bạn có chắc chắn muốn xóa kỷ yếu này không? Hành động này không thể hoàn tác."
+        onConfirm={() => {
+          onDelete(deletingId)
+          setDeletingId(null)
+        }}
+      />
     </div>
   )
 }

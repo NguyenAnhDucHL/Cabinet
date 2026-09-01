@@ -5,6 +5,7 @@ import { QuestionnaireSidebar } from '../../features/questionnaires/components/Q
 import { QuestionnaireHeader } from '../../features/questionnaires/components/QuestionnaireList/QuestionnaireHeader'
 import { QuestionnaireTabs } from '../../features/questionnaires/components/QuestionnaireList/QuestionnaireTabs'
 import { QuestionnaireTable } from '../../features/questionnaires/components/QuestionnaireList/QuestionnaireTable'
+import { QuestionnaireMyList } from '../../features/questionnaires/components/QuestionnaireList/QuestionnaireMyList'
 
 export function CabinetQuestionnaire() {
   const [activeTab, setActiveTab] = useState('pending')
@@ -47,7 +48,10 @@ export function CabinetQuestionnaire() {
     <div className="flex-1 flex overflow-hidden bg-gray-50">
       <QuestionnaireSidebar
         activeSidebar={activeSidebar}
-        setActiveSidebar={setActiveSidebar}
+        setActiveSidebar={(val) => {
+          setActiveSidebar(val)
+          setMode('list')
+        }}
         setMode={setMode}
       />
 
@@ -61,6 +65,8 @@ export function CabinetQuestionnaire() {
         />
       ) : activeSidebar === 'template' ? (
         <CabinetQuestionnaireTemplates />
+      ) : activeSidebar === 'my' ? (
+        <QuestionnaireMyList />
       ) : (
         <div className="flex-1 flex flex-col overflow-hidden">
           <QuestionnaireHeader setMode={setMode} />
@@ -78,6 +84,7 @@ export function CabinetQuestionnaire() {
             filteredLength={filtered.length}
             totalPages={totalPages}
             activeTab={activeTab}
+            onRefresh={fetchQuestionnaires}
           />
         </div>
       )}

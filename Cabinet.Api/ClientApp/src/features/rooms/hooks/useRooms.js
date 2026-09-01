@@ -42,10 +42,13 @@ export function useRooms() {
   )
 
   const deleteRoom = useCallback(async (id) => {
-    if (!window.confirm('Bạn có chắc muốn xóa phòng này?')) return false
-    await roomApi.delete(id)
-    setRooms((prev) => prev.filter((r) => r.id !== id))
-    return true
+    try {
+      await roomApi.delete(id)
+      setRooms((prev) => prev.filter((r) => r.id !== id))
+      return true
+    } catch (e) {
+      return false
+    }
   }, [])
 
   const toggleStatus = useCallback(async (id, currentStatus) => {

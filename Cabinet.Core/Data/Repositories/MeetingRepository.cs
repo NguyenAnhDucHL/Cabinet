@@ -15,6 +15,9 @@ namespace Cabinet.Core.Data.Repositories
         Task<int> CreateAsync(CreateMeetingRequest request, int creatorId);
         Task<bool> UpdateAsync(int id, CreateMeetingRequest request);
         Task<bool> UpdateAttendanceAsync(int meetingId, int userId, string status);
+        Task<bool> ReportAbsenceAsync(int meetingId, int userId, string reason, int? substituteUserId);
+        Task<bool> ApproveAbsenceAsync(int meetingId, int userId, bool approve);
+        Task<bool> SendInvitationAsync(int meetingId);
         Task<bool> CancelAsync(int id);
         Task<bool> DeleteAsync(int id);
     }
@@ -54,10 +57,13 @@ namespace Cabinet.Core.Data.Repositories
             OnlineMeetingUrl = r["OnlineMeetingUrl"]?.ToString(),
             ProgramFilePaths = r["ProgramFilePaths"]?.ToString(),
             InvitationFilePaths = r["InvitationFilePaths"]?.ToString(),
+            InvitationSentAt = r["InvitationSentAt"] == DBNull.Value || string.IsNullOrEmpty(r["InvitationSentAt"]?.ToString())
+                ? null
+                : DateTime.Parse(r["InvitationSentAt"].ToString()!),
         };
 
         private const string BASE_SELECT = @"
-            SELECT m.Id, m.Title, m.StartTime, m.EndTime, m.RoomId, m.Status, m.CreatorId, m.CreatedAt, m.Location, m.Presider, m.PreparingUnit, m.Content, m.Notes, m.OrganizingUnit, m.ExpectedAttendees, m.ExternalParticipants, m.MeetingType, m.OnlineMeetingUrl, m.ProgramFilePaths, m.InvitationFilePaths, r.Name as RoomName, u.FullName as CreatorName 
+            SELECT m.Id, m.Title, m.StartTime, m.EndTime, m.RoomId, m.Status, m.CreatorId, m.CreatedAt, m.Location, m.Presider, m.PreparingUnit, m.Content, m.Notes, m.OrganizingUnit, m.ExpectedAttendees, m.ExternalParticipants, m.MeetingType, m.OnlineMeetingUrl, m.ProgramFilePaths, m.InvitationFilePaths, m.InvitationSentAt, r.Name as RoomName, u.FullName as CreatorName 
             FROM Meetings m 
             LEFT JOIN Rooms r ON m.RoomId = r.Id 
             LEFT JOIN Users u ON m.CreatorId = u.Id";
@@ -178,10 +184,13 @@ namespace Cabinet.Core.Data.Repositories
         {
             var list = new List<MeetingParticipant>();
             string sql = @"
-                SELECT mp.MeetingId, mp.UserId, mp.AttendanceStatus, u.FullName as UserFullName, d.Name as DepartmentName 
+                SELECT mp.MeetingId, mp.UserId, mp.AttendanceStatus, mp.AbsenceReason, mp.SubstituteUserId, mp.AbsenceStatus,
+                       u.FullName as UserFullName, d.Name as DepartmentName,
+                       su.FullName as SubstituteUserName
                 FROM MeetingParticipants mp 
                 JOIN Users u ON mp.UserId = u.Id 
-                LEFT JOIN Departments d ON u.DepartmentId = d.Id 
+                LEFT JOIN Departments d ON u.DepartmentId = d.Id
+                LEFT JOIN Users su ON mp.SubstituteUserId = su.Id
                 WHERE mp.MeetingId = @mId";
 
             using var cmd = new SqliteCommand(sql, connection);
@@ -195,7 +204,11 @@ namespace Cabinet.Core.Data.Repositories
                     UserId = Convert.ToInt32(reader["UserId"]),
                     UserFullName = reader["UserFullName"]?.ToString(),
                     DepartmentName = reader["DepartmentName"]?.ToString(),
-                    AttendanceStatus = reader["AttendanceStatus"]?.ToString() ?? "Chưa xác nhận"
+                    AttendanceStatus = reader["AttendanceStatus"]?.ToString() ?? "Chưa xác nhận",
+                    AbsenceReason = reader["AbsenceReason"]?.ToString(),
+                    SubstituteUserId = reader["SubstituteUserId"] == DBNull.Value ? null : Convert.ToInt32(reader["SubstituteUserId"]),
+                    SubstituteUserName = reader["SubstituteUserName"]?.ToString(),
+                    AbsenceStatus = reader["AbsenceStatus"]?.ToString(),
                 });
             }
             return list;
@@ -354,6 +367,48 @@ namespace Cabinet.Core.Data.Repositories
                 tx.Rollback(); // Hoàn tác toàn bộ nếu có lỗi giữa chừng
                 throw;
             }
+        }
+
+        public async Task<bool> ReportAbsenceAsync(int meetingId, int userId, string reason, int? substituteUserId)
+        {
+            using var conn = new SqliteConnection(_connectionString);
+            await conn.OpenAsync();
+            using var cmd = new SqliteCommand(
+                @"UPDATE MeetingParticipants 
+                  SET AttendanceStatus='Báo vắng', AbsenceReason=@reason, SubstituteUserId=@sub, AbsenceStatus='Chờ duyệt'
+                  WHERE MeetingId=@m AND UserId=@u",
+                conn);
+            cmd.Parameters.AddWithValue("@reason", reason ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@sub", substituteUserId.HasValue ? substituteUserId.Value : DBNull.Value);
+            cmd.Parameters.AddWithValue("@m", meetingId);
+            cmd.Parameters.AddWithValue("@u", userId);
+            return await cmd.ExecuteNonQueryAsync() > 0;
+        }
+
+        public async Task<bool> ApproveAbsenceAsync(int meetingId, int userId, bool approve)
+        {
+            using var conn = new SqliteConnection(_connectionString);
+            await conn.OpenAsync();
+            var newStatus = approve ? "Được chấp thuận" : "Bị từ chối";
+            using var cmd = new SqliteCommand(
+                "UPDATE MeetingParticipants SET AbsenceStatus=@s WHERE MeetingId=@m AND UserId=@u",
+                conn);
+            cmd.Parameters.AddWithValue("@s", newStatus);
+            cmd.Parameters.AddWithValue("@m", meetingId);
+            cmd.Parameters.AddWithValue("@u", userId);
+            return await cmd.ExecuteNonQueryAsync() > 0;
+        }
+
+        public async Task<bool> SendInvitationAsync(int meetingId)
+        {
+            using var conn = new SqliteConnection(_connectionString);
+            await conn.OpenAsync();
+            using var cmd = new SqliteCommand(
+                "UPDATE Meetings SET InvitationSentAt=@now WHERE Id=@id",
+                conn);
+            cmd.Parameters.AddWithValue("@now", DateTime.Now.ToString("o"));
+            cmd.Parameters.AddWithValue("@id", meetingId);
+            return await cmd.ExecuteNonQueryAsync() > 0;
         }
 
         public async Task<bool> CancelAsync(int id)
