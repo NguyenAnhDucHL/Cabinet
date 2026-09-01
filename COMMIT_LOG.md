@@ -1813,3 +1813,20 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/lib/signalr.js` (Sửa đổi)
   - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "feat(meetings): thêm real-time orchestration SignalR cho phiên họp"`
+### [2026-09-01 11:46] Giai đoạn 6: Tính năng Báo cáo & Thống kê
+- **Mô tả**: Phát triển module Reports cung cấp thống kê tổng quan (số cuộc họp, số phiếu lấy ý kiến) và xuất danh sách cuộc họp ra file CSV để quản lý. Sử dụng Recharts để vẽ biểu đồ số phiên họp hàng tháng. Báo cáo CSV được xử lý tại Frontend để giảm tải backend. Sửa lỗi namespace `Hubs` trong `QuestionnairesController`.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Data/Repositories/IReportRepository.cs` (Mới)
+  - `Cabinet.Core/Data/Repositories/ReportRepository.cs` (Mới)
+  - `Cabinet.Api/Controllers/Cabinet/ReportsController.cs` (Mới)
+  - `Cabinet.Api/Program.cs` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/reports/api/reportApi.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/reports/hooks/useReports.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/reports/components/StatCards.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/reports/components/MeetingCharts.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/reports/components/ReportExportPanel.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetReports.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/CabinetAppShell.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/appshell/constants/navigation.js` (Sửa đổi)
+  - `Cabinet.Api/Controllers/Cabinet/QuestionnairesController.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(reports): thêm tính năng báo cáo và xuất csv"`

@@ -13,6 +13,7 @@ import {
   FileText,
   List,
   Search,
+  BarChart3,
 } from 'lucide-react'
 
 export const NAV_ITEMS = [
@@ -22,6 +23,7 @@ export const NAV_ITEMS = [
   { id: 'rooms', icon: MapPin, label: 'Phòng họp' },
   { id: 'questionnaire', icon: ClipboardList, label: 'Phiếu lấy ý kiến' },
   { id: 'library', icon: BookOpen, label: 'Thư viện văn bản' },
+  { id: 'reports', icon: BarChart3, label: 'Báo cáo & Thống kê' },
   { id: 'admin', icon: ShieldCheck, label: 'Phân quyền' },
 ]
 

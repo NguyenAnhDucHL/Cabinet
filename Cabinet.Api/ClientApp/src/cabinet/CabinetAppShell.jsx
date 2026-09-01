@@ -13,6 +13,7 @@ import { ProfileModal } from '../features/appshell/components/AppShell/ProfileMo
 import { ThemeModal } from '../features/appshell/components/AppShell/ThemeModal'
 import { VersionModal } from '../features/appshell/components/AppShell/VersionModal'
 import { CabinetAdmin } from './pages/CabinetAdmin'
+import { CabinetReports } from './pages/CabinetReports'
 
 export function CabinetAppShell({ children }) {
   const [activeNav, setActiveNav] = useState('home')
@@ -121,6 +122,8 @@ export function CabinetAppShell({ children }) {
         return <CabinetLibrary activeTab={activeSidebar} />
       case 'admin':
         return <CabinetAdmin activeTab={activeSidebar} />
+      case 'reports':
+        return <CabinetReports />
       default:
         return (
           <div className="flex-1 flex flex-col items-center justify-center text-gray-400">

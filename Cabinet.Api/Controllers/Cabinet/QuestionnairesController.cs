@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Cabinet.Core.Data.Repositories;
 using Cabinet.Core.Models;
 using Cabinet.Models;
+using Microsoft.AspNetCore.SignalR;
+using Cabinet.Hubs;
 
 namespace Cabinet.Api.Controllers.Cabinet
 {
@@ -12,9 +14,9 @@ namespace Cabinet.Api.Controllers.Cabinet
     public class QuestionnairesController : ControllerBase
     {
         private readonly IQuestionnaireRepository _repo;
-        private readonly Microsoft.AspNetCore.SignalR.IHubContext<Cabinet.Hubs.NotificationHub> _hubContext;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public QuestionnairesController(IQuestionnaireRepository repo, Microsoft.AspNetCore.SignalR.IHubContext<Cabinet.Hubs.NotificationHub> hubContext)
+        public QuestionnairesController(IQuestionnaireRepository repo, IHubContext<NotificationHub> hubContext)
         {
             _repo = repo;
             _hubContext = hubContext;
@@ -95,7 +97,7 @@ namespace Cabinet.Api.Controllers.Cabinet
             if (!success)
                 return BadRequest(ApiResponse.Fail("Không thể gửi phiếu. Phiếu có thể đã được gửi trước đó."));
 
-            await _hubContext.Clients.Group($"Meeting_{detail.MeetingId}").SendAsync("QuestionnaireSent");
+            await _hubContext.Clients.Group($"Meeting_{detail.Questionnaire.MeetingId}").SendAsync("QuestionnaireSent");
             
             return Ok(ApiResponse.Ok(null, "Đã gửi phiếu lấy ý kiến đến các thành viên."));
         }
@@ -133,7 +135,7 @@ namespace Cabinet.Api.Controllers.Cabinet
             if (!success)
                 return BadRequest(ApiResponse.Fail("Không thể lưu câu trả lời."));
 
-            await _hubContext.Clients.Group($"Meeting_{detail.MeetingId}").SendAsync("QuestionnaireResponded");
+            await _hubContext.Clients.Group($"Meeting_{detail.Questionnaire.MeetingId}").SendAsync("QuestionnaireResponded");
             
             return Ok(ApiResponse.Ok(null, "Đã gửi câu trả lời thành công."));
         }

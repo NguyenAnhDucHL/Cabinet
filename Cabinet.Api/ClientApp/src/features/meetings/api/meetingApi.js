@@ -10,8 +10,8 @@ export const meetingApi = {
     fetch(`${BASE}/${id}`, { method: 'PUT', body: formData }).then((r) => r.json()),
   delete: (id) => fetch(`${BASE}/${id}`, { method: 'DELETE' }).then((r) => r.json()),
   cancel: (id) => fetch(`${BASE}/${id}/cancel`, { method: 'POST' }).then((r) => r.json()),
-  updateAttendance: (meetingId, userId, status) =>
-    fetch(`${BASE}/${meetingId}/attendance/${userId}`, {
+  updateAttendance: (meetingId, status) =>
+    fetch(`${BASE}/${meetingId}/attendance`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status }),

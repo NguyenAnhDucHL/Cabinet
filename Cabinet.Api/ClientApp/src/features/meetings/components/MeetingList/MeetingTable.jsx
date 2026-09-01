@@ -50,6 +50,8 @@ export function MeetingTable({
   isAdmin,
   setSelectedMeeting,
   deleteMeeting,
+  setConfirmMeeting,
+  setSaveLibraryMeeting,
 }) {
   const [deletingMeetingId, setDeletingMeetingId] = useState(null)
 
@@ -143,11 +145,17 @@ export function MeetingTable({
                           align="end"
                           className="w-56 rounded-xl shadow-lg border-gray-100 p-1"
                         >
-                          <DropdownMenuItem className="gap-2 cursor-pointer rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#1a202c] py-2 outline-none">
+                          <DropdownMenuItem
+                            className="gap-2 cursor-pointer rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#1a202c] py-2 outline-none"
+                            onClick={() => setConfirmMeeting?.(m)}
+                          >
                             <CheckCircle2 size={16} />
                             <span>Xác nhận tham gia</span>
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="gap-2 cursor-pointer rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#1a202c] py-2 outline-none">
+                          <DropdownMenuItem
+                            className="gap-2 cursor-pointer rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#1a202c] py-2 outline-none"
+                            onClick={() => setSaveLibraryMeeting?.(m)}
+                          >
                             <FolderPlus size={16} />
                             <span>Thêm tài liệu vào thư viện</span>
                           </DropdownMenuItem>

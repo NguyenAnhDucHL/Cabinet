@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { meetingApi } from '../api/meetingApi'
 import { ROLES } from '../../../constants/roles'
 import { ATTENDANCE_STATUS } from '../../../constants/meeting'
 
@@ -69,6 +70,22 @@ export function useMeetingList() {
     [activeTab, fetchMeetings]
   )
 
+  const confirmAttendance = useCallback(
+    async (meetingId, status) => {
+      try {
+        const json = await meetingApi.updateAttendance(meetingId, status)
+        if (json.success) {
+          fetchMeetings(activeTab)
+        } else {
+          alert('Có lỗi xảy ra: ' + (json.message || 'Không thể xác nhận tham gia.'))
+        }
+      } catch {
+        alert('Lỗi kết nối máy chủ.')
+      }
+    },
+    [activeTab, fetchMeetings]
+  )
+
   useEffect(() => {
     fetchMeetings(activeTab)
     const handler = () => fetchMeetings(activeTab)
@@ -76,5 +93,14 @@ export function useMeetingList() {
     return () => document.removeEventListener('realtime:meeting_updated', handler)
   }, [activeTab])
 
-  return { meetings, loading, activeTab, setActiveTab, isAdmin, fetchMeetings, deleteMeeting }
+  return {
+    meetings,
+    loading,
+    activeTab,
+    setActiveTab,
+    isAdmin,
+    fetchMeetings,
+    deleteMeeting,
+    confirmAttendance,
+  }
 }

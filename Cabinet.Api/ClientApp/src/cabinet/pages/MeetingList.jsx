@@ -12,10 +12,20 @@ import { MeetingStats } from '../../features/meetings/components/MeetingList/Mee
 import { MeetingFilters } from '../../features/meetings/components/MeetingList/MeetingFilters'
 import { MeetingTable } from '../../features/meetings/components/MeetingList/MeetingTable'
 import { MeetingPagination } from '../../features/meetings/components/MeetingList/MeetingPagination'
+import { AttendanceConfirmModal } from '../../features/home/components/CabinetHome/AttendanceConfirmModal'
+import { SaveToLibraryModal } from '../../features/meetings/components/MeetingList/SaveToLibraryModal'
 
 export function MeetingList() {
-  const { meetings, loading, activeTab, setActiveTab, isAdmin, fetchMeetings, deleteMeeting } =
-    useMeetingList()
+  const {
+    meetings,
+    loading,
+    activeTab,
+    setActiveTab,
+    isAdmin,
+    fetchMeetings,
+    deleteMeeting,
+    confirmAttendance,
+  } = useMeetingList()
 
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedMeeting, setSelectedMeeting] = useState(null)
@@ -24,6 +34,8 @@ export function MeetingList() {
   const [pageSize, setPageSize] = useState(10)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
+  const [confirmMeeting, setConfirmMeeting] = useState(null)
+  const [saveLibraryMeeting, setSaveLibraryMeeting] = useState(null)
 
   const filteredMeetings = meetings.filter((m) => {
     const matchSearch = m.title?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -89,6 +101,21 @@ export function MeetingList() {
         </div>
       </div>
 
+      <AttendanceConfirmModal
+        confirmMeeting={confirmMeeting}
+        setConfirmMeeting={setConfirmMeeting}
+        handleConfirmAttendance={(status) => {
+          confirmAttendance(confirmMeeting.id, status)
+          setConfirmMeeting(null)
+        }}
+      />
+      <SaveToLibraryModal
+        open={!!saveLibraryMeeting}
+        onOpenChange={(open) => !open && setSaveLibraryMeeting(null)}
+        meeting={saveLibraryMeeting}
+        onSaved={() => alert('Đã lưu tài liệu thành công')}
+      />
+
       <div className="flex-1 overflow-auto p-6">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           {/* Sub Tabs */}
@@ -125,6 +152,8 @@ export function MeetingList() {
             isAdmin={isAdmin}
             setSelectedMeeting={setSelectedMeeting}
             deleteMeeting={deleteMeeting}
+            setConfirmMeeting={setConfirmMeeting}
+            setSaveLibraryMeeting={setSaveLibraryMeeting}
           />
 
           {!loading && filteredMeetings.length > 0 && (

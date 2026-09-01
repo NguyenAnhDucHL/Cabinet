@@ -30,6 +30,19 @@ namespace Cabinet.Api.Controllers.Cabinet
             return int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
         }
 
+        public class SaveFromExistingRequest
+        {
+            public int? FolderId { get; set; }
+            public string Type { get; set; } = "CaNhan";
+            public List<ExistingFileDto> Files { get; set; } = new();
+        }
+
+        public class ExistingFileDto
+        {
+            public string Name { get; set; } = string.Empty;
+            public string FilePath { get; set; } = string.Empty;
+        }
+
         // ==========================================
         // FOLDERS
         // ==========================================
@@ -157,6 +170,35 @@ namespace Cabinet.Api.Controllers.Cabinet
 
             doc.Id = await _repo.InsertDocumentAsync(doc);
             return Ok(ApiResponse<Document>.Ok(doc));
+        }
+
+        [HttpPost("save-from-existing")]
+        public async Task<IActionResult> SaveFromExisting([FromBody] SaveFromExistingRequest request)
+        {
+            if (request.Files == null || !request.Files.Any())
+                return BadRequest(ApiResponse.Fail("Không có tài liệu nào để lưu."));
+
+            var savedDocs = new List<Document>();
+            int currentUserId = GetCurrentUserId();
+
+            foreach (var file in request.Files)
+            {
+                var doc = new Document
+                {
+                    Name = file.Name,
+                    FileType = Path.GetExtension(file.FilePath),
+                    FilePath = file.FilePath,
+                    DocumentType = "Tài liệu phiên họp",
+                    FolderId = request.FolderId,
+                    CreatorId = currentUserId,
+                    Type = request.Type
+                };
+
+                doc.Id = await _repo.InsertDocumentAsync(doc);
+                savedDocs.Add(doc);
+            }
+
+            return Ok(ApiResponse<List<Document>>.Ok(savedDocs, $"Lưu thành công {savedDocs.Count} tài liệu."));
         }
 
         [HttpDelete("{id}")]
