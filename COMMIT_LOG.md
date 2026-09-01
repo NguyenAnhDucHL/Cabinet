@@ -1853,3 +1853,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/shell/AppShell.jsx` (Sửa đổi)
   - `Cabinet.Api/ClientApp/src/main.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -am "refactor(api): gom logic bắt lỗi 401 về một mối tại main.jsx"`
+### [2026-09-01 14:26] Sửa lỗi nút Thêm vào kỷ yếu không hoạt động
+- **Mô tả**: Bổ sung `ProceedingCreateModal` vào luồng tạo mới phiên họp (`CabinetMeetingCreate.jsx`). Truyền hàm `onAddProceeding` xuống component con `Step1Details.jsx` để khi click nút "+ Thêm vào kỷ yếu" sẽ mở modal tạo kỷ yếu. Sau khi tạo thành công, tự động gắn kỷ yếu vừa tạo vào dropdown chọn kỷ yếu.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetMeetingCreate.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingCreate/Step1Details.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -am "fix(meetings): xử lý logic nút Thêm vào kỷ yếu trong form tạo phiên họp"`

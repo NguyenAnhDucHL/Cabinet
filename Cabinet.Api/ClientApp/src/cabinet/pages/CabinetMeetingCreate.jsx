@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button'
 import { Step1Details } from '../../features/meetings/components/MeetingCreate/Step1Details'
 import { Step2Participants } from '../../features/meetings/components/MeetingCreate/Step2Participants'
 import { Step3Contents } from '../../features/meetings/components/MeetingCreate/Step3Contents'
+import { ProceedingCreateModal } from '../../features/proceedings/components/ProceedingModals'
+import { proceedingApi } from '../../features/proceedings/api/proceedingApi'
 
 export function CabinetMeetingCreate({ onBack, onSaved }) {
   const [step, setStep] = useState(1)
@@ -13,6 +15,12 @@ export function CabinetMeetingCreate({ onBack, onSaved }) {
   const [proceedings, setProceedings] = useState([])
   const [users, setUsers] = useState([])
   const [departments, setDepartments] = useState([])
+
+  const [showProceedingModal, setShowProceedingModal] = useState(false)
+  const [proceedingName, setProceedingName] = useState('')
+  const [proceedingDesc, setProceedingDesc] = useState('')
+  const [proceedingMeetingId, setProceedingMeetingId] = useState('')
+  const [savingProceeding, setSavingProceeding] = useState(false)
 
   const [formData, setFormData] = useState({
     title: '',
@@ -59,6 +67,31 @@ export function CabinetMeetingCreate({ onBack, onSaved }) {
   const usersInSelectedDept = groupType
     ? users.filter((u) => u.departmentId === Number(groupType))
     : users
+
+  const handleCreateProceeding = async () => {
+    if (!proceedingName.trim()) return
+    setSavingProceeding(true)
+    try {
+      const res = await proceedingApi.create({
+        name: proceedingName.trim(),
+        description: proceedingDesc.trim(),
+        meetingId: null,
+      })
+      if (res.success) {
+        const newProc = res.data
+        setProceedings((prev) => [newProc, ...prev])
+        setFormData((prev) => ({ ...prev, proceedingId: String(newProc.id) }))
+        setShowProceedingModal(false)
+        setProceedingName('')
+        setProceedingDesc('')
+      } else {
+        alert(res.message || 'Lỗi tạo kỷ yếu')
+      }
+    } catch (e) {
+      alert('Không thể kết nối đến máy chủ')
+    }
+    setSavingProceeding(false)
+  }
 
   const handleSubmit = async () => {
     if (!formData.title || !formData.startTime || !formData.endTime) {
@@ -166,6 +199,7 @@ export function CabinetMeetingCreate({ onBack, onSaved }) {
                 invitationFiles={invitationFiles}
                 setInvitationFiles={setInvitationFiles}
                 invitationInputRef={invitationInputRef}
+                onAddProceeding={() => setShowProceedingModal(true)}
               />
             )}
             {step === 2 && (
@@ -226,6 +260,19 @@ export function CabinetMeetingCreate({ onBack, onSaved }) {
           </div>
         </div>
       </div>
+      <ProceedingCreateModal
+        open={showProceedingModal}
+        onOpenChange={setShowProceedingModal}
+        allMeetings={[]}
+        formName={proceedingName}
+        setFormName={setProceedingName}
+        formDesc={proceedingDesc}
+        setFormDesc={setProceedingDesc}
+        formMeetingId={proceedingMeetingId}
+        setFormMeetingId={setProceedingMeetingId}
+        onSubmit={handleCreateProceeding}
+        saving={savingProceeding}
+      />
     </div>
   )
 }

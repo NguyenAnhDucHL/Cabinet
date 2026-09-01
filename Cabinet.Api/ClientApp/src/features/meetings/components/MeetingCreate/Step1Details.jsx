@@ -22,6 +22,7 @@ export function Step1Details({
   invitationFiles,
   setInvitationFiles,
   invitationInputRef,
+  onAddProceeding,
 }) {
   const handleFileChange = (e, setFiles) => {
     if (e.target.files) {
@@ -108,7 +109,12 @@ export function Step1Details({
           </Select>
         </div>
         <div className="flex items-end">
-          <Button variant="outline" className="text-blue-600 border-blue-200 hover:bg-blue-50">
+          <Button
+            type="button"
+            variant="outline"
+            className="text-blue-600 border-blue-200 hover:bg-blue-50"
+            onClick={onAddProceeding}
+          >
             <Plus size={16} className="mr-1" /> Thêm vào kỷ yếu
           </Button>
         </div>
