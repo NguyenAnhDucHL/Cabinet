@@ -1830,3 +1830,13 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/features/appshell/constants/navigation.js` (Sửa đổi)
   - `Cabinet.Api/Controllers/Cabinet/QuestionnairesController.cs` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "feat(reports): thêm tính năng báo cáo và xuất csv"`
+### [2026-09-01 13:56] Thêm tính năng Xác nhận tham gia và Lưu tài liệu vào thư viện
+- **Mô tả**: Bổ sung tính năng từ dropdown của danh sách phiên họp: Xác nhận tham gia thông qua modal và chọn trạng thái Tham gia/Báo vắng; chức năng Lưu tài liệu phiên họp vào thư mục cá nhân thông qua API mới save-from-existing.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/Controllers/Cabinet/DocumentsController.cs` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingList.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingTable.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/api/meetingApi.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/hooks/useMeetingList.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/SaveToLibraryModal.jsx` (Mới)
+- **Lệnh git commit**: `git commit -am "feat(meetings): thêm tính năng xác nhận tham gia và lưu tài liệu vào thư viện"`
