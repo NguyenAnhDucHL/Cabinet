@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {
   ArrowLeft,
   Plus,
@@ -27,6 +27,8 @@ import {
   getRemainingTimeText,
 } from '../../features/meetings/components/MeetingDetail/MeetingDetailComponents'
 import { NotebookModal } from '../../features/meetings/components/MeetingDetail/NotebookModal'
+import { signalRService } from '../../lib/signalr'
+import { toast } from 'sonner'
 
 export function MeetingDetail({ meeting, onBack, onViewProgress }) {
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false)
@@ -36,6 +38,41 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
   const [isAbsenceModalOpen, setIsAbsenceModalOpen] = useState(false)
   const [absenceReason, setAbsenceReason] = useState('')
   const [absenceSaving, setAbsenceSaving] = useState(false)
+
+  // Giai đoạn 5: SignalR Meeting Group
+  useEffect(() => {
+    if (meeting?.id) {
+      signalRService.joinMeetingGroup(meeting.id)
+    }
+
+    const handleAttendanceUpdated = (e) => {
+      // toast.info("Có đại biểu vừa cập nhật trạng thái điểm danh")
+      // Nếu cần, có thể trigger re-fetch ở đây
+    }
+
+    const handleQuestionnaireSent = () => {
+      toast.info('Chủ tọa vừa phát một phiếu lấy ý kiến mới!')
+    }
+
+    const handleScreenSynced = (e) => {
+      const data = e.detail
+      toast.info(`Chủ tọa đang xem: ${data.tabName} - Trang ${data.pageNumber}`)
+      // Tính năng đồng bộ màn hình (chuyển trang tự động) có thể xử lý ở đây
+    }
+
+    document.addEventListener('realtime:attendance_updated', handleAttendanceUpdated)
+    document.addEventListener('realtime:questionnaire_sent', handleQuestionnaireSent)
+    document.addEventListener('realtime:screen_synced', handleScreenSynced)
+
+    return () => {
+      if (meeting?.id) {
+        signalRService.leaveMeetingGroup(meeting.id)
+      }
+      document.removeEventListener('realtime:attendance_updated', handleAttendanceUpdated)
+      document.removeEventListener('realtime:questionnaire_sent', handleQuestionnaireSent)
+      document.removeEventListener('realtime:screen_synced', handleScreenSynced)
+    }
+  }, [meeting?.id])
 
   // Parse file paths safely
   const parseFiles = (jsonString) => {

@@ -61,6 +61,27 @@ class SignalRService {
       document.dispatchEvent(new CustomEvent('realtime:document_updated'))
     })
 
+    // 🔔 Giai đoạn 5: Real-time Orchestration
+    this.connection.on('AttendanceUpdated', (data) => {
+      console.log('[SignalR] AttendanceUpdated:', data)
+      document.dispatchEvent(new CustomEvent('realtime:attendance_updated', { detail: data }))
+    })
+
+    this.connection.on('ScreenSynced', (data) => {
+      console.log('[SignalR] ScreenSynced:', data)
+      document.dispatchEvent(new CustomEvent('realtime:screen_synced', { detail: data }))
+    })
+
+    this.connection.on('QuestionnaireSent', () => {
+      console.log('[SignalR] QuestionnaireSent')
+      document.dispatchEvent(new CustomEvent('realtime:questionnaire_sent'))
+    })
+
+    this.connection.on('QuestionnaireResponded', () => {
+      console.log('[SignalR] QuestionnaireResponded')
+      document.dispatchEvent(new CustomEvent('realtime:questionnaire_responded'))
+    })
+
     try {
       await this.connection.start()
       console.log('[SignalR] Connected successfully')
@@ -74,6 +95,20 @@ class SignalRService {
     if (this.connection) {
       this.connection.stop()
       this.connection = null
+    }
+  }
+
+  async joinMeetingGroup(meetingId) {
+    if (this.connection?.state === signalR.HubConnectionState.Connected) {
+      await this.connection.invoke('JoinMeetingGroup', parseInt(meetingId, 10))
+      console.log(`[SignalR] Joined Meeting_${meetingId}`)
+    }
+  }
+
+  async leaveMeetingGroup(meetingId) {
+    if (this.connection?.state === signalR.HubConnectionState.Connected) {
+      await this.connection.invoke('LeaveMeetingGroup', parseInt(meetingId, 10))
+      console.log(`[SignalR] Left Meeting_${meetingId}`)
     }
   }
 }

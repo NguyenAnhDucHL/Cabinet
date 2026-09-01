@@ -51,3 +51,9 @@ export const LIBRARY_SIDEBAR = [
   { label: 'Tài liệu được chia sẻ', type: 'DuocChiaSe', icon: Users },
   { label: 'Tài liệu quan trọng', type: 'QuanTrong', icon: ShieldCheck },
 ]
+
+export const ADMIN_SIDEBAR = [
+  { icon: Users, label: 'Quản lý người dùng' },
+  { icon: ShieldCheck, label: 'Quản lý chức vụ' },
+  { label: 'Cấu hình hệ thống', icon: Settings },
+]

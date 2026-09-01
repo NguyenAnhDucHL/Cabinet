@@ -48,6 +48,7 @@ import { cn } from '@/lib/utils'
 export function Users() {
   const [users, setUsers] = useState([])
   const [departments, setDepartments] = useState([])
+  const [positions, setPositions] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
@@ -66,6 +67,7 @@ export function Users() {
     phoneNumber: '',
     role: ROLES.CAN_BO,
     departmentId: '',
+    positionId: '',
   })
   const [errors, setErrors] = useState({
     email: '',
@@ -87,6 +89,7 @@ export function Users() {
   useEffect(() => {
     fetchUsers()
     fetchDepartments()
+    fetchPositions()
   }, [])
 
   const fetchUsers = async () => {
@@ -113,7 +116,23 @@ export function Users() {
       if (response.ok) {
         setDepartments(await response.json())
       }
-    } catch (e) {}
+    } catch (error) {
+      toast.error('Lỗi khi tải danh sách phòng ban')
+    }
+  }
+
+  const fetchPositions = async () => {
+    try {
+      const response = await fetch('/api/admin/positions', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('auth_token')}` },
+      })
+      if (response.ok) {
+        const json = await response.json()
+        setPositions(json.data || [])
+      }
+    } catch (error) {
+      toast.error('Lỗi khi tải danh sách chức vụ')
+    }
   }
 
   const handleOpenModal = (user = null) => {
@@ -126,7 +145,8 @@ export function Users() {
         email: user.email || '',
         phoneNumber: user.phoneNumber || '',
         role: user.role || ROLES.CAN_BO,
-        departmentId: user.departmentId ? user.departmentId.toString() : '0',
+        departmentId: user.departmentId || '',
+        positionId: user.positionId || '',
       })
       setErrors({ email: '', phoneNumber: '' })
     } else {
@@ -138,7 +158,8 @@ export function Users() {
         email: '',
         phoneNumber: '',
         role: ROLES.CAN_BO,
-        departmentId: '0',
+        departmentId: '',
+        positionId: '',
       })
       setErrors({ email: '', phoneNumber: '' })
     }
@@ -339,8 +360,8 @@ export function Users() {
                   <TableHead className="font-black text-[10px] uppercase tracking-widest text-foreground w-44">
                     Liên hệ
                   </TableHead>
-                  <TableHead className="font-black text-[10px] uppercase tracking-widest text-foreground w-36">
-                    Phòng ban
+                  <TableHead className="font-black text-[10px] uppercase tracking-widest text-foreground w-48">
+                    Phòng ban / Chức vụ
                   </TableHead>
                   <TableHead className="font-black text-[10px] uppercase tracking-widest text-foreground w-28">
                     Vai trò
@@ -427,12 +448,22 @@ export function Users() {
                         </div>
                       </TableCell>
                       <TableCell className="truncate">
-                        <Badge
-                          variant="default"
-                          className="bg-muted/50 text-muted-foreground font-bold text-[10px] truncate max-w-full"
-                        >
-                          {user.departmentName || 'Chưa phân phòng'}
-                        </Badge>
+                        <div className="flex flex-col gap-1">
+                          <Badge
+                            variant="default"
+                            className="bg-muted/50 text-muted-foreground font-bold text-[10px] truncate max-w-full w-fit"
+                          >
+                            {user.departmentName || 'Chưa phân phòng'}
+                          </Badge>
+                          {user.positionName && (
+                            <Badge
+                              variant="default"
+                              className="bg-[#c8102e]/10 text-[#c8102e] font-bold text-[10px] truncate max-w-full w-fit"
+                            >
+                              {user.positionName}
+                            </Badge>
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell>{getRoleBadge(user.role)}</TableCell>
                       <TableCell className="text-right">
@@ -668,14 +699,32 @@ export function Users() {
                   Phòng ban
                 </Label>
                 <select
-                  value={formData.departmentId}
+                  value={formData.departmentId || ''}
                   onChange={(e) => setFormData({ ...formData, departmentId: e.target.value })}
                   className="w-full px-4 h-11 rounded-xl bg-muted/50 border-none text-sm font-bold text-foreground outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none"
                 >
-                  <option value="0">Chưa phân phòng</option>
+                  <option value="">Chưa phân phòng</option>
                   {departments.map((d) => (
                     <option key={d.id} value={d.id.toString()}>
                       {d.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                  Chức vụ
+                </Label>
+                <select
+                  value={formData.positionId || ''}
+                  onChange={(e) => setFormData({ ...formData, positionId: e.target.value })}
+                  className="w-full px-4 h-11 rounded-xl bg-muted/50 border-none text-sm font-bold text-foreground outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none"
+                >
+                  <option value="">Không có chức vụ</option>
+                  {positions.map((p) => (
+                    <option key={p.id} value={p.id.toString()}>
+                      {p.name}
                     </option>
                   ))}
                 </select>

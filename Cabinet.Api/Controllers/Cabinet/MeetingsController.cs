@@ -15,6 +15,7 @@ namespace Cabinet.Api.Controllers.Cabinet
     public record UpdateAttendanceRequest(string Status);
     public record ReportAbsenceRequest(string Reason, int? SubstituteUserId);
     public record ApproveAbsenceRequest(bool Approve);
+    public record SyncScreenRequest(string DocumentUrl, int PageNumber, string TabName);
 
     [Route("api/phonghopkhonggiayto/meetings")]
     [ApiController]
@@ -150,7 +151,7 @@ namespace Cabinet.Api.Controllers.Cabinet
             <td>{qStt++}</td>
             <td>{q.Title}</td>
             <td>{q.Status}</td>
-            <td>{(q.Deadline.HasValue ? q.Deadline.Value.ToString("dd/MM/yyyy") : "")}</td>
+            <td>{(q.Deadline != DateTime.MinValue ? q.Deadline.ToString("dd/MM/yyyy") : "")}</td>
             <td>-</td>
         </tr>";
             }
@@ -231,7 +232,24 @@ namespace Cabinet.Api.Controllers.Cabinet
             if (!success)
                 return NotFound(ApiResponse.Fail("Không tìm thấy phiên họp hoặc bạn không được mời tham dự."));
 
+            // Broadcast real-time event to Meeting Group
+            await _hubContext.Clients.Group($"Meeting_{id}").SendAsync("AttendanceUpdated", new { UserId = userId, Status = request.Status });
+
             return Ok(ApiResponse.Ok(null, $"Đã cập nhật trạng thái tham dự thành '{request.Status}'."));
+        }
+
+        // POST /api/phonghopkhonggiayto/meetings/{id}/sync-screen
+        [HttpPost("{id}/sync-screen")]
+        public async Task<IActionResult> SyncScreen(int id, [FromBody] SyncScreenRequest req)
+        {
+            var meeting = await _meetingRepo.GetByIdAsync(id);
+            if (meeting == null)
+                return NotFound(ApiResponse.Fail("Không tìm thấy phiên họp."));
+
+            // Broadcast real-time event to Meeting Group
+            await _hubContext.Clients.Group($"Meeting_{id}").SendAsync("ScreenSynced", req);
+
+            return Ok(ApiResponse.Ok(null, "Đã gửi tín hiệu đồng bộ màn hình."));
         }
 
         // POST /api/phonghopkhonggiayto/meetings

@@ -37,6 +37,7 @@ namespace Cabinet.Models
         public int MeetingId { get; set; }
         public int UserId { get; set; }
         public string? UserFullName { get; set; }
+        public string? UserRole { get; set; }
         public string? DepartmentName { get; set; }
         public string AttendanceStatus { get; set; } = "Chưa xác nhận"; // Chưa xác nhận, Có tham gia, Vắng mặt, Báo vắng
         public string? AbsenceReason { get; set; }     // Lý do vắng mặt

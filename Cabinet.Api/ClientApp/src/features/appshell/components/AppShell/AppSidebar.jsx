@@ -6,6 +6,7 @@ import {
   ROOMS_SIDEBAR,
   MEETINGS_SIDEBAR,
   LIBRARY_SIDEBAR,
+  ADMIN_SIDEBAR,
 } from '../../constants/navigation'
 
 export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSidebarCollapsed }) {
@@ -13,7 +14,8 @@ export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSideb
     activeNav === 'schedule' ||
     activeNav === 'rooms' ||
     activeNav === 'manage_meetings' ||
-    activeNav === 'library'
+    activeNav === 'library' ||
+    activeNav === 'admin'
 
   if (!hasSidebar) return null
 
@@ -74,6 +76,23 @@ export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSideb
 
       {activeNav === 'library' &&
         LIBRARY_SIDEBAR.map((item, i) => (
+          <button
+            key={item.label}
+            onClick={() => setActiveSidebar(i)}
+            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${
+              activeSidebar === i
+                ? 'bg-[#c8102e] text-white'
+                : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
+            } ${isSidebarCollapsed ? 'justify-center' : ''}`}
+            title={isSidebarCollapsed ? item.label : undefined}
+          >
+            <item.icon size={20} className="shrink-0" />
+            {!isSidebarCollapsed && <span>{item.label}</span>}
+          </button>
+        ))}
+
+      {activeNav === 'admin' &&
+        ADMIN_SIDEBAR.map((item, i) => (
           <button
             key={item.label}
             onClick={() => setActiveSidebar(i)}

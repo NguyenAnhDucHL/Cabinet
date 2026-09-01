@@ -7,6 +7,7 @@ namespace Cabinet.Core.Data.Repositories
     public interface IQuestionnaireRepository
     {
         Task<List<Questionnaire>> GetAllAsync(string? statusFilter = null);
+        Task<List<Questionnaire>> GetAllByMeetingIdAsync(int meetingId);
         Task<List<Questionnaire>> GetMyAssignedAsync(int userId);
         Task<QuestionnaireDetail?> GetDetailAsync(int id, int userId);
         Task<int> CreateAsync(CreateQuestionnaireRequest req);
@@ -21,9 +22,39 @@ namespace Cabinet.Core.Data.Repositories
 
         public QuestionnaireRepository(IConfiguration configuration)
         {
-            var dbPath = Environment.GetEnvironmentVariable("DB_PATH") 
-                ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Cabinet", "documents.db");
-            _connectionString = $"Data Source={dbPath};Pooling=True;Default Timeout=30;Cache=Shared";
+            _connectionString = configuration.GetConnectionString("DefaultConnection") 
+                ?? $"Data Source={Environment.GetEnvironmentVariable("DB_PATH") ?? "data_dump/documents.db"}";
+        }
+
+        public async Task<List<Questionnaire>> GetAllByMeetingIdAsync(int meetingId)
+        {
+            var list = new List<Questionnaire>();
+            using var conn = new SqliteConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = conn.CreateCommand();
+            cmd.CommandText = @"
+                SELECT Id, MeetingId, Title, AssignedTo, Deadline, Status, CreatedAt 
+                FROM Questionnaires 
+                WHERE MeetingId = @MeetingId
+                ORDER BY CreatedAt DESC";
+            cmd.Parameters.AddWithValue("@MeetingId", meetingId);
+
+            using var reader = await cmd.ExecuteReaderAsync();
+            while(await reader.ReadAsync())
+            {
+                list.Add(new Questionnaire
+                {
+                    Id = reader.GetInt32(0),
+                    MeetingId = reader.IsDBNull(1) ? 0 : reader.GetInt32(1),
+                    Title = reader.GetString(2),
+                    AssignedTo = reader.IsDBNull(3) ? 0 : reader.GetInt32(3),
+                    Deadline = reader.IsDBNull(4) ? DateTime.MinValue : reader.GetDateTime(4),
+                    Status = reader.GetString(5),
+                    CreatedAt = reader.IsDBNull(6) ? DateTime.MinValue : reader.GetDateTime(6)
+                });
+            }
+            return list;
         }
 
         public async Task<List<Questionnaire>> GetAllAsync(string? statusFilter = null)

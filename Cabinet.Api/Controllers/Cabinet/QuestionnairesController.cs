@@ -12,10 +12,12 @@ namespace Cabinet.Api.Controllers.Cabinet
     public class QuestionnairesController : ControllerBase
     {
         private readonly IQuestionnaireRepository _repo;
+        private readonly Microsoft.AspNetCore.SignalR.IHubContext<Cabinet.Hubs.NotificationHub> _hubContext;
 
-        public QuestionnairesController(IQuestionnaireRepository repo)
+        public QuestionnairesController(IQuestionnaireRepository repo, Microsoft.AspNetCore.SignalR.IHubContext<Cabinet.Hubs.NotificationHub> hubContext)
         {
             _repo = repo;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -84,9 +86,17 @@ namespace Cabinet.Api.Controllers.Cabinet
         [HttpPost("{id}/send")]
         public async Task<IActionResult> Send(int id)
         {
+            var userId = GetCurrentUserId();
+            var detail = await _repo.GetDetailAsync(id, userId);
+            if (detail == null)
+                return NotFound(ApiResponse.Fail("Không tìm thấy phiếu."));
+
             var success = await _repo.SendAsync(id);
             if (!success)
                 return BadRequest(ApiResponse.Fail("Không thể gửi phiếu. Phiếu có thể đã được gửi trước đó."));
+
+            await _hubContext.Clients.Group($"Meeting_{detail.MeetingId}").SendAsync("QuestionnaireSent");
+            
             return Ok(ApiResponse.Ok(null, "Đã gửi phiếu lấy ý kiến đến các thành viên."));
         }
 
@@ -115,9 +125,16 @@ namespace Cabinet.Api.Controllers.Cabinet
         public async Task<IActionResult> Respond(int id, [FromBody] SubmitResponseRequest req)
         {
             var userId = GetCurrentUserId();
+            var detail = await _repo.GetDetailAsync(id, userId);
+            if (detail == null)
+                return NotFound(ApiResponse.Fail("Không tìm thấy phiếu."));
+
             var success = await _repo.SubmitResponseAsync(id, userId, req.Responses);
             if (!success)
                 return BadRequest(ApiResponse.Fail("Không thể lưu câu trả lời."));
+
+            await _hubContext.Clients.Group($"Meeting_{detail.MeetingId}").SendAsync("QuestionnaireResponded");
+            
             return Ok(ApiResponse.Ok(null, "Đã gửi câu trả lời thành công."));
         }
 

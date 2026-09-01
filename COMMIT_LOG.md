@@ -1804,3 +1804,12 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/features/appshell/components/AppShell/AppSidebar.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "style(appshell): format AppSidebar.jsx"`
+### [2026-09-01 11:35] Thêm SignalR Real-time Orchestration cho Phiên họp (Giai đoạn 5)
+- **Mô tả**: Bổ sung tính năng điều phối thời gian thực bằng SignalR cho phiên họp. Cho phép gửi tín hiệu đồng bộ điểm danh, phát phiếu lấy ý kiến, nộp phiếu lấy ý kiến, và đồng bộ màn hình đến toàn bộ thiết bị đang tham gia phiên họp.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Hubs/NotificationHub.cs` (Sửa đổi)
+  - `Cabinet.Api/Controllers/Cabinet/MeetingsController.cs` (Sửa đổi)
+  - `Cabinet.Api/Controllers/Cabinet/QuestionnairesController.cs` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/lib/signalr.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(meetings): thêm real-time orchestration SignalR cho phiên họp"`

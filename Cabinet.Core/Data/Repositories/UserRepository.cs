@@ -53,6 +53,8 @@ namespace Cabinet.Core.Data.Repositories
                 Role         = reader["Role"]?.ToString() ?? "Guest",
                 DepartmentId = reader["DepartmentId"] == DBNull.Value ? null : Convert.ToInt32(reader["DepartmentId"]),
                 DepartmentName = HasColumn(reader, "DepartmentName") ? reader["DepartmentName"]?.ToString() : null,
+                PositionId = HasColumn(reader, "PositionId") && reader["PositionId"] != DBNull.Value ? Convert.ToInt32(reader["PositionId"]) : null,
+                PositionName = HasColumn(reader, "PositionName") ? reader["PositionName"]?.ToString() : null,
                 SessionId    = reader["SessionId"]?.ToString(),
                 CreatedAt    = reader["CreatedAt"] != DBNull.Value && DateTime.TryParse(reader["CreatedAt"]?.ToString(), out DateTime dt) ? dt : DateTime.UtcNow,
 
@@ -114,12 +116,10 @@ namespace Cabinet.Core.Data.Repositories
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
             string sql = @"
-                SELECT u.Id, u.Username, u.FullName, u.Email, u.PhoneNumber, u.Role,
-                       u.DepartmentId, d.Name as DepartmentName, u.SessionId, u.CreatedAt,
-                       u.FailedLoginCount, u.LockoutUntil,
-                       u.SecurityStamp, u.NormalizedUserName, u.LockoutEnabled, u.AccessFailedCount, u.LockoutEnd
+                SELECT u.*, d.Name as DepartmentName, p.Name as PositionName
                 FROM Users u 
-                LEFT JOIN Departments d ON u.DepartmentId = d.Id";
+                LEFT JOIN Departments d ON u.DepartmentId = d.Id
+                LEFT JOIN Positions p ON u.PositionId = p.Id";
             using var cmd = new SqliteCommand(sql, connection);
             using var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
@@ -132,12 +132,10 @@ namespace Cabinet.Core.Data.Repositories
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
             string sql = @"
-                SELECT u.Id, u.Username, u.PasswordHash, u.FullName, u.Email, u.PhoneNumber, u.Role,
-                       u.DepartmentId, d.Name as DepartmentName, u.SessionId, u.CreatedAt,
-                       u.FailedLoginCount, u.LockoutUntil,
-                       u.SecurityStamp, u.NormalizedUserName, u.LockoutEnabled, u.AccessFailedCount, u.LockoutEnd
+                SELECT u.*, d.Name as DepartmentName, p.Name as PositionName
                 FROM Users u 
-                LEFT JOIN Departments d ON u.DepartmentId = d.Id 
+                LEFT JOIN Departments d ON u.DepartmentId = d.Id
+                LEFT JOIN Positions p ON u.PositionId = p.Id
                 WHERE u.Id=@id";
             using var cmd = new SqliteCommand(sql, connection);
             cmd.Parameters.AddWithValue("@id", id);
@@ -297,9 +295,9 @@ namespace Cabinet.Core.Data.Repositories
                 var normalizedUserName = user.Username.ToUpperInvariant();
 
                 string sql = @"
-                    INSERT INTO Users (Username, PasswordHash, FullName, Email, PhoneNumber, Role, DepartmentId, CreatedAt,
+                    INSERT INTO Users (Username, PasswordHash, FullName, Email, PhoneNumber, Role, DepartmentId, PositionId, CreatedAt,
                                        SecurityStamp, NormalizedUserName, LockoutEnabled) 
-                    VALUES (@u, @p, @f, @e, @pn, @r, @d, @now, @stamp, @norm, 1)";
+                    VALUES (@u, @p, @f, @e, @pn, @r, @d, @posId, @now, @stamp, @norm, 1)";
                 using var cmd = new SqliteCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@now",   DateTime.UtcNow.AddHours(7).ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.Parameters.AddWithValue("@u",     user.Username);
@@ -309,6 +307,7 @@ namespace Cabinet.Core.Data.Repositories
                 cmd.Parameters.AddWithValue("@pn",    (object?)user.PhoneNumber ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@r",     (object?)user.Role ?? "Guest");
                 cmd.Parameters.AddWithValue("@d",     (object?)user.DepartmentId ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@posId", (object?)user.PositionId ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@stamp", securityStamp);
                 cmd.Parameters.AddWithValue("@norm",  normalizedUserName);
                 await cmd.ExecuteNonQueryAsync();
@@ -329,6 +328,7 @@ namespace Cabinet.Core.Data.Repositories
                     PhoneNumber    = @pn, 
                     Role           = @r, 
                     DepartmentId   = @d,
+                    PositionId     = @posId,
                     SecurityStamp  = @stamp,
                     NormalizedUserName = upper(Username),
                     PasswordHash   = @ph
@@ -340,6 +340,7 @@ namespace Cabinet.Core.Data.Repositories
             cmd.Parameters.AddWithValue("@pn",    (object?)user.PhoneNumber ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@r",     (object?)user.Role ?? "Guest");
             cmd.Parameters.AddWithValue("@d",     (object?)user.DepartmentId ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@posId", (object?)user.PositionId ?? DBNull.Value);
             // Tạo SecurityStamp mới mỗi khi thông tin user thay đổi (invalidate token cũ)
             cmd.Parameters.AddWithValue("@stamp", Guid.NewGuid().ToString());
             cmd.Parameters.AddWithValue("@ph",    user.PasswordHash ?? "");

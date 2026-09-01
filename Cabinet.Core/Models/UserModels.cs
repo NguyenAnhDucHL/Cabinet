@@ -11,6 +11,8 @@ namespace Cabinet.Models
         public string Role { get; set; } = "Guest"; // Admin, LanhDao, VanThu, CanBo
         public int? DepartmentId { get; set; }
         public string? DepartmentName { get; set; }
+        public int? PositionId { get; set; }
+        public string? PositionName { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public string? SessionId { get; set; }
         

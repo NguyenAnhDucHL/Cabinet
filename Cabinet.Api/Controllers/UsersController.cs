@@ -184,6 +184,72 @@ namespace Cabinet.Api.Controllers
             await _userRepository.DeleteUserAsync(id);
             return Ok(ApiResponse.Ok("Xóa người dùng thành công."));
         }
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetProfile()
+        {
+            var userIdStr = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+            if (!int.TryParse(userIdStr, out var id)) return Unauthorized();
+
+            var user = await _userRepository.GetUserByIdAsync(id);
+            if (user == null) return NotFound(ApiResponse.Fail("Không tìm thấy người dùng."));
+
+            return Ok(ApiResponse.Ok(new
+            {
+                user.Id,
+                user.Username,
+                user.FullName,
+                user.Email,
+                user.PhoneNumber,
+                user.Role,
+                user.DepartmentId
+            }));
+        }
+
+        [Authorize]
+        [HttpPut("me")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
+        {
+            var userIdStr = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+            if (!int.TryParse(userIdStr, out var id)) return Unauthorized();
+
+            var user = await _userRepository.GetUserByIdAsync(id);
+            if (user == null) return NotFound(ApiResponse.Fail("Không tìm thấy người dùng."));
+
+            if (!string.IsNullOrWhiteSpace(request.OldPassword) && !string.IsNullOrWhiteSpace(request.NewPassword))
+            {
+                var identityUser = await _userManager.FindByIdAsync(id.ToString());
+                if (identityUser != null)
+                {
+                    var checkPassword = await _userManager.CheckPasswordAsync(identityUser, request.OldPassword);
+                    if (!checkPassword) return BadRequest(ApiResponse.Fail("Mật khẩu hiện tại không chính xác."));
+                    
+                    var (isValid, errorMessage) = ValidatePassword(request.NewPassword);
+                    if (!isValid) return BadRequest(ApiResponse.Fail(errorMessage));
+
+                    await _userManager.ChangePasswordAsync(identityUser, request.OldPassword, request.NewPassword);
+                    user.PasswordHash = identityUser.PasswordHash;
+                    user.SecurityStamp = identityUser.SecurityStamp;
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.FullName)) user.FullName = request.FullName;
+            if (request.Email != null) user.Email = request.Email;
+            if (request.PhoneNumber != null) user.PhoneNumber = request.PhoneNumber;
+
+            await _userRepository.UpdateUserAsync(user);
+            return Ok(ApiResponse.Ok("Cập nhật thông tin thành công."));
+        }
+    }
+
+    public class UpdateProfileRequest
+    {
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? OldPassword { get; set; }
+        public string? NewPassword { get; set; }
     }
 
     public class UserUpdateRequest

@@ -78,6 +78,8 @@ builder.Services.AddRateLimiter(options =>
 
 // Đăng ký Repositories (Clean Architecture)
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPositionRepository, PositionRepository>();
+builder.Services.AddScoped<ISystemConfigRepository, SystemConfigRepository>();
 
 builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IRoomRepository, Cabinet.Core.Data.Repositories.RoomRepository>();
 builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IMeetingRepository, Cabinet.Core.Data.Repositories.MeetingRepository>();

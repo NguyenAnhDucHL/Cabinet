@@ -30,5 +30,15 @@ namespace Cabinet.Hubs
 
             await base.OnDisconnectedAsync(exception);
         }
+
+        public async Task JoinMeetingGroup(int meetingId)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, $"Meeting_{meetingId}");
+        }
+
+        public async Task LeaveMeetingGroup(int meetingId)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"Meeting_{meetingId}");
+        }
     }
 }

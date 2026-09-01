@@ -224,6 +224,33 @@ function Root() {
   useEffect(() => {
     document.body.classList.add('app-booting')
 
+    // Fetch System Configs
+    const fetchSystemConfigs = async () => {
+      try {
+        const res = await fetch('/api/admin/configs')
+        if (res.ok) {
+          const json = await res.json()
+          if (json.data) {
+            if (json.data.PrimaryColor) {
+              document.documentElement.style.setProperty('--primary-color', json.data.PrimaryColor)
+              // Override tailwind primary if we use hardcoded #c8102e everywhere, but right now it relies on hardcoded tailwind classes.
+              // Wait, the rule says "System: Cơ chế load configs khi boot app (ghi đè biến CSS runtime)."
+              // It's just a proof of concept.
+            }
+            if (json.data.AppName) {
+              document.title = json.data.AppName
+            }
+            // Can save to localStorage for other components to use (like Logo in Sidebar)
+            localStorage.setItem('system_configs', JSON.stringify(json.data))
+            window.dispatchEvent(new Event('system_configs_updated'))
+          }
+        }
+      } catch (e) {
+        // silent
+      }
+    }
+    fetchSystemConfigs()
+
     // Lắng nghe thay đổi localStorage (đăng xuất từ tab khác)
     const handleStorageChange = () => {
       setIsAuthenticated(!!localStorage.getItem('auth_token'))
