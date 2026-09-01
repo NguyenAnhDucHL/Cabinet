@@ -1859,3 +1859,13 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetMeetingCreate.jsx` (Sửa đổi)
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingCreate/Step1Details.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -am "fix(meetings): xử lý logic nút Thêm vào kỷ yếu trong form tạo phiên họp"`
+### [2026-09-01 14:28] Cập nhật các file untracked lên Git
+- **Mô tả**: Bổ sung các tính năng chưa được track bao gồm tính năng Báo cáo thống kê (Reports) ở cả Backend lẫn Frontend và tính năng Lưu tài liệu vào thư viện (SaveToLibraryModal).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetReports.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/SaveToLibraryModal.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/reports/*` (Mới)
+  - `Cabinet.Api/Controllers/Cabinet/ReportsController.cs` (Mới)
+  - `Cabinet.Core/Data/Repositories/IReportRepository.cs` (Mới)
+  - `Cabinet.Core/Data/Repositories/ReportRepository.cs` (Mới)
+- **Lệnh git commit**: `git commit -m "feat(reports): bổ sung tính năng Báo cáo thống kê và Lưu vào thư viện"`
