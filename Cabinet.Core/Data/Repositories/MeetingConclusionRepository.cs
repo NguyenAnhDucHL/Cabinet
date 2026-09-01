@@ -27,6 +27,7 @@ namespace Cabinet.Core.Data.Repositories
 
         private const string BASE_SELECT = @"
             SELECT c.Id, c.MeetingId, c.FileName, c.Status, c.LastHandlerId, c.Progress, c.UpdatedAt,
+                   c.DocumentNumber, c.DocumentDate,
                    m.Title as MeetingTitle,
                    u.FullName as LastHandlerName,
                    u.Role as LastHandlerRole
@@ -46,6 +47,8 @@ namespace Cabinet.Core.Data.Repositories
             LastHandlerRole = r["LastHandlerRole"]?.ToString(),
             Progress = r["Progress"] == DBNull.Value ? 0 : Convert.ToInt32(r["Progress"]),
             UpdatedAt = r["UpdatedAt"] == DBNull.Value ? null : DateTime.Parse(r["UpdatedAt"].ToString()!),
+            DocumentNumber = r["DocumentNumber"]?.ToString(),
+            DocumentDate = r["DocumentDate"] == DBNull.Value ? null : DateTime.Parse(r["DocumentDate"].ToString()!),
         };
 
         public async Task<List<MeetingConclusion>> GetAllAsync(string? search, int page, int pageSize)
@@ -54,7 +57,7 @@ namespace Cabinet.Core.Data.Repositories
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
 
-            var where = string.IsNullOrWhiteSpace(search) ? "" : "WHERE m.Title LIKE @search OR c.FileName LIKE @search";
+            var where = string.IsNullOrWhiteSpace(search) ? "" : "WHERE m.Title LIKE @search OR c.FileName LIKE @search OR c.DocumentNumber LIKE @search";
             var sql = $"{BASE_SELECT} {where} ORDER BY c.UpdatedAt DESC LIMIT @limit OFFSET @offset";
 
             using var cmd = new SqliteCommand(sql, connection);
@@ -75,7 +78,7 @@ namespace Cabinet.Core.Data.Repositories
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
 
-            var where = string.IsNullOrWhiteSpace(search) ? "" : "WHERE m.Title LIKE @search OR c.FileName LIKE @search";
+            var where = string.IsNullOrWhiteSpace(search) ? "" : "WHERE m.Title LIKE @search OR c.FileName LIKE @search OR c.DocumentNumber LIKE @search";
             var sql = $"SELECT COUNT(*) FROM MeetingConclusions c JOIN Meetings m ON c.MeetingId = m.Id {where}";
 
             using var cmd = new SqliteCommand(sql, connection);
@@ -103,8 +106,8 @@ namespace Cabinet.Core.Data.Repositories
             await connection.OpenAsync();
 
             const string sql = @"
-                INSERT INTO MeetingConclusions (MeetingId, FileName, Status, LastHandlerId, Progress, UpdatedAt)
-                VALUES (@meetingId, @fileName, @status, @lastHandlerId, @progress, @now);
+                INSERT INTO MeetingConclusions (MeetingId, FileName, Status, LastHandlerId, Progress, UpdatedAt, DocumentNumber, DocumentDate)
+                VALUES (@meetingId, @fileName, @status, @lastHandlerId, @progress, @now, @docNum, @docDate);
                 SELECT last_insert_rowid();";
 
             using var cmd = new SqliteCommand(sql, connection);
@@ -114,6 +117,8 @@ namespace Cabinet.Core.Data.Repositories
             cmd.Parameters.AddWithValue("@lastHandlerId", (object?)req.LastHandlerId ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@progress", req.Progress);
             cmd.Parameters.AddWithValue("@now", DateTime.UtcNow.AddHours(7).ToString("yyyy-MM-dd HH:mm:ss"));
+            cmd.Parameters.AddWithValue("@docNum", (object?)req.DocumentNumber ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@docDate", (object?)req.DocumentDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? DBNull.Value);
 
             return Convert.ToInt32(await cmd.ExecuteScalarAsync());
         }
@@ -127,6 +132,8 @@ namespace Cabinet.Core.Data.Repositories
             if (req.Status != null) sets.Add("Status = @status");
             if (req.Progress.HasValue) sets.Add("Progress = @progress");
             if (req.LastHandlerId.HasValue) sets.Add("LastHandlerId = @lastHandlerId");
+            if (req.DocumentNumber != null) sets.Add("DocumentNumber = @docNum");
+            if (req.DocumentDate.HasValue) sets.Add("DocumentDate = @docDate");
 
             var sql = $"UPDATE MeetingConclusions SET {string.Join(", ", sets)} WHERE Id = @id";
 
@@ -136,6 +143,8 @@ namespace Cabinet.Core.Data.Repositories
             if (req.Status != null) cmd.Parameters.AddWithValue("@status", req.Status);
             if (req.Progress.HasValue) cmd.Parameters.AddWithValue("@progress", req.Progress.Value);
             if (req.LastHandlerId.HasValue) cmd.Parameters.AddWithValue("@lastHandlerId", req.LastHandlerId.Value);
+            if (req.DocumentNumber != null) cmd.Parameters.AddWithValue("@docNum", req.DocumentNumber);
+            if (req.DocumentDate.HasValue) cmd.Parameters.AddWithValue("@docDate", req.DocumentDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
 
             return await cmd.ExecuteNonQueryAsync() > 0;
         }

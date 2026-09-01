@@ -19,6 +19,10 @@ export function ConclusionFormModal({
   setFormMeetingId,
   formFileName,
   setFormFileName,
+  formDocumentNumber,
+  setFormDocumentNumber,
+  formDocumentDate,
+  setFormDocumentDate,
   formStatus,
   setFormStatus,
   onSubmit,
@@ -54,6 +58,22 @@ export function ConclusionFormModal({
               placeholder="Tên file kết luận (ví dụ: KL_2025_01.pdf)"
               value={formFileName}
               onChange={(e) => setFormFileName(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Số văn bản</Label>
+            <Input
+              placeholder="Ví dụ: 123/NQ-HĐND"
+              value={formDocumentNumber}
+              onChange={(e) => setFormDocumentNumber(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Ngày ban hành</Label>
+            <Input
+              type="date"
+              value={formDocumentDate}
+              onChange={(e) => setFormDocumentDate(e.target.value)}
             />
           </div>
           <div className="space-y-2">

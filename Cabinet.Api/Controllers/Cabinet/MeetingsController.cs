@@ -24,13 +24,16 @@ namespace Cabinet.Api.Controllers.Cabinet
         private readonly IMeetingRepository _meetingRepo;
         private readonly IRoomRepository _roomRepo;
         private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IQuestionnaireRepository _questionnaireRepo;
 
-        public MeetingsController(IMeetingRepository meetingRepo, IRoomRepository roomRepo, IHubContext<NotificationHub> hubContext)
+        public MeetingsController(IMeetingRepository meetingRepo, IRoomRepository roomRepo, IHubContext<NotificationHub> hubContext, IQuestionnaireRepository questionnaireRepo)
         {
             _meetingRepo = meetingRepo;
             _roomRepo = roomRepo;
             _hubContext = hubContext;
+            _questionnaireRepo = questionnaireRepo;
         }
+
 
         private int GetCurrentUserId()
         {
@@ -57,6 +60,111 @@ namespace Cabinet.Api.Controllers.Cabinet
                 return NotFound(ApiResponse.Fail("Không tìm thấy phiên họp."));
             return Ok(ApiResponse.Ok(meeting));
         }
+
+        // GET /api/phonghopkhonggiayto/meetings/{id}/export
+        [HttpGet("{id}/export")]
+        public async Task<IActionResult> Export(int id)
+        {
+            var meeting = await _meetingRepo.GetByIdAsync(id);
+            if (meeting == null)
+                return NotFound("Không tìm thấy phiên họp.");
+
+            var questionnaires = await _questionnaireRepo.GetAllByMeetingIdAsync(id);
+
+            var html = $@"<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Báo cáo phiên họp</title>
+    <style>
+        body {{ font-family: Arial, sans-serif; padding: 20px; }}
+        table {{ border-collapse: collapse; width: 100%; margin-bottom: 20px; }}
+        th, td {{ border: 1px solid #ccc; padding: 8px; text-align: left; }}
+        th {{ background-color: #f5f5f5; font-weight: bold; }}
+        h2, h3 {{ color: #333; }}
+        .text-center {{ text-align: center; }}
+    </style>
+</head>
+<body>
+    <h2 class='text-center'>BÁO CÁO PHIÊN HỌP</h2>
+    <table>
+        <tr><th width='200'>Tên phiên họp</th><td>{meeting.Title}</td></tr>
+        <tr><th>Thời gian</th><td>{(meeting.StartTime != DateTime.MinValue ? meeting.StartTime.ToString("dd/MM/yyyy HH:mm") : "")} - {(meeting.EndTime != DateTime.MinValue ? meeting.EndTime.ToString("HH:mm") : "")}</td></tr>
+        <tr><th>Địa điểm</th><td>{meeting.Location ?? "Phòng trực tuyến"}</td></tr>
+        <tr><th>Chủ trì</th><td>{meeting.Presider}</td></tr>
+        <tr><th>Đơn vị chuẩn bị</th><td>{meeting.PreparingUnit}</td></tr>
+        <tr><th>Trạng thái</th><td>{meeting.Status}</td></tr>
+    </table>
+
+    <h3>1. Danh sách tham dự</h3>
+    <table>
+        <tr>
+            <th width='50'>STT</th>
+            <th>Tên thành viên</th>
+            <th>Vai trò</th>
+            <th>Trạng thái tham dự</th>
+            <th>Lý do vắng mặt</th>
+            <th>Người đi thay</th>
+        </tr>";
+
+            int stt = 1;
+            int presentCount = 0;
+            int absentCount = 0;
+            foreach(var p in meeting.Participants)
+            {
+                var isAbsent = p.AttendanceStatus == "Vắng mặt" || p.AttendanceStatus == "Báo vắng";
+                if (isAbsent) absentCount++;
+                else presentCount++;
+
+                html += $@"<tr>
+            <td>{stt++}</td>
+            <td>{p.UserFullName}</td>
+            <td>{p.UserRole}</td>
+            <td>{p.AttendanceStatus}</td>
+            <td>{p.AbsenceReason}</td>
+            <td>{(p.SubstituteUserId.HasValue ? "Có" : "")}</td>
+        </tr>";
+            }
+
+            html += $@"
+    </table>
+    <p><strong>Thống kê:</strong> Tổng: {meeting.Participants.Count}, Tham dự: {presentCount}, Vắng mặt: {absentCount}</p>
+
+    <h3>2. Nội dung phiên họp</h3>
+    <p>{meeting.Content?.Replace("\n", "<br>") ?? "Không có nội dung"}</p>
+
+    <h3>3. Phiếu lấy ý kiến & Biểu quyết</h3>
+    <table>
+        <tr>
+            <th width='50'>STT</th>
+            <th>Tên phiếu</th>
+            <th>Trạng thái</th>
+            <th>Ngày hạn</th>
+            <th>Tỉ lệ hoàn thành</th>
+        </tr>";
+
+            int qStt = 1;
+            foreach(var q in questionnaires)
+            {
+                // Thống kê kết quả có thể chi tiết hơn, nhưng tạm thời xuất danh sách phiếu.
+                html += $@"<tr>
+            <td>{qStt++}</td>
+            <td>{q.Title}</td>
+            <td>{q.Status}</td>
+            <td>{(q.Deadline.HasValue ? q.Deadline.Value.ToString("dd/MM/yyyy") : "")}</td>
+            <td>-</td>
+        </tr>";
+            }
+
+            html += @"
+    </table>
+</body>
+</html>";
+
+            var bytes = System.Text.Encoding.UTF8.GetBytes(html);
+            var fileName = $"BaoCao_PhienHop_{id}.xls";
+            return File(bytes, "application/vnd.ms-excel", fileName);
+        }
+
 
         // GET /api/phonghopkhonggiayto/meetings/my-meetings
         // Lấy danh sách phiên họp mà user hiện tại được mời tham dự (kèm trạng thái tham dự)

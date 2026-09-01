@@ -31,4 +31,9 @@ export const meetingApi = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ approve }),
     }).then((r) => r.json()),
+  export: (id) =>
+    fetch(`${BASE}/${id}/export`).then((r) => {
+      if (!r.ok) throw new Error('Không thể tải báo cáo')
+      return r.blob()
+    }),
 }

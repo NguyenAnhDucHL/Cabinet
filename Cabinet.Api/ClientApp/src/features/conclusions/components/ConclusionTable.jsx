@@ -33,6 +33,8 @@ export function ConclusionTable({ data, loading, page, pageSize }) {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[60px] text-center">STT</TableHead>
+            <TableHead>Số văn bản</TableHead>
+            <TableHead>Ngày ban hành</TableHead>
             <TableHead>Phiên họp</TableHead>
             <TableHead>File kết luận</TableHead>
             <TableHead className="text-center">Tiến độ</TableHead>
@@ -44,7 +46,7 @@ export function ConclusionTable({ data, loading, page, pageSize }) {
         <TableBody>
           {data.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="h-64 text-center">
+              <TableCell colSpan={9} className="h-64 text-center">
                 <div className="flex flex-col items-center justify-center text-gray-500">
                   <FileText className="h-12 w-12 text-gray-300 mb-4" />
                   <p>Không có dữ liệu</p>
@@ -55,6 +57,12 @@ export function ConclusionTable({ data, loading, page, pageSize }) {
             data.map((row, idx) => (
               <TableRow key={row.id}>
                 <TableCell className="text-center">{stt(idx)}</TableCell>
+                <TableCell className="font-semibold text-gray-900">
+                  {row.documentNumber || '—'}
+                </TableCell>
+                <TableCell className="text-gray-600">
+                  {row.documentDate ? new Date(row.documentDate).toLocaleDateString('vi-VN') : '—'}
+                </TableCell>
                 <TableCell className="font-medium text-gray-900">{row.meetingTitle}</TableCell>
                 <TableCell className="text-gray-600">{row.fileName || '—'}</TableCell>
                 <TableCell className="text-center">

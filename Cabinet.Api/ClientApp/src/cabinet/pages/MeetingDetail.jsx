@@ -150,6 +150,26 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                   : 'Gửi lịch họp'}
             </button>
             <button
+              className="border border-green-600 text-green-700 hover:bg-green-50 px-3 py-2 rounded-md flex items-center text-sm font-medium transition-colors"
+              onClick={async () => {
+                try {
+                  const blob = await meetingApi.export(meeting.id)
+                  const url = window.URL.createObjectURL(blob)
+                  const a = document.createElement('a')
+                  a.href = url
+                  a.download = `BaoCao_PhienHop_${meeting.id}.xls`
+                  document.body.appendChild(a)
+                  a.click()
+                  document.body.removeChild(a)
+                  window.URL.revokeObjectURL(url)
+                } catch (e) {
+                  alert(e.message || 'Có lỗi khi xuất báo cáo')
+                }
+              }}
+            >
+              <Download size={15} className="mr-1.5" /> Xuất báo cáo
+            </button>
+            <button
               className="bg-[#c8102e] hover:bg-[#a50e27] text-white px-4 py-2 rounded-md flex items-center text-sm font-medium transition-colors"
               onClick={() => {
                 if (onViewProgress) onViewProgress()

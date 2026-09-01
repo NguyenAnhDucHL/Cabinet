@@ -19,4 +19,12 @@ export const conclusionApi = {
       body: JSON.stringify(body),
     }).then((r) => r.json()),
   delete: (id) => fetch(`${BASE}/${id}`, { method: 'DELETE' }).then((r) => r.json()),
+  export: (search = '') => {
+    const params = new URLSearchParams()
+    if (search) params.append('search', search)
+    return fetch(`${BASE}/export?${params}`).then((r) => {
+      if (!r.ok) throw new Error('Không thể xuất Excel')
+      return r.blob()
+    })
+  },
 }

@@ -1,3 +1,20 @@
+### [2026-09-01 11:05] Hoàn thành báo cáo phiên họp và tra cứu nghị quyết nâng cao
+- **Mô tả**: Hoàn thiện Phase 3 từ tài liệu HDSD:
+  1. Xuất báo cáo phiên họp: Thêm API `/meetings/{id}/export` trả về Excel, và nút Xuất báo cáo trong màn hình chi tiết phiên họp.
+  2. Tra cứu nghị quyết nâng cao: Thêm cột `DocumentNumber` (Số văn bản) và `DocumentDate` (Ngày ban hành) vào `MeetingConclusions`. Bổ sung API export Excel `/conclusions/export`. Cập nhật giao diện quản lý kết luận.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Models/MeetingConclusion.cs` (Sửa đổi)
+  - `Cabinet.Core/Data/Repositories/MeetingConclusionRepository.cs` (Sửa đổi)
+  - `Cabinet.Api/Controllers/Cabinet/MeetingsController.cs` (Sửa đổi)
+  - `Cabinet.Api/Controllers/Cabinet/MeetingConclusionsController.cs` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/api/meetingApi.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/conclusions/api/conclusionApi.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/conclusions/components/ConclusionFormModal.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/conclusions/components/ConclusionTable.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetConclusions.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(cabinet): hoàn thành xuất báo cáo phiên họp và tra cứu nghị quyết nâng cao"`
+
 ### [2026-09-01 10:59] Hoàn thành tính năng gửi lịch họp, báo vắng và phiếu lấy ý kiến
 - **Mô tả**: Đã hoàn thiện toàn bộ luồng nghiệp vụ Phase 1 và 2 từ tài liệu HDSD:
   1. Gửi lịch họp / Thông báo mời họp (MeetingDetail)

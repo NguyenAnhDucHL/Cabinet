@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Search, Plus, RefreshCw } from 'lucide-react'
+import { Search, Plus, RefreshCw, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useConclusions } from '../../features/conclusions/hooks/useConclusions'
 import { ConclusionTable } from '../../features/conclusions/components/ConclusionTable'
 import { ConclusionFormModal } from '../../features/conclusions/components/ConclusionFormModal'
+import { conclusionApi } from '../../features/conclusions/api/conclusionApi'
 
 export function CabinetConclusions() {
   const {
@@ -25,6 +26,8 @@ export function CabinetConclusions() {
   const [saving, setSaving] = useState(false)
   const [formMeetingId, setFormMeetingId] = useState('')
   const [formFileName, setFormFileName] = useState('')
+  const [formDocumentNumber, setFormDocumentNumber] = useState('')
+  const [formDocumentDate, setFormDocumentDate] = useState('')
   const [formStatus, setFormStatus] = useState('Chưa xử lý')
 
   const totalPages = Math.ceil(total / pageSize)
@@ -43,12 +46,16 @@ export function CabinetConclusions() {
       await createConclusion({
         meetingId: Number(formMeetingId),
         fileName: formFileName || null,
+        documentNumber: formDocumentNumber || null,
+        documentDate: formDocumentDate ? new Date(formDocumentDate).toISOString() : null,
         status: formStatus,
         progress: 0,
       })
       setIsAddOpen(false)
       setFormMeetingId('')
       setFormFileName('')
+      setFormDocumentNumber('')
+      setFormDocumentDate('')
       setFormStatus('Chưa xử lý')
     } finally {
       setSaving(false)
@@ -59,13 +66,37 @@ export function CabinetConclusions() {
     <div className="flex flex-col h-full bg-white rounded-lg p-6 shadow-sm">
       <div className="flex items-center justify-between mb-6">
         <h3 className="font-semibold text-xl text-slate-800">Tra cứu kết luận sau phiên họp</h3>
-        <Button
-          onClick={() => setIsAddOpen(true)}
-          className="bg-[#c8102e] hover:bg-[#a50e27] text-white"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Thêm mới
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            className="border-green-600 text-green-700 hover:bg-green-50"
+            onClick={async () => {
+              try {
+                const blob = await conclusionApi.export(search)
+                const url = window.URL.createObjectURL(blob)
+                const a = document.createElement('a')
+                a.href = url
+                a.download = `DanhSachKetLuan_${new Date().getTime()}.xls`
+                document.body.appendChild(a)
+                a.click()
+                document.body.removeChild(a)
+                window.URL.revokeObjectURL(url)
+              } catch (e) {
+                alert(e.message || 'Có lỗi khi xuất Excel')
+              }
+            }}
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Xuất Excel
+          </Button>
+          <Button
+            onClick={() => setIsAddOpen(true)}
+            className="bg-[#c8102e] hover:bg-[#a50e27] text-white"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Thêm mới
+          </Button>
+        </div>
       </div>
 
       <div className="flex items-center justify-between mb-4">
@@ -118,6 +149,10 @@ export function CabinetConclusions() {
         setFormMeetingId={setFormMeetingId}
         formFileName={formFileName}
         setFormFileName={setFormFileName}
+        formDocumentNumber={formDocumentNumber}
+        setFormDocumentNumber={setFormDocumentNumber}
+        formDocumentDate={formDocumentDate}
+        setFormDocumentDate={setFormDocumentDate}
         formStatus={formStatus}
         setFormStatus={setFormStatus}
         onSubmit={handleCreate}

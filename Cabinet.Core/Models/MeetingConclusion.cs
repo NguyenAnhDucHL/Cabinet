@@ -12,6 +12,8 @@ namespace Cabinet.Models
         public string? LastHandlerName { get; set; }   // Join
         public string? LastHandlerRole { get; set; }   // Join (e.g. chức vụ)
         public int Progress { get; set; }              // 0-100 %
+        public string? DocumentNumber { get; set; }
+        public DateTime? DocumentDate { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
 
@@ -22,6 +24,8 @@ namespace Cabinet.Models
         public string Status { get; set; } = "Chưa xử lý";
         public int? LastHandlerId { get; set; }
         public int Progress { get; set; }
+        public string? DocumentNumber { get; set; }
+        public DateTime? DocumentDate { get; set; }
     }
 
     public class UpdateConclusionRequest
@@ -29,5 +33,7 @@ namespace Cabinet.Models
         public string? Status { get; set; }
         public int? Progress { get; set; }
         public int? LastHandlerId { get; set; }
+        public string? DocumentNumber { get; set; }
+        public DateTime? DocumentDate { get; set; }
     }
 }
