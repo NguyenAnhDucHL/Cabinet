@@ -296,24 +296,6 @@ export function AppShell() {
     const handleKicked = () => signalRService.stop()
     document.addEventListener('auth:kicked', handleKicked)
 
-    const originalFetch = window.fetch
-    window.fetch = async (...args) => {
-      try {
-        const response = await originalFetch(...args)
-        if (response.status === 401) {
-          const url = typeof args[0] === 'string' ? args[0] : args[0]?.url || ''
-          const isRoleIssue = url.includes('/api/admin/') || url.includes('/api/users')
-          if (!isRoleIssue) {
-            document.dispatchEvent(new CustomEvent('auth:unauthorized'))
-          }
-        }
-        return response
-      } catch (error) {
-        console.error('Fetch error:', error)
-        throw error
-      }
-    }
-
     signalRService.start()
 
     const handleNewTask = (e) => {

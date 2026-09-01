@@ -90,7 +90,11 @@ window.fetch = async (...args) => {
     }
 
     // Nếu không có refresh token hoặc refresh thất bại
-    document.dispatchEvent(new CustomEvent('auth:unauthorized'))
+    const url = typeof args[0] === 'string' ? args[0] : args[0]?.url || ''
+    const isRoleIssue = url.includes('/api/admin/') || url.includes('/api/users')
+    if (!isRoleIssue) {
+      document.dispatchEvent(new CustomEvent('auth:unauthorized'))
+    }
   }
   return response
 }

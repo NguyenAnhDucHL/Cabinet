@@ -1847,3 +1847,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetQuestionnaireCreate.jsx` (Sửa đổi)
   - `Cabinet.Api/ClientApp/src/features/questionnaires/hooks/useQuestionnaireCreate.js` (Sửa đổi)
 - **Lệnh git commit**: `git commit -am "refactor(questionnaires): tách fetch call ra questionnaireApi"`
+### [2026-09-01 14:15] Gộp logic bắt lỗi 401 về main.jsx
+- **Mô tả**: Loại bỏ việc ghi đè `window.fetch` (Monkey Patching chaining) ở `AppShell.jsx` và gộp chung logic bỏ qua lỗi 401 đối với các URL Admin/Users vào thẳng Global Fetch Interceptor ở `main.jsx`.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/shell/AppShell.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/main.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -am "refactor(api): gom logic bắt lỗi 401 về một mối tại main.jsx"`
