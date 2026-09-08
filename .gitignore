@@ -62,3 +62,8 @@ Cabinet.Core/Models/PaddleOCR/
 Models/PaddleOCR/
 scratch/
 
+
+# SSL Certificates (Do not commit to git)
+nginx/certs/*.crt
+nginx/certs/*.key
+nginx/certs/*.pem
