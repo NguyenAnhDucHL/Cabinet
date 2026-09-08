@@ -1932,3 +1932,10 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Core/Data/Repositories/UserRepository.cs` (Sửa đổi)
   - `Cabinet.Core/Data/Repositories/AuditLogRepository.cs` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "perf(db): thay thế SELECT * bằng explicit columns"`
+
+### [2026-09-08 08:38] Giới hạn tài nguyên Docker (Memory & Log Size)
+- **Mô tả**: Bổ sung cấu hình giới hạn dung lượng RAM và CPU cho từng service (`cabinet-backend`, `clamav`, `nginx`) để tránh tình trạng tràn RAM (OOM). Bổ sung giới hạn lưu log (`logging: max-size: "10m"`, `max-file: "3"`) để ngăn chặn việc file log phình to gây đầy ổ cứng 100% như sự cố vừa gặp. Thêm cờ `--compatibility` vào lệnh chạy compose để tương thích với docker-compose cũ.
+- **Tệp thay đổi**:
+  - `docker-compose.yml` (Sửa đổi)
+  - `.github/workflows/deploy.yml` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(infra): giới hạn memory và dung lượng log cho docker"`

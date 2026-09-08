@@ -38,6 +38,16 @@ services:
       - ./Cabinet.Api/Uploads:/app/Uploads
       - ./Cabinet.Core/Models/PaddleOCR:/app/Models/PaddleOCR:ro
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1536M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 
 
@@ -53,6 +63,16 @@ services:
     volumes:
       - clamav-db:/var/lib/clamav  # Database virus được persist giữa các lần khởi động
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1536M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   nginx:
     image: nginx:alpine
@@ -66,6 +86,16 @@ services:
     depends_on:
       - cabinet-backend
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 
 

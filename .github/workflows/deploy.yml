@@ -39,5 +39,5 @@ jobs:
             
             # Build và khởi động lại
             docker-compose down
-            docker-compose up -d --build
+            docker-compose --compatibility up -d --build
           EOF
