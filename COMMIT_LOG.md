@@ -1925,3 +1925,10 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/main.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(api): tối ưu fetch interceptor xoá content-length và bỏ qua login 401"`
+
+### [2026-09-08 08:33] Refactor Query Database
+- **Mô tả**: Thay thế toàn bộ các câu truy vấn `SELECT *` và `SELECT u.*` bằng cách liệt kê danh sách cột rõ ràng. Điều này giúp tối ưu hóa hiệu năng Database, giảm dung lượng bộ nhớ cấp phát không cần thiết và tránh rủi ro phá vỡ code khi cấu trúc bảng thay đổi trong tương lai.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Data/Repositories/UserRepository.cs` (Sửa đổi)
+  - `Cabinet.Core/Data/Repositories/AuditLogRepository.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "perf(db): thay thế SELECT * bằng explicit columns"`

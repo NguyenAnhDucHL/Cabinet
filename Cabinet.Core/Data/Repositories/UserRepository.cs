@@ -116,7 +116,7 @@ namespace Cabinet.Core.Data.Repositories
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
             string sql = @"
-                SELECT u.*, d.Name as DepartmentName, p.Name as PositionName
+                SELECT u.Id, u.Username, u.PasswordHash, u.FullName, u.Email, u.PhoneNumber, u.Role, u.DepartmentId, u.CreatedAt, u.SessionId, u.FailedLoginCount, u.LockoutUntil, u.SecurityStamp, u.NormalizedUserName, u.LockoutEnabled, u.AccessFailedCount, u.LockoutEnd, u.RefreshToken, u.RefreshTokenExpiryTime, u.PositionId, d.Name as DepartmentName, p.Name as PositionName
                 FROM Users u 
                 LEFT JOIN Departments d ON u.DepartmentId = d.Id
                 LEFT JOIN Positions p ON u.PositionId = p.Id";
@@ -132,7 +132,7 @@ namespace Cabinet.Core.Data.Repositories
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
             string sql = @"
-                SELECT u.*, d.Name as DepartmentName, p.Name as PositionName
+                SELECT u.Id, u.Username, u.PasswordHash, u.FullName, u.Email, u.PhoneNumber, u.Role, u.DepartmentId, u.CreatedAt, u.SessionId, u.FailedLoginCount, u.LockoutUntil, u.SecurityStamp, u.NormalizedUserName, u.LockoutEnabled, u.AccessFailedCount, u.LockoutEnd, u.RefreshToken, u.RefreshTokenExpiryTime, u.PositionId, d.Name as DepartmentName, p.Name as PositionName
                 FROM Users u 
                 LEFT JOIN Departments d ON u.DepartmentId = d.Id
                 LEFT JOIN Positions p ON u.PositionId = p.Id
@@ -451,7 +451,7 @@ namespace Cabinet.Core.Data.Repositories
 
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
-            string sql = "SELECT * FROM Users WHERE RefreshToken = @rt";
+            string sql = "SELECT Id, Username, PasswordHash, FullName, Email, PhoneNumber, Role, DepartmentId, CreatedAt, SessionId, FailedLoginCount, LockoutUntil, SecurityStamp, NormalizedUserName, LockoutEnabled, AccessFailedCount, LockoutEnd, RefreshToken, RefreshTokenExpiryTime, PositionId FROM Users WHERE RefreshToken = @rt";
             using var cmd = new SqliteCommand(sql, connection);
             cmd.Parameters.AddWithValue("@rt", refreshToken);
             using var reader = await cmd.ExecuteReaderAsync();

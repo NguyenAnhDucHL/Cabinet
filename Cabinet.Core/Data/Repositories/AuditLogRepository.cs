@@ -49,7 +49,7 @@ namespace Cabinet.Core.Data.Repositories
                 total = Convert.ToInt32(totalObj);
 
                 string sql = $@"
-                    SELECT a.*, u.FullName as UserFullName 
+                    SELECT a.Id, a.UserId, a.Action, a.Timestamp, u.FullName as UserFullName
                     FROM AuditLogs a 
                     LEFT JOIN Users u ON a.UserId = u.Id 
                     {whereSql}
