@@ -14,6 +14,7 @@ import {
   Book,
   Send,
   UserX,
+  Upload,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { meetingApi } from '../../features/meetings/api/meetingApi'
@@ -207,7 +208,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
               <Download size={15} className="mr-1.5" /> Xuất báo cáo
             </button>
             <button
-              className="bg-[#c8102e] hover:bg-[#a50e27] text-white px-4 py-2 rounded-md flex items-center text-sm font-medium transition-colors"
+              className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white px-4 py-2 rounded-md flex items-center text-sm font-medium transition-colors"
               onClick={() => {
                 if (onViewProgress) onViewProgress()
               }}
@@ -250,7 +251,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-gray-500 w-[140px] shrink-0">Địa điểm họp:</span>
-                    <span className="font-semibold text-[#c8102e]">
+                    <span className="font-semibold text-[var(--color-primary)]">
                       {meeting.roomName || meeting.location || 'Chưa cập nhật'}
                     </span>
                   </div>
@@ -258,7 +259,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                     <span className="text-gray-500 w-[140px] shrink-0">Thành phần tham gia:</span>
                     <button
                       onClick={() => setIsParticipantsModalOpen(true)}
-                      className="font-semibold text-[#c8102e] hover:underline"
+                      className="font-semibold text-[var(--color-primary)] hover:underline"
                     >
                       Xem thành phần tham gia
                     </button>
@@ -273,14 +274,14 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                               href={file}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="font-semibold text-[#c8102e] hover:underline truncate max-w-[250px]"
+                              className="font-semibold text-[var(--color-primary)] hover:underline truncate max-w-[250px]"
                             >
                               {file.split('/').pop()}
                             </a>
                             <a
                               href={file}
                               download
-                              className="text-gray-400 hover:text-[#c8102e] transition-colors"
+                              className="text-gray-400 hover:text-[var(--color-primary)] transition-colors"
                               title="Tải xuống"
                             >
                               <Download className="w-4 h-4" />
@@ -302,14 +303,14 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                               href={file}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="font-semibold text-[#c8102e] hover:underline truncate max-w-[250px]"
+                              className="font-semibold text-[var(--color-primary)] hover:underline truncate max-w-[250px]"
                             >
                               {file.split('/').pop()}
                             </a>
                             <a
                               href={file}
                               download
-                              className="text-gray-400 hover:text-[#c8102e] transition-colors"
+                              className="text-gray-400 hover:text-[var(--color-primary)] transition-colors"
                               title="Tải xuống"
                             >
                               <Download className="w-4 h-4" />
@@ -349,7 +350,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                       </h4>
                       <div className="flex items-center gap-2 shrink-0">
                         <Button
-                          className="bg-[#c8102e] hover:bg-[#a50e27] text-white h-8 text-xs font-semibold px-4 rounded-md"
+                          className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white h-8 text-xs font-semibold px-4 rounded-md"
                           onClick={() => setIsGopYOpen(true)}
                         >
                           Thêm góp ý
@@ -384,7 +385,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                         <span className="text-gray-500 w-[130px]">Thành phần tham gia:</span>
                         <button
                           onClick={() => setIsParticipantsModalOpen(true)}
-                          className="font-semibold text-[#c8102e] hover:underline"
+                          className="font-semibold text-[var(--color-primary)] hover:underline"
                         >
                           Xem thành phần tham gia
                         </button>
@@ -410,7 +411,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                               <span className="font-medium text-[#1a202c] truncate">
                                 {idx + 1}. {doc.name || 'Tài liệu'}
                               </span>
-                              <button className="text-gray-400 hover:text-[#c8102e] ml-1">
+                              <button className="text-gray-400 hover:text-[var(--color-primary)] ml-1">
                                 <Download size={14} />
                               </button>
                             </li>
@@ -456,7 +457,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
               >
                 <div className="border border-gray-200 rounded-lg overflow-hidden">
                   <div className="flex border-b border-gray-200">
-                    <button className="flex-1 py-3 text-center font-bold text-sm text-[#c8102e] border-b-2 border-[#c8102e] bg-white">
+                    <button className="flex-1 py-3 text-center font-bold text-sm text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] bg-white">
                       Chờ phát biểu
                     </button>
                     <button className="flex-1 py-3 text-center font-bold text-sm text-gray-600 hover:bg-gray-50">
@@ -505,12 +506,12 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
         <div className="fixed right-0 top-[40%] z-40 flex items-center group cursor-pointer transition-transform translate-x-[calc(100%-3rem)] hover:translate-x-0">
           <button
             onClick={() => setIsNoteModalOpen(true)}
-            className="bg-white border-y border-l border-[#c8102e] rounded-l-full flex items-center shadow-md overflow-hidden h-12"
+            className="bg-white border-y border-l border-[var(--color-primary)] rounded-l-full flex items-center shadow-md overflow-hidden h-12"
           >
-            <div className="bg-[#c8102e] text-white w-9 h-9 flex items-center justify-center rounded-md ml-1.5 shrink-0">
+            <div className="bg-[var(--color-primary)] text-white w-9 h-9 flex items-center justify-center rounded-md ml-1.5 shrink-0">
               <Book size={18} />
             </div>
-            <span className="text-[#c8102e] font-bold px-3 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+            <span className="text-[var(--color-primary)] font-bold px-3 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
               Sổ tay
             </span>
           </button>
@@ -542,12 +543,12 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                 {/* Góp ý cho nội dung */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Góp ý cho nội dung <span className="text-[#c8102e]">*</span>
+                    Góp ý cho nội dung <span className="text-[var(--color-primary)]">*</span>
                   </label>
                   <select
                     value={gopYContent}
                     onChange={(e) => setGopYContent(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition bg-white"
                   >
                     <option value="">-- Chọn nội dung --</option>
                     <option value={meeting.content || meeting.title}>
@@ -564,7 +565,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                   <select
                     value={gopYDoc}
                     onChange={(e) => setGopYDoc(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition bg-white"
                   >
                     <option value="">Chọn tài liệu</option>
                     {(meeting.documents || []).map((doc, idx) => (
@@ -578,14 +579,14 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                 {/* Chi tiết góp ý */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Chi tiết góp ý <span className="text-[#c8102e]">*</span>
+                    Chi tiết góp ý <span className="text-[var(--color-primary)]">*</span>
                   </label>
                   <textarea
                     rows={4}
                     placeholder="Nhập nội dung góp ý"
                     value={gopYDetail}
                     onChange={(e) => setGopYDetail(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition resize-none"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition resize-none"
                   />
                 </div>
 
@@ -595,7 +596,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                     Tài liệu đính kèm
                   </label>
                   <div
-                    className="border-2 border-dashed border-gray-300 rounded-lg px-4 py-5 text-center cursor-pointer hover:border-[#c8102e] hover:bg-red-50/30 transition"
+                    className="border-2 border-dashed border-gray-300 rounded-lg px-4 py-5 text-center cursor-pointer hover:border-[var(--color-primary)] hover:bg-red-50/30 transition"
                     onClick={() => gopYFileRef.current?.click()}
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={(e) => {
@@ -604,9 +605,9 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                       setGopYFiles((prev) => [...prev, ...files])
                     }}
                   >
-                    <Upload size={20} className="mx-auto text-[#c8102e] mb-1" />
+                    <Upload size={20} className="mx-auto text-[var(--color-primary)] mb-1" />
                     <p className="text-sm">
-                      <span className="text-[#c8102e] font-semibold">Chọn file</span>
+                      <span className="text-[var(--color-primary)] font-semibold">Chọn file</span>
                       <span className="text-gray-500"> hoặc Kéo thả từ máy tính</span>
                     </p>
                     <p className="text-xs text-gray-400 mt-1">
@@ -658,7 +659,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                 <button
                   onClick={handleGopYSubmit}
                   disabled={gopYSaving || !gopYDetail.trim()}
-                  className="px-5 py-2 text-sm bg-[#c8102e] hover:bg-[#a50e27] text-white rounded-lg font-semibold transition disabled:opacity-60"
+                  className="px-5 py-2 text-sm bg-[var(--color-primary)] hover:bg-[#a50e27] text-white rounded-lg font-semibold transition disabled:opacity-60"
                 >
                   {gopYSaving ? 'Đang gửi...' : 'Góp ý'}
                 </button>

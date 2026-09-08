@@ -69,7 +69,7 @@ export function ConclusionTable({ data, loading, page, pageSize }) {
                   <div className="flex items-center gap-2 justify-center">
                     <div className="w-20 bg-gray-200 rounded-full h-1.5">
                       <div
-                        className="bg-[#c8102e] h-1.5 rounded-full"
+                        className="bg-[var(--color-primary)] h-1.5 rounded-full"
                         style={{ width: `${row.progress || 0}%` }}
                       />
                     </div>

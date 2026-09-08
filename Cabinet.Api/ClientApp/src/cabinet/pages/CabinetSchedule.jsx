@@ -77,7 +77,7 @@ export function CabinetSchedule({ scheduleType = 'personal' }) {
         <h1 className="text-xl font-bold text-gray-800">Lịch họp</h1>
         <button
           onClick={() => setModal({ mode: 'add' })}
-          className="flex items-center gap-2 bg-[#c8102e] hover:bg-[#a50e27] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm"
+          className="flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[#a50e27] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm"
         >
           <Plus size={15} />
           Tạo phiên họp mới
@@ -117,7 +117,7 @@ export function CabinetSchedule({ scheduleType = 'personal' }) {
               onClick={() => handleViewChange(btn.key)}
               className={`px-4 py-1.5 font-medium transition-colors ${
                 viewMode === btn.key
-                  ? 'bg-[#c8102e] text-white'
+                  ? 'bg-[var(--color-primary)] text-white'
                   : 'bg-white text-gray-600 hover:bg-gray-50'
               }`}
             >
@@ -132,7 +132,7 @@ export function CabinetSchedule({ scheduleType = 'personal' }) {
         {loading ? (
           <div className="flex items-center justify-center h-full">
             <div className="flex flex-col items-center gap-3 text-gray-400">
-              <div className="w-8 h-8 border-2 border-[#c8102e] border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-2 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin" />
               <span className="text-sm">Đang tải lịch họp...</span>
             </div>
           </div>

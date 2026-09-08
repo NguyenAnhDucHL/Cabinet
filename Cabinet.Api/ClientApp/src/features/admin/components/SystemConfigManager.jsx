@@ -75,7 +75,7 @@ export function SystemConfigManager() {
         <CardContent className="p-6">
           {loading ? (
             <div className="flex justify-center items-center h-40">
-              <Loader2 className="w-8 h-8 text-[#c8102e] animate-spin" />
+              <Loader2 className="w-8 h-8 text-[var(--color-primary)] animate-spin" />
             </div>
           ) : (
             <div className="space-y-6">
@@ -139,7 +139,7 @@ export function SystemConfigManager() {
                 <Button
                   onClick={handleSave}
                   disabled={saving}
-                  className="bg-[#c8102e] hover:bg-[#a50e27] text-white flex items-center gap-2"
+                  className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white flex items-center gap-2"
                 >
                   {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
                   Lưu cấu hình

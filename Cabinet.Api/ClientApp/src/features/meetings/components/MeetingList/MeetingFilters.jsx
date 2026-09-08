@@ -40,7 +40,7 @@ export function MeetingFilters({ searchQuery, setSearchQuery, fetchMeetings }) {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="h-9 text-[#c8102e] border-[#c8102e] hover:bg-red-50 rounded-full px-4"
+              className="h-9 text-[var(--color-primary)] border-[var(--color-primary)] hover:bg-red-50 rounded-full px-4"
             >
               <Filter size={14} className="mr-2" />
               Bộ lọc
@@ -67,7 +67,7 @@ export function MeetingFilters({ searchQuery, setSearchQuery, fetchMeetings }) {
                   </Select>
                 </div>
               ))}
-              <Button className="w-full bg-[#c8102e] hover:bg-[#a50e27] text-white">
+              <Button className="w-full bg-[var(--color-primary)] hover:bg-[#a50e27] text-white">
                 Lọc dữ liệu
               </Button>
             </div>
@@ -77,7 +77,7 @@ export function MeetingFilters({ searchQuery, setSearchQuery, fetchMeetings }) {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="h-9 text-[#c8102e] border-[#c8102e] hover:bg-red-50 rounded-full px-4"
+              className="h-9 text-[var(--color-primary)] border-[var(--color-primary)] hover:bg-red-50 rounded-full px-4"
             >
               <CalendarIcon size={14} className="mr-2" />
               Thời gian
@@ -93,7 +93,7 @@ export function MeetingFilters({ searchQuery, setSearchQuery, fetchMeetings }) {
                 <label className="text-xs font-semibold text-gray-600">Đến ngày</label>
                 <Input type="date" className="h-9 text-sm" />
               </div>
-              <Button className="w-full bg-[#c8102e] hover:bg-[#a50e27] text-white mt-2">
+              <Button className="w-full bg-[var(--color-primary)] hover:bg-[#a50e27] text-white mt-2">
                 Lọc dữ liệu
               </Button>
             </div>

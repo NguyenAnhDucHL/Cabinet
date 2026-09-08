@@ -1,6 +1,6 @@
 import { ROLES } from '../constants/roles'
 /* eslint-disable */
-/* eslint-disable no-empty */
+
 import React, { useEffect, useState } from 'react'
 import {
   Plus,
@@ -458,7 +458,7 @@ export function Users() {
                           {user.positionName && (
                             <Badge
                               variant="default"
-                              className="bg-[#c8102e]/10 text-[#c8102e] font-bold text-[10px] truncate max-w-full w-fit"
+                              className="bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-bold text-[10px] truncate max-w-full w-fit"
                             >
                               {user.positionName}
                             </Badge>

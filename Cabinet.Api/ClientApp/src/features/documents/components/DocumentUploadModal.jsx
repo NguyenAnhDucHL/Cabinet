@@ -136,13 +136,15 @@ export function DocumentUploadModal({ isOpen, onClose, onSuccess, type, folderId
                 />
               </div>
             ) : (
-              <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg bg-gray-50">
-                <div className="flex items-center space-x-3 overflow-hidden">
+              <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg bg-gray-50 gap-2">
+                <div className="flex items-center space-x-3 overflow-hidden min-w-0 flex-1">
                   <div className="p-2 bg-white rounded shadow-sm shrink-0">
                     <UploadCloud className="w-4 h-4 text-gray-500" />
                   </div>
-                  <div className="truncate">
-                    <p className="text-sm font-medium text-gray-700 truncate">{file.name}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-700 truncate" title={file.name}>
+                      {file.name}
+                    </p>
                     <p className="text-xs text-gray-500">
                       {(file.size / 1024 / 1024).toFixed(2)} MB
                     </p>
@@ -168,7 +170,7 @@ export function DocumentUploadModal({ isOpen, onClose, onSuccess, type, folderId
           <Button
             onClick={handleUpload}
             disabled={isUploading || !file}
-            className="bg-[#c8102e] hover:bg-red-700 text-white"
+            className="bg-[var(--color-primary)] hover:bg-red-700 text-white"
           >
             {isUploading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             Tải lên

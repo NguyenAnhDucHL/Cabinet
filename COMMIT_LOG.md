@@ -1,3 +1,39 @@
+### [2026-09-08 08:05] Khắc phục lỗi N+1 Query trong QuestionnaireRepository
+- **Mô tả**: Sửa lỗi N+1 Query trong hàm `GetQuestionnaireWithDetailsAsync`. Trước đó, vòng lặp `foreach` thực hiện N truy vấn để lấy Options cho từng câu hỏi (N câu hỏi = N truy vấn). Đã chuyển sang sử dụng mệnh đề `IN (...)` để lấy toàn bộ Options cho tất cả câu hỏi chỉ bằng 1 câu truy vấn duy nhất, cải thiện đáng kể hiệu năng khi tải chi tiết Phiếu lấy ý kiến.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Data/Repositories/QuestionnaireRepository.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "perf(questionnaires): khắc phục lỗi N+1 query khi lấy danh sách phương án trả lời"`
+
+### [2026-09-08 07:47] Loại bỏ hoàn toàn cấu hình ngrok
+- **Mô tả**: Xóa cấu hình ngrok khỏi `.env`, `.env.example`, `README.md` và `Program.cs` theo yêu cầu vì không còn sử dụng.
+- **Tệp thay đổi**:
+  - `.env` (Sửa đổi)
+  - `.env.example` (Sửa đổi)
+  - `README.md` (Sửa đổi)
+  - `Cabinet.Api/Program.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(infra): loại bỏ hoàn toàn ngrok khỏi cấu hình và mã nguồn"`
+
+### [2026-09-01 16:48] Fix text overflow in DocumentUploadModal
+- **Mô tả**: Sửa lỗi vỡ giao diện (layout bị đẩy ngang) trong modal Tải lên tài liệu khi người dùng đính kèm file có tên quá dài. Thêm các class Tailwind `min-w-0 flex-1` để flexbox giới hạn chiều rộng con và kích hoạt tính năng `truncate` (hiển thị dấu ba chấm ...).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/documents/components/DocumentUploadModal.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(ui): sửa lỗi vỡ khung modal tải lên tài liệu khi tên file quá dài"`
+
+### [2026-09-01 16:35] Add View modal for Questionnaire Templates
+- **Mô tả**: Sửa lỗi nút "Xem" (Eye icon) trong trang Mẫu phiếu lấy ý kiến không có tác dụng. Đã thêm modal hiển thị chi tiết (Tên mẫu, Mô tả, Ngày tạo) khi click vào nút Xem.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetQuestionnaireTemplates.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(questionnaires): thêm modal xem chi tiết mẫu phiếu lấy ý kiến"`
+
+### [2026-09-01 16:25] Fix UI bugs in MeetingDetail, CabinetRooms and Login
+- **Mô tả**: Sửa lỗi crash khi mở modal Thêm góp ý do thiếu import component `Upload`. Fix lỗi click vào các tab bên trái (Cấu hình thành phần, Cấu hình màu sắc, v.v.) trong trang Phòng họp không hiển thị đúng (đã hiển thị Empty State "Đang phát triển"). Cập nhật UI màn hình đăng nhập: Xoá Mã QR tải app và đổi số điện thoại hotline.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/CabinetAppShell.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/CabinetRooms.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/pages/Login.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(ui): sửa lỗi crash modal thêm góp ý, update tab phòng họp và giao diện login"`
+
 ### [2026-09-01 15:37] Fix DefaultConnection issue for repositories
 - **Mô tả**: Sửa lỗi `no such table: Questionnaires` khi kết nối tới SQLite Database. Nguyên nhân do `appsettings.json` định nghĩa thuộc tính `"DefaultConnection": ""` gây ra việc các repositories (như `QuestionnaireRepository`) không chịu fallback sang giá trị biến môi trường `DB_PATH`, mà đi tạo database tạm trong memory.
 - **Tệp thay đổi**:

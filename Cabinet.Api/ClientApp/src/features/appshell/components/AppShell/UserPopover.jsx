@@ -27,7 +27,7 @@ export function UserPopover({
               document.body.click() // close popover
               setIsProfileModalOpen(true)
             }}
-            className="flex items-center gap-3 px-4 py-3 bg-[#c8102e] text-white hover:bg-[#a50e27] transition-colors text-sm font-semibold"
+            className="flex items-center gap-3 px-4 py-3 bg-[var(--color-primary)] text-white hover:bg-[#a50e27] transition-colors text-sm font-semibold"
           >
             <User size={16} />
             <span>Hồ sơ cá nhân</span>
@@ -49,7 +49,7 @@ export function UserPopover({
           <div className="h-px bg-gray-100 my-1" />
           <button
             onClick={onLogout}
-            className="flex items-center gap-3 px-4 py-3 text-[#c8102e] hover:bg-red-50 transition-colors text-sm font-bold"
+            className="flex items-center gap-3 px-4 py-3 text-[var(--color-primary)] hover:bg-red-50 transition-colors text-sm font-bold"
           >
             <LogOut size={16} />
             <span>Đăng xuất</span>

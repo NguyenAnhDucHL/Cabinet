@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import { FileText } from 'lucide-react'
 import { RoomModal } from '../../features/rooms/components/RoomModal'
 import { DeleteConfirm } from '../../features/rooms/components/DeleteConfirm'
 import { Toast } from '../../features/rooms/components/CabinetRooms/Toast'
 import { RoomHeader } from '../../features/rooms/components/CabinetRooms/RoomHeader'
 import { RoomTable } from '../../features/rooms/components/CabinetRooms/RoomTable'
+import { ROOMS_SIDEBAR } from '../../features/appshell/constants/navigation'
 
-export function CabinetRooms() {
+export function CabinetRooms({ activeTab = 0 }) {
   const [rooms, setRooms] = useState([])
   const [departments, setDepartments] = useState([])
   const [loading, setLoading] = useState(true)
@@ -90,6 +92,19 @@ export function CabinetRooms() {
   )
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
   const paged = filtered.slice((page - 1) * pageSize, page * pageSize)
+
+  if (activeTab > 0) {
+    const tabLabel = ROOMS_SIDEBAR[activeTab]?.label || 'Tính năng'
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center text-gray-400 bg-white">
+        <div className="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center mb-4">
+          <FileText size={28} className="opacity-25" />
+        </div>
+        <h3 className="text-base font-bold text-gray-600 mb-1">Đang phát triển</h3>
+        <p className="text-sm">{tabLabel} sẽ sớm được cập nhật.</p>
+      </div>
+    )
+  }
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">

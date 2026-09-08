@@ -91,7 +91,7 @@ export function CabinetConclusions() {
           </Button>
           <Button
             onClick={() => setIsAddOpen(true)}
-            className="bg-[#c8102e] hover:bg-[#a50e27] text-white"
+            className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white"
           >
             <Plus className="h-4 w-4 mr-2" />
             Thêm mới
@@ -133,7 +133,7 @@ export function CabinetConclusions() {
                 setPage(i + 1)
                 fetchData(i + 1, search)
               }}
-              className={`w-8 h-8 rounded text-sm font-medium transition ${page === i + 1 ? 'bg-[#c8102e] text-white' : 'text-gray-700 hover:bg-gray-100 border border-gray-200'}`}
+              className={`w-8 h-8 rounded text-sm font-medium transition ${page === i + 1 ? 'bg-[var(--color-primary)] text-white' : 'text-gray-700 hover:bg-gray-100 border border-gray-200'}`}
             >
               {i + 1}
             </button>

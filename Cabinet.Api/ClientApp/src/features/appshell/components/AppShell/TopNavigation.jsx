@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, ArrowLeft } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { CabinetLogo } from './CabinetLogo'
 import { NotificationsPopover } from './NotificationsPopover'
 import { UserPopover } from './UserPopover'
@@ -22,7 +22,10 @@ export function TopNavigation({
   setIsSidebarCollapsed,
 }) {
   return (
-    <header className="bg-[#c8102e] text-white flex items-center h-14 shrink-0 shadow-md z-20">
+    <header
+      className="text-white flex items-center h-14 shrink-0 shadow-md z-20"
+      style={{ background: 'var(--color-primary, #c8102e)' }}
+    >
       <CabinetLogo
         onClick={() => {
           setActiveNav('home')
@@ -31,7 +34,12 @@ export function TopNavigation({
       />
 
       <button
-        className="px-3 h-full flex items-center hover:bg-[#a50e27] transition"
+        className="px-3 h-full flex items-center transition"
+        style={{ '--tw-hover-bg': 'var(--color-sidebar-mid, #a50d25)' }}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.background = 'var(--color-sidebar-mid, #a50d25)')
+        }
+        onMouseLeave={(e) => (e.currentTarget.style.background = '')}
         onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
       >
         <Menu size={20} />
@@ -46,10 +54,18 @@ export function TopNavigation({
               setActiveSidebar(0)
             }}
             className={`flex items-center gap-1.5 px-4 h-full text-sm font-medium whitespace-nowrap transition border-b-2 shrink-0 ${
-              activeNav === item.id
-                ? 'bg-[#a50e27] border-white'
-                : 'border-transparent hover:bg-[#a50e27]/70'
+              activeNav === item.id ? 'border-white' : 'border-transparent'
             }`}
+            style={{
+              background: activeNav === item.id ? 'var(--color-sidebar-mid, #a50d25)' : undefined,
+            }}
+            onMouseEnter={(e) => {
+              if (activeNav !== item.id)
+                e.currentTarget.style.background = 'var(--color-sidebar-mid, #a50d25)'
+            }}
+            onMouseLeave={(e) => {
+              if (activeNav !== item.id) e.currentTarget.style.background = ''
+            }}
           >
             <item.icon size={14} />
             <span>{item.label}</span>
@@ -65,7 +81,10 @@ export function TopNavigation({
           markRead={markRead}
         />
 
-        <div className="w-px h-7 bg-[#a50e27] mx-1" />
+        <div
+          className="w-px h-7 mx-1"
+          style={{ background: 'var(--color-sidebar-mid, #a50d25)' }}
+        />
 
         <UserPopover
           userName={userName}

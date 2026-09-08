@@ -73,7 +73,7 @@ export function NoteTable({ notes, loading, onDelete }) {
                   <TableCell className="text-gray-500 text-sm">{fmt(row.createdAt)}</TableCell>
                   <TableCell className="text-center">
                     {attachments.length > 0 ? (
-                      <span className="text-xs text-[#c8102e] font-medium">
+                      <span className="text-xs text-[var(--color-primary)] font-medium">
                         {attachments.length} file
                       </span>
                     ) : (

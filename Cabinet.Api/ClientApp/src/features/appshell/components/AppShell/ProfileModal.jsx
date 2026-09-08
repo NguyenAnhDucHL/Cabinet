@@ -88,7 +88,7 @@ export function ProfileModal({
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-[450px] p-0 overflow-hidden border-0 rounded-xl bg-white">
-        <div className="bg-[#c8102e] text-white pt-10 pb-6 px-6 relative flex flex-col items-center">
+        <div className="bg-[var(--color-primary)] text-white pt-10 pb-6 px-6 relative flex flex-col items-center">
           {mode === 'edit' ? (
             <button
               onClick={() => setMode('view')}
@@ -159,8 +159,8 @@ export function ProfileModal({
                   className="w-full flex items-center justify-between px-2 py-3 hover:bg-red-50 rounded-lg transition-colors mt-2"
                 >
                   <div className="flex items-center gap-3">
-                    <LogOut size={18} className="text-[#c8102e]" />
-                    <span className="font-medium text-[#c8102e]">Đăng xuất</span>
+                    <LogOut size={18} className="text-[var(--color-primary)]" />
+                    <span className="font-medium text-[var(--color-primary)]">Đăng xuất</span>
                   </div>
                 </button>
               </div>
@@ -220,7 +220,7 @@ export function ProfileModal({
                   <Button
                     onClick={handleSave}
                     disabled={saving}
-                    className="w-full bg-[#c8102e] hover:bg-[#a50e27] text-white mt-4"
+                    className="w-full bg-[var(--color-primary)] hover:bg-[#a50e27] text-white mt-4"
                   >
                     {saving ? 'Đang lưu...' : 'Lưu thay đổi'}
                   </Button>

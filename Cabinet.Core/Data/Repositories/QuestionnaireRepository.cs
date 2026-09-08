@@ -1,6 +1,7 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Cabinet.Models;
+using System.Linq;
 
 namespace Cabinet.Core.Data.Repositories
 {
@@ -250,21 +251,24 @@ namespace Cabinet.Core.Data.Repositories
             }
             iReader.Close();
 
-            // Lấy phương án cho từng câu hỏi
-            foreach (var item in items)
+            // Lấy phương án cho tất cả câu hỏi (Khắc phục N+1 Query)
+            if (items.Count > 0)
             {
+                var itemIds = string.Join(",", items.Select(i => i.Id));
                 using var oCmd = new SqliteCommand(
-                    "SELECT Id, OptionText, OrderIndex FROM QuestionnaireItemOptions WHERE ItemId=@iid ORDER BY OrderIndex", conn);
-                oCmd.Parameters.AddWithValue("@iid", item.Id);
+                    $"SELECT Id, ItemId, OptionText, OrderIndex FROM QuestionnaireItemOptions WHERE ItemId IN ({itemIds}) ORDER BY OrderIndex", conn);
                 using var oReader = await oCmd.ExecuteReaderAsync();
                 while (await oReader.ReadAsync())
                 {
-                    item.Options.Add(new QuestionnaireOptionDetail
+                    var itemId = Convert.ToInt32(oReader["ItemId"]);
+                    var option = new QuestionnaireOptionDetail
                     {
                         Id = Convert.ToInt32(oReader["Id"]),
                         OptionText = oReader["OptionText"]?.ToString() ?? "",
                         OrderIndex = Convert.ToInt32(oReader["OrderIndex"]),
-                    });
+                    };
+                    var parentItem = items.FirstOrDefault(i => i.Id == itemId);
+                    parentItem?.Options.Add(option);
                 }
             }
 

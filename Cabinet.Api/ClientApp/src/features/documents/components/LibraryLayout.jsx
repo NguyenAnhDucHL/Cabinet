@@ -67,7 +67,7 @@ export function LibraryLayout({ type, label }) {
           {canCreateFolder && (
             <Button
               onClick={() => setIsFolderModalOpen(true)}
-              className="bg-[#c8102e] hover:bg-red-700 text-white"
+              className="bg-[var(--color-primary)] hover:bg-red-700 text-white"
             >
               <Plus className="w-4 h-4 mr-2" />
               Thêm mới thư mục
@@ -102,7 +102,7 @@ export function LibraryLayout({ type, label }) {
               Hủy
             </Button>
             <Button
-              className="bg-[#c8102e] hover:bg-red-700 text-white"
+              className="bg-[var(--color-primary)] hover:bg-red-700 text-white"
               onClick={handleCreateFolder}
             >
               Lưu

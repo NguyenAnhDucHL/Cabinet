@@ -78,7 +78,7 @@ export function CabinetLeaderSchedule() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-4">
-          <h1 className="text-xl font-bold text-[#c8102e]">
+          <h1 className="text-xl font-bold text-[var(--color-primary)]">
             {formatDate(startOfWeek)} - {formatDate(endOfWeek)}
           </h1>
           <div className="flex items-center gap-1">
@@ -105,10 +105,10 @@ export function CabinetLeaderSchedule() {
               placeholder="Tìm kiếm theo tên phiên họp..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-4 py-2 border border-gray-300 rounded-full text-sm w-64 focus:outline-none focus:border-[#c8102e] focus:ring-1 focus:ring-[#c8102e] transition"
+              className="pl-9 pr-4 py-2 border border-gray-300 rounded-full text-sm w-64 focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition"
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 border border-[#c8102e] text-[#c8102e] rounded-full hover:bg-red-50 text-sm font-medium transition">
+          <button className="flex items-center gap-2 px-4 py-2 border border-[var(--color-primary)] text-[var(--color-primary)] rounded-full hover:bg-red-50 text-sm font-medium transition">
             <Filter size={16} />
             Bộ lọc
           </button>
@@ -120,7 +120,7 @@ export function CabinetLeaderSchedule() {
         {loading ? (
           <div className="flex items-center justify-center h-full">
             <div className="flex flex-col items-center gap-3 text-gray-400">
-              <div className="w-8 h-8 border-2 border-[#c8102e] border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-2 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin" />
               <span className="text-sm">Đang tải lịch họp...</span>
             </div>
           </div>

@@ -66,15 +66,15 @@ export const NotebookModal = ({ isOpen, setIsOpen, meeting }) => {
               <label className="text-sm font-bold text-[#1a202c]">
                 Ghi chú <span className="text-red-500">*</span>
               </label>
-              <textarea className="w-full h-48 border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#c8102e] resize-none" />
+              <textarea className="w-full h-48 border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] resize-none" />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-bold text-[#1a202c]">Tài liệu đính kèm (0):</label>
               <div className="border-2 border-dashed border-gray-200 rounded-lg bg-white p-8 flex flex-col items-center justify-center text-center hover:bg-red-50/30 transition-colors cursor-pointer">
-                <CloudUpload size={32} className="text-[#c8102e] mb-3" />
+                <CloudUpload size={32} className="text-[var(--color-primary)] mb-3" />
                 <div className="text-sm text-gray-700 mb-1">
-                  <span className="text-[#c8102e] font-semibold">Chọn file</span> hoặc Kéo thả từ
-                  máy tính
+                  <span className="text-[var(--color-primary)] font-semibold">Chọn file</span> hoặc
+                  Kéo thả từ máy tính
                 </div>
                 <div className="text-xs text-gray-400">
                   Tối đa 50MB, định dạng .doc, .docx, .xls, .xlsx, .txt, .ppt, .pptx, .pdf
@@ -87,11 +87,11 @@ export const NotebookModal = ({ isOpen, setIsOpen, meeting }) => {
           <Button
             variant="outline"
             onClick={() => setIsOpen(false)}
-            className="text-[#c8102e] border-[#c8102e] hover:bg-red-50 font-semibold px-6 rounded-full"
+            className="text-[var(--color-primary)] border-[var(--color-primary)] hover:bg-red-50 font-semibold px-6 rounded-full"
           >
             Hủy bỏ
           </Button>
-          <Button className="bg-[#c8102e] hover:bg-[#a50e27] text-white font-semibold px-6 rounded-full">
+          <Button className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white font-semibold px-6 rounded-full">
             Thêm mới
           </Button>
         </div>

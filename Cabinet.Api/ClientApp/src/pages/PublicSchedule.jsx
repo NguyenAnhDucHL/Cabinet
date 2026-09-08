@@ -183,7 +183,7 @@ export default function PublicSchedule() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#c8102e] mx-auto mb-4" />
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-primary)] mx-auto mb-4" />
           <p className="text-gray-600 font-bold uppercase text-xs tracking-widest">
             Đang kết nối hệ thống...
           </p>

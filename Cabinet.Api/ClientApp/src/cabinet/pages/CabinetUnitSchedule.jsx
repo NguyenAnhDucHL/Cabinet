@@ -135,7 +135,7 @@ export function CabinetUnitSchedule() {
         {loading ? (
           <div className="flex items-center justify-center h-full bg-white rounded-b-lg border border-t-0 border-gray-200">
             <div className="flex flex-col items-center gap-3 text-gray-400">
-              <div className="w-8 h-8 border-2 border-[#c8102e] border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-2 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin" />
               <span className="text-sm">Đang tải lịch họp...</span>
             </div>
           </div>

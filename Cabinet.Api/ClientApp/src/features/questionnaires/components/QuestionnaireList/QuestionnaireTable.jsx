@@ -35,7 +35,7 @@ export function QuestionnaireTable({
                 setSearch(e.target.value)
                 setPage(1)
               }}
-              className="pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c8102e]/20 focus:border-[#c8102e] w-60"
+              className="pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] w-60"
             />
           </div>
           <button className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition">
@@ -140,7 +140,7 @@ export function QuestionnaireTable({
                             <Send size={11} /> Gửi
                           </button>
                         )}
-                        <button className="text-xs text-[#c8102e] hover:underline flex items-center gap-0.5">
+                        <button className="text-xs text-[var(--color-primary)] hover:underline flex items-center gap-0.5">
                           Chi tiết <ChevronRight size={11} />
                         </button>
                       </div>
@@ -205,7 +205,9 @@ export function QuestionnaireTable({
                 key={p}
                 onClick={() => setPage(p)}
                 className={`w-7 h-7 rounded flex items-center justify-center font-medium transition ${
-                  page === p ? 'bg-[#c8102e] text-white' : 'hover:bg-gray-100 text-gray-600'
+                  page === p
+                    ? 'bg-[var(--color-primary)] text-white'
+                    : 'hover:bg-gray-100 text-gray-600'
                 }`}
               >
                 {p}

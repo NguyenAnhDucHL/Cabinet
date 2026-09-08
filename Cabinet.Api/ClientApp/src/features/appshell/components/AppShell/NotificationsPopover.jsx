@@ -23,7 +23,7 @@ export function NotificationsPopover({ notifCount, notifications, markAllRead, m
           <h3 className="font-bold text-[#1a202c] text-lg">Thông báo</h3>
           <button
             onClick={markAllRead}
-            className="text-sm text-gray-500 hover:text-[#c8102e] transition-colors"
+            className="text-sm text-gray-500 hover:text-[var(--color-primary)] transition-colors"
           >
             Đánh dấu tất cả đã đọc
           </button>

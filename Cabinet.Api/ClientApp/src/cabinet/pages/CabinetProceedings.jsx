@@ -82,7 +82,7 @@ export function CabinetProceedings() {
           <h3 className="font-semibold text-lg text-slate-800">Danh sách kỷ yếu</h3>
           <Button
             onClick={() => setIsAddModalOpen(true)}
-            className="bg-[#c8102e] hover:bg-[#a50e27] text-white"
+            className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white"
           >
             <Plus className="h-4 w-4 mr-2" />
             Thêm mới

@@ -184,7 +184,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
 
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 flex flex-col max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 bg-[#c8102e] shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 bg-[var(--color-primary)] shrink-0">
           <div className="flex items-center gap-2 text-white">
             <Calendar size={18} />
             <h2 className="font-bold text-base">
@@ -208,7 +208,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
               onClick={() => setActiveSection(s.id)}
               className={`flex items-center gap-1.5 px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
                 activeSection === s.id
-                  ? 'border-[#c8102e] text-[#c8102e] bg-white'
+                  ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-white'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -227,14 +227,14 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                 {/* Tên phiên họp */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Tên phiên họp / Nội dung <span className="text-[#c8102e]">*</span>
+                    Tên phiên họp / Nội dung <span className="text-[var(--color-primary)]">*</span>
                   </label>
                   <textarea
                     value={form.title}
                     onChange={set('title')}
                     rows={2}
                     placeholder="VD: Họp về kiểm đếm tiến độ Đề án ứng dụng CNTT trong đảm bảo ANTT, VSMT"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition resize-none"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition resize-none"
                     autoFocus
                   />
                 </div>
@@ -244,25 +244,25 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                       <Clock size={13} className="inline mr-1" />
-                      Bắt đầu <span className="text-[#c8102e]">*</span>
+                      Bắt đầu <span className="text-[var(--color-primary)]">*</span>
                     </label>
                     <input
                       type="datetime-local"
                       value={form.startTime}
                       onChange={set('startTime')}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                       <Clock size={13} className="inline mr-1" />
-                      Kết thúc <span className="text-[#c8102e]">*</span>
+                      Kết thúc <span className="text-[var(--color-primary)]">*</span>
                     </label>
                     <input
                       type="datetime-local"
                       value={form.endTime}
                       onChange={set('endTime')}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition"
                     />
                   </div>
                 </div>
@@ -271,7 +271,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                     <Building2 size={13} className="inline mr-1" />
-                    Phòng họp <span className="text-[#c8102e]">*</span>
+                    Phòng họp <span className="text-[var(--color-primary)]">*</span>
                   </label>
                   {loadingOptions ? (
                     <div className="h-10 bg-gray-100 rounded-lg animate-pulse" />
@@ -279,7 +279,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                     <select
                       value={form.roomId}
                       onChange={set('roomId')}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition bg-white"
                     >
                       <option value="">-- Chọn phòng họp --</option>
                       {rooms
@@ -299,14 +299,15 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                       <MapPin size={13} className="inline mr-1" />
-                      Tên/Địa điểm phòng họp khác <span className="text-[#c8102e]">*</span>
+                      Tên/Địa điểm phòng họp khác{' '}
+                      <span className="text-[var(--color-primary)]">*</span>
                     </label>
                     <textarea
                       value={form.location}
                       onChange={set('location')}
                       placeholder="VD: Tại Hội trường Huyện ủy..."
                       rows={2}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition"
                     />
                   </div>
                 )}
@@ -321,7 +322,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                     value={form.organizingUnit}
                     onChange={set('organizingUnit')}
                     placeholder="VD: Văn phòng HĐND - UBND phường"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition"
                   />
                 </div>
               </div>
@@ -341,7 +342,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                     value={form.presider}
                     onChange={set('presider')}
                     placeholder="VD: Đ/c Hoàng Việt Dũng - Phó Bí thư Đảng uỷ, Chủ tịch UBND phường (chủ trì)"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition"
                   />
                 </div>
 
@@ -355,7 +356,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                     value={form.preparingUnit}
                     onChange={set('preparingUnit')}
                     placeholder="VD: Phòng VH-XH chuẩn bị tài liệu"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition"
                   />
                 </div>
 
@@ -369,7 +370,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                     min="0"
                     value={form.expectedAttendees}
                     onChange={set('expectedAttendees')}
-                    className="w-40 border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition"
+                    className="w-40 border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition"
                   />
                 </div>
 
@@ -384,7 +385,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                     onChange={set('content')}
                     rows={5}
                     placeholder="Nhập nội dung chương trình cuộc họp, các điểm thảo luận..."
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition resize-none"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition resize-none"
                   />
                 </div>
 
@@ -399,7 +400,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                     onChange={set('notes')}
                     rows={3}
                     placeholder="Các ghi chú, yêu cầu đặc biệt cho phiên họp..."
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition resize-none"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition resize-none"
                   />
                 </div>
               </div>
@@ -418,7 +419,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                     onChange={set('externalParticipants')}
                     rows={2}
                     placeholder="VD: Đ/c Nguyễn Văn A (Công an phường); Đ/c Trần Văn B (Ban Chỉ huy Quân sự phường)..."
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition resize-none"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition resize-none"
                   />
                 </div>
 
@@ -426,7 +427,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                   <p className="text-sm font-semibold text-gray-700">
                     Chọn thành viên tham dự
                     {form.participantUserIds.length > 0 && (
-                      <span className="ml-2 bg-[#c8102e] text-white text-xs px-2 py-0.5 rounded-full">
+                      <span className="ml-2 bg-[var(--color-primary)] text-white text-xs px-2 py-0.5 rounded-full">
                         {form.participantUserIds.length} đã chọn
                       </span>
                     )}
@@ -446,7 +447,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                     placeholder="Tìm kiếm người tham dự (tên, đơn vị...)"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition"
                   />
                 </div>
 
@@ -481,13 +482,15 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                             onClick={() => toggleParticipant(u.id)}
                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg border transition text-left ${
                               selected
-                                ? 'bg-red-50 border-[#c8102e] text-[#c8102e]'
+                                ? 'bg-red-50 border-[var(--color-primary)] text-[var(--color-primary)]'
                                 : 'border-gray-200 hover:bg-gray-50 text-gray-700'
                             }`}
                           >
                             <div
                               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
-                                selected ? 'bg-[#c8102e] text-white' : 'bg-gray-200 text-gray-600'
+                                selected
+                                  ? 'bg-[var(--color-primary)] text-white'
+                                  : 'bg-gray-200 text-gray-600'
                               }`}
                             >
                               {(u.fullName || u.username || '?')[0].toUpperCase()}
@@ -547,7 +550,7 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                 <button
                   type="submit"
                   disabled={saving || deleting}
-                  className="flex items-center gap-2 px-5 py-2 text-sm bg-[#c8102e] hover:bg-[#a50e27] text-white rounded-lg font-semibold transition disabled:opacity-60"
+                  className="flex items-center gap-2 px-5 py-2 text-sm bg-[var(--color-primary)] hover:bg-[#a50e27] text-white rounded-lg font-semibold transition disabled:opacity-60"
                 >
                   {saving ? (
                     <>

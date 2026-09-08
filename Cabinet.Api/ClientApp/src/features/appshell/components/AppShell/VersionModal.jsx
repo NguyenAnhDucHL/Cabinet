@@ -28,7 +28,7 @@ export function VersionModal({ isOpen, onClose }) {
           <div className="flex justify-center pt-8 mt-6 border-t border-gray-100">
             <Button
               onClick={() => onClose(false)}
-              className="bg-[#c8102e] hover:bg-[#a50e27] text-white px-10 py-2 h-auto rounded-lg font-bold"
+              className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white px-10 py-2 h-auto rounded-lg font-bold"
             >
               Đóng
             </Button>

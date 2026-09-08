@@ -131,7 +131,7 @@ export function SaveToLibraryModal({ open, onOpenChange, meeting, onSaved }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl bg-white p-0 overflow-hidden border-0 rounded-xl shadow-2xl h-[80vh] flex flex-col">
-        <DialogHeader className="bg-[#c8102e] px-6 py-4 shrink-0">
+        <DialogHeader className="bg-[var(--color-primary)] px-6 py-4 shrink-0">
           <DialogTitle className="text-white text-lg font-bold">Lưu tài liệu phiên họp</DialogTitle>
         </DialogHeader>
 
@@ -140,7 +140,7 @@ export function SaveToLibraryModal({ open, onOpenChange, meeting, onSaved }) {
           <div className="w-full md:w-1/3 flex flex-col bg-gray-50/50">
             <div className="p-4 border-b border-gray-200 bg-white">
               <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-                <Folder className="w-4 h-4 mr-2 text-[#c8102e]" />
+                <Folder className="w-4 h-4 mr-2 text-[var(--color-primary)]" />
                 Danh sách thư mục
               </h3>
               <div className="relative mb-3">
@@ -154,7 +154,7 @@ export function SaveToLibraryModal({ open, onOpenChange, meeting, onSaved }) {
               </div>
               <Button
                 variant="outline"
-                className="w-full text-[#c8102e] border-[#c8102e] hover:bg-red-50"
+                className="w-full text-[var(--color-primary)] border-[var(--color-primary)] hover:bg-red-50"
                 onClick={() => setIsAddingFolder(true)}
               >
                 <FolderPlus className="w-4 h-4 mr-2" />
@@ -177,7 +177,7 @@ export function SaveToLibraryModal({ open, onOpenChange, meeting, onSaved }) {
                       onClick={() => setSelectedFolderId(folder.id)}
                       className={`w-full flex items-center justify-between p-3 rounded-lg text-sm transition-colors ${
                         selectedFolderId === folder.id
-                          ? 'bg-[#c8102e]/10 text-[#c8102e] font-medium'
+                          ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-medium'
                           : 'text-gray-700 hover:bg-gray-100'
                       }`}
                     >
@@ -211,7 +211,7 @@ export function SaveToLibraryModal({ open, onOpenChange, meeting, onSaved }) {
                       key={idx}
                       className="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-100"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-red-100 text-[#c8102e] flex items-center justify-center mr-4 shrink-0">
+                      <div className="w-10 h-10 rounded-lg bg-red-100 text-[var(--color-primary)] flex items-center justify-center mr-4 shrink-0">
                         <FileText className="w-5 h-5" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -231,7 +231,7 @@ export function SaveToLibraryModal({ open, onOpenChange, meeting, onSaved }) {
             Hủy bỏ
           </Button>
           <Button
-            className="bg-[#c8102e] hover:bg-[#a50e27] text-white"
+            className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white"
             onClick={handleSave}
             disabled={!selectedFolderId || documents.length === 0}
           >
@@ -262,7 +262,7 @@ export function SaveToLibraryModal({ open, onOpenChange, meeting, onSaved }) {
               Hủy bỏ
             </Button>
             <Button
-              className="bg-[#c8102e] hover:bg-[#a50e27] text-white"
+              className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white"
               onClick={handleAddFolder}
             >
               Lưu

@@ -11,7 +11,7 @@ export function QuestionnaireHeader({ setMode }) {
           <input
             type="text"
             placeholder="Tìm kiếm phiếu..."
-            className="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#c8102e] focus:ring-1 focus:ring-[#c8102e] w-64 transition-all"
+            className="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] w-64 transition-all"
           />
         </div>
         <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
@@ -20,7 +20,7 @@ export function QuestionnaireHeader({ setMode }) {
         </button>
         <button
           onClick={() => setMode('create')}
-          className="flex items-center gap-2 px-4 py-2 bg-[#c8102e] text-white rounded-lg text-sm font-medium hover:bg-[#a50e27] transition-colors shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg text-sm font-medium hover:bg-[#a50e27] transition-colors shadow-sm"
         >
           <Plus size={16} />
           Thêm mới

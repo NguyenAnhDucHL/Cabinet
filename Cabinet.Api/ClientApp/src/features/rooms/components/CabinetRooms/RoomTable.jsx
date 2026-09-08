@@ -44,7 +44,7 @@ export function RoomTable({
                   setSearch(e.target.value)
                   setPage(1)
                 }}
-                className="pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c8102e]/20 focus:border-[#c8102e] w-64"
+                className="pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] w-64"
               />
             </div>
             <button className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition">
@@ -98,7 +98,7 @@ export function RoomTable({
                       {!search && (
                         <button
                           onClick={() => setModal({ mode: 'add' })}
-                          className="mt-3 flex items-center gap-1.5 text-xs text-[#c8102e] hover:underline"
+                          className="mt-3 flex items-center gap-1.5 text-xs text-[var(--color-primary)] hover:underline"
                         >
                           <Plus size={12} />
                           Thêm phòng họp đầu tiên
@@ -119,7 +119,7 @@ export function RoomTable({
                     <td className="px-4 py-3">
                       <div className="flex items-start gap-2">
                         <div className="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center shrink-0 mt-0.5">
-                          <Building2 size={13} className="text-[#c8102e]" />
+                          <Building2 size={13} className="text-[var(--color-primary)]" />
                         </div>
                         <div>
                           <p className="font-medium text-gray-800 leading-tight">{room.name}</p>
@@ -145,7 +145,7 @@ export function RoomTable({
                         <button
                           title="Xem chi tiết"
                           onClick={() => setModal({ mode: 'view', room })}
-                          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-500 hover:text-[#c8102e] transition"
+                          className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-500 hover:text-[var(--color-primary)] transition"
                         >
                           <Eye size={15} />
                         </button>
@@ -197,7 +197,9 @@ export function RoomTable({
                   key={p}
                   onClick={() => setPage(p)}
                   className={`w-7 h-7 rounded flex items-center justify-center font-medium transition ${
-                    page === p ? 'bg-[#c8102e] text-white' : 'hover:bg-gray-100 text-gray-600'
+                    page === p
+                      ? 'bg-[var(--color-primary)] text-white'
+                      : 'hover:bg-gray-100 text-gray-600'
                   }`}
                 >
                   {p}

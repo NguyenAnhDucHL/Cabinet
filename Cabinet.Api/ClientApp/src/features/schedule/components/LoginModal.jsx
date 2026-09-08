@@ -40,7 +40,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md animate-in fade-in duration-300">
       <div className="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-500">
-        <div className="bg-[#c8102e] p-8 text-center relative">
+        <div className="bg-[var(--color-primary)] p-8 text-center relative">
           <button
             onClick={onClose}
             className="absolute top-6 right-6 text-white/50 hover:text-white"
@@ -61,7 +61,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }) {
           <div className="space-y-4">
             <div className="relative group">
               <User
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#c8102e] transition-colors"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[var(--color-primary)] transition-colors"
                 size={18}
               />
               <input
@@ -70,12 +70,12 @@ export function LoginModal({ isOpen, onClose, onSuccess }) {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-sm font-bold outline-none focus:border-[#c8102e] transition-all"
+                className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-sm font-bold outline-none focus:border-[var(--color-primary)] transition-all"
               />
             </div>
             <div className="relative group">
               <Key
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#c8102e] transition-colors"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[var(--color-primary)] transition-colors"
                 size={18}
               />
               <input
@@ -84,12 +84,12 @@ export function LoginModal({ isOpen, onClose, onSuccess }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full pl-12 pr-12 py-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-sm font-bold outline-none focus:border-[#c8102e] transition-all"
+                className="w-full pl-12 pr-12 py-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-sm font-bold outline-none focus:border-[var(--color-primary)] transition-all"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#c8102e] transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[var(--color-primary)] transition-colors"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -98,7 +98,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }) {
           <button
             type="submit"
             disabled={isLoggingIn}
-            className="w-full py-4 bg-[#c8102e] text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-[#a00d25] transition-all shadow-xl shadow-red-100 flex items-center justify-center gap-2"
+            className="w-full py-4 bg-[var(--color-primary)] text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-[#a00d25] transition-all shadow-xl shadow-red-100 flex items-center justify-center gap-2"
           >
             {isLoggingIn ? (
               <Loader2 size={16} className="animate-spin" />

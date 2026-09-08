@@ -16,7 +16,7 @@ export function FolderTree({ folders, selectedFolderId, onSelectFolder }) {
         className={cn(
           'w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors',
           selectedFolderId === null
-            ? 'bg-red-50 text-[#c8102e] font-medium'
+            ? 'bg-red-50 text-[var(--color-primary)] font-medium'
             : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
         )}
       >
@@ -33,7 +33,7 @@ export function FolderTree({ folders, selectedFolderId, onSelectFolder }) {
           className={cn(
             'w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors',
             selectedFolderId === folder.id
-              ? 'bg-red-50 text-[#c8102e] font-medium'
+              ? 'bg-red-50 text-[var(--color-primary)] font-medium'
               : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
           )}
         >

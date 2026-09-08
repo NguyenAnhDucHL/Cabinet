@@ -48,7 +48,7 @@ export function RoomModal({ mode, room, departments, onClose, onSaved }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 bg-[#c8102e]">
+        <div className="flex items-center justify-between px-6 py-4 bg-[var(--color-primary)]">
           <div className="flex items-center gap-2 text-white">
             <Building2 size={18} />
             <h2 className="font-bold text-base">
@@ -69,7 +69,7 @@ export function RoomModal({ mode, room, departments, onClose, onSaved }) {
         <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-              Tên phòng họp <span className="text-[#c8102e]">*</span>
+              Tên phòng họp <span className="text-[var(--color-primary)]">*</span>
             </label>
             <input
               type="text"
@@ -78,7 +78,7 @@ export function RoomModal({ mode, room, departments, onClose, onSaved }) {
               placeholder="VD: Hội trường A, tầng 1"
               disabled={isView}
               autoFocus={!isView}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition disabled:bg-gray-50 disabled:text-gray-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition disabled:bg-gray-50 disabled:text-gray-500"
             />
           </div>
           <div>
@@ -89,7 +89,7 @@ export function RoomModal({ mode, room, departments, onClose, onSaved }) {
               value={form.departmentId}
               onChange={(e) => setForm((f) => ({ ...f, departmentId: e.target.value }))}
               disabled={isView}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white disabled:bg-gray-50 disabled:text-gray-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition bg-white disabled:bg-gray-50 disabled:text-gray-500"
             >
               <option value="">-- Không thuộc đơn vị cụ thể --</option>
               {departments.map((d) => (
@@ -139,7 +139,7 @@ export function RoomModal({ mode, room, departments, onClose, onSaved }) {
               <button
                 type="submit"
                 disabled={saving}
-                className="flex items-center gap-2 px-5 py-2 text-sm bg-[#c8102e] hover:bg-[#a50e27] text-white rounded-lg font-semibold transition disabled:opacity-60"
+                className="flex items-center gap-2 px-5 py-2 text-sm bg-[var(--color-primary)] hover:bg-[#a50e27] text-white rounded-lg font-semibold transition disabled:opacity-60"
               >
                 {saving ? (
                   <>

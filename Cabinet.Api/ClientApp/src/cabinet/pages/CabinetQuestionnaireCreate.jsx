@@ -105,7 +105,7 @@ export function CabinetQuestionnaireCreate({ onBack, onSaved }) {
               {step > 1 && (
                 <button
                   onClick={() => setStep((s) => s - 1)}
-                  className="px-6 py-2 text-sm font-medium text-[#c8102e] bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                  className="px-6 py-2 text-sm font-medium text-[var(--color-primary)] bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
                 >
                   Quay lại
                 </button>
@@ -113,7 +113,7 @@ export function CabinetQuestionnaireCreate({ onBack, onSaved }) {
               {step < 3 ? (
                 <button
                   onClick={() => setStep((s) => s + 1)}
-                  className="px-6 py-2 text-sm font-medium text-[#c8102e] bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-transparent"
+                  className="px-6 py-2 text-sm font-medium text-[var(--color-primary)] bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-transparent"
                 >
                   Tiếp tục
                 </button>
@@ -121,7 +121,7 @@ export function CabinetQuestionnaireCreate({ onBack, onSaved }) {
                 <button
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="px-6 py-2 text-sm font-medium text-white bg-[#c8102e] rounded-lg hover:bg-[#a50e27] transition-colors disabled:opacity-50"
+                  className="px-6 py-2 text-sm font-medium text-white bg-[var(--color-primary)] rounded-lg hover:bg-[#a50e27] transition-colors disabled:opacity-50"
                 >
                   {loading ? 'Đang lưu...' : 'Lưu nháp'}
                 </button>

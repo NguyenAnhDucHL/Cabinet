@@ -29,10 +29,11 @@ export function CabinetQuestionnaireTemplates() {
   const pageSize = 10
 
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
-  const [editingId, setEditingId] = useState(null)
   const [templateName, setTemplateName] = useState('')
+  const [editingId, setEditingId] = useState(null)
   const [deletingId, setDeletingId] = useState(null)
+  const [isSaving, setIsSaving] = useState(false)
+  const [viewingTemplate, setViewingTemplate] = useState(null)
 
   useEffect(() => {
     fetchTemplates()
@@ -83,7 +84,7 @@ export function CabinetQuestionnaireTemplates() {
           </div>
           <button
             onClick={handleOpenAdd}
-            className="flex items-center gap-2 bg-[#c8102e] hover:bg-[#a50e27] text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+            className="flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[#a50e27] text-white px-4 py-2 rounded-lg text-sm font-medium transition"
           >
             <Plus size={16} />
             Thêm mẫu phiếu
@@ -96,7 +97,7 @@ export function CabinetQuestionnaireTemplates() {
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c8102e]/20 focus:border-[#c8102e]"
+              className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]"
               placeholder="Tìm kiếm tên mẫu..."
               value={search}
               onChange={(e) => {
@@ -160,7 +161,11 @@ export function CabinetQuestionnaireTemplates() {
                     </td>
                     <td className="px-5 py-3 text-center">
                       <div className="flex items-center justify-center gap-2 text-gray-400">
-                        <button className="hover:text-gray-600 transition" title="Xem">
+                        <button
+                          onClick={() => setViewingTemplate(t)}
+                          className="hover:text-gray-600 transition"
+                          title="Xem"
+                        >
                           <Eye size={16} />
                         </button>
                         <button
@@ -215,7 +220,7 @@ export function CabinetQuestionnaireTemplates() {
                   <button
                     key={p}
                     onClick={() => setPage(p)}
-                    className={`w-7 h-7 rounded flex items-center justify-center font-medium transition ${page === p ? 'bg-[#c8102e] text-white' : 'hover:bg-gray-200 text-gray-600'}`}
+                    className={`w-7 h-7 rounded flex items-center justify-center font-medium transition ${page === p ? 'bg-[var(--color-primary)] text-white' : 'hover:bg-gray-200 text-gray-600'}`}
                   >
                     {p}
                   </button>
@@ -257,7 +262,7 @@ export function CabinetQuestionnaireTemplates() {
             </label>
             <input
               type="text"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/20 focus:border-[#c8102e]"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)]"
               placeholder="Nhập tên mẫu phiếu..."
               value={templateName}
               onChange={(e) => setTemplateName(e.target.value)}
@@ -274,7 +279,7 @@ export function CabinetQuestionnaireTemplates() {
             <Button
               onClick={handleSave}
               disabled={isSaving || !templateName.trim()}
-              className="bg-[#c8102e] hover:bg-[#a50e27] text-white"
+              className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white"
             >
               {isSaving && <Loader2 size={14} className="mr-2 animate-spin" />}
               Lưu
@@ -293,6 +298,48 @@ export function CabinetQuestionnaireTemplates() {
           setDeletingId(null)
         }}
       />
+
+      {/* View Modal */}
+      <Dialog open={!!viewingTemplate} onOpenChange={(open) => !open && setViewingTemplate(null)}>
+        <DialogContent className="max-w-md bg-white p-0 overflow-hidden border-0 rounded-xl">
+          <DialogHeader className="px-6 py-4 border-b border-gray-100">
+            <DialogTitle className="text-lg font-bold text-gray-800">
+              Chi tiết mẫu phiếu
+            </DialogTitle>
+          </DialogHeader>
+          <div className="p-6">
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-500 mb-1">
+                Tên mẫu phiếu
+              </label>
+              <p className="text-gray-800">{viewingTemplate?.name}</p>
+            </div>
+            {viewingTemplate?.description && (
+              <div className="mb-4">
+                <label className="block text-sm font-semibold text-gray-500 mb-1">Mô tả</label>
+                <p className="text-gray-800">{viewingTemplate.description}</p>
+              </div>
+            )}
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-500 mb-1">Ngày tạo</label>
+              <p className="text-gray-800">
+                {viewingTemplate?.createdAt
+                  ? new Date(viewingTemplate.createdAt).toLocaleDateString('vi-VN')
+                  : 'N/A'}
+              </p>
+            </div>
+          </div>
+          <DialogFooter className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-end">
+            <Button
+              variant="outline"
+              onClick={() => setViewingTemplate(null)}
+              className="text-gray-600"
+            >
+              Đóng
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

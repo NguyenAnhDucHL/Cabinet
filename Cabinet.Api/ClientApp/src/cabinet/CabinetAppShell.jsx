@@ -115,7 +115,7 @@ export function CabinetAppShell({ children }) {
       case 'manage_meetings':
         return <CabinetMeetings activeTab={activeSidebar} />
       case 'rooms':
-        return <CabinetRooms />
+        return <CabinetRooms activeTab={activeSidebar} />
       case 'questionnaire':
         return <CabinetQuestionnaire />
       case 'library':

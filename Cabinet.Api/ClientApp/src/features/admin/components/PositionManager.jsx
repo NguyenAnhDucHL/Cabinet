@@ -114,7 +114,7 @@ export function PositionManager() {
         </div>
         <Button
           onClick={() => handleOpen()}
-          className="bg-[#c8102e] hover:bg-[#a50e27] text-white gap-2"
+          className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white gap-2"
         >
           <Plus size={16} /> Thêm chức vụ
         </Button>
@@ -124,7 +124,7 @@ export function PositionManager() {
         <CardContent className="p-0 overflow-auto flex-1">
           {loading ? (
             <div className="flex justify-center items-center h-40">
-              <Loader2 className="w-8 h-8 text-[#c8102e] animate-spin" />
+              <Loader2 className="w-8 h-8 text-[var(--color-primary)] animate-spin" />
             </div>
           ) : (
             <Table>
@@ -210,7 +210,10 @@ export function PositionManager() {
             <Button variant="outline" onClick={() => setIsOpen(false)}>
               Hủy
             </Button>
-            <Button onClick={handleSave} className="bg-[#c8102e] hover:bg-[#a50e27] text-white">
+            <Button
+              onClick={handleSave}
+              className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white"
+            >
               {editingId ? 'Cập nhật' : 'Thêm mới'}
             </Button>
           </DialogFooter>

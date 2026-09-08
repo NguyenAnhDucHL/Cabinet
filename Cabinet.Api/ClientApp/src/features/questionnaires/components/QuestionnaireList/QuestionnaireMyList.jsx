@@ -21,11 +21,11 @@ function QuestionnaireCard({ q, onOpen }) {
   const isPast = new Date(q.deadline) < new Date()
   return (
     <div
-      className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-[#c8102e]/30 transition-all cursor-pointer group"
+      className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-[var(--color-primary)]/30 transition-all cursor-pointer group"
       onClick={() => onOpen(q.id)}
     >
       <div className="flex items-start justify-between gap-3 mb-2">
-        <h3 className="font-semibold text-gray-900 group-hover:text-[#c8102e] transition-colors line-clamp-2">
+        <h3 className="font-semibold text-gray-900 group-hover:text-[var(--color-primary)] transition-colors line-clamp-2">
           {q.title}
         </h3>
         <StatusBadge status={q.status} />
@@ -161,7 +161,7 @@ function QuestionnaireRespondDetail({ id, onBack }) {
               return (
                 <div key={item.id} className="bg-white border border-gray-200 rounded-xl p-6">
                   <div className="flex items-start gap-3 mb-4">
-                    <span className="flex-shrink-0 w-7 h-7 bg-[#c8102e] text-white rounded-full flex items-center justify-center text-xs font-bold">
+                    <span className="flex-shrink-0 w-7 h-7 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center text-xs font-bold">
                       {idx + 1}
                     </span>
                     <div className="flex-1">
@@ -177,7 +177,7 @@ function QuestionnaireRespondDetail({ id, onBack }) {
                       return (
                         <label
                           key={opt.id}
-                          className={`flex items-center gap-3 px-4 py-3 rounded-lg border cursor-pointer transition-all ${isSelected ? 'border-[#c8102e] bg-red-50' : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'}`}
+                          className={`flex items-center gap-3 px-4 py-3 rounded-lg border cursor-pointer transition-all ${isSelected ? 'border-[var(--color-primary)] bg-red-50' : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'}`}
                         >
                           <input
                             type="radio"
@@ -188,7 +188,7 @@ function QuestionnaireRespondDetail({ id, onBack }) {
                             disabled={isPast && submitted}
                           />
                           <span
-                            className={`text-sm font-medium ${isSelected ? 'text-[#c8102e]' : 'text-gray-700'}`}
+                            className={`text-sm font-medium ${isSelected ? 'text-[var(--color-primary)]' : 'text-gray-700'}`}
                           >
                             {opt.optionText}
                           </span>
@@ -205,7 +205,7 @@ function QuestionnaireRespondDetail({ id, onBack }) {
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="flex items-center gap-2 px-6 py-3 bg-[#c8102e] hover:bg-[#a50e27] text-white rounded-xl font-semibold text-sm transition-colors disabled:opacity-60 shadow-sm"
+                className="flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] hover:bg-[#a50e27] text-white rounded-xl font-semibold text-sm transition-colors disabled:opacity-60 shadow-sm"
               >
                 <Send size={16} />
                 {submitting
@@ -253,14 +253,14 @@ export function QuestionnaireMyList() {
             <h2 className="text-lg font-bold text-gray-900">Phiếu nhận được</h2>
             <p className="text-sm text-gray-500">Danh sách phiếu lấy ý kiến được gửi đến bạn</p>
           </div>
-          <span className="bg-[#c8102e]/10 text-[#c8102e] text-sm font-semibold px-3 py-1 rounded-full">
+          <span className="bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-sm font-semibold px-3 py-1 rounded-full">
             {list.length} phiếu
           </span>
         </div>
         <input
           type="text"
           placeholder="Tìm kiếm phiếu..."
-          className="w-full max-w-sm border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/30"
+          className="w-full max-w-sm border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />

@@ -19,7 +19,7 @@ export function QuestionnaireSidebar({ activeSidebar, setActiveSidebar, setMode 
           }}
           className={`flex items-center gap-3 px-6 py-4 text-sm font-medium transition-colors border-l-4 ${
             activeSidebar === item.id
-              ? 'border-[#c8102e] text-[#c8102e] bg-red-50/50'
+              ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-red-50/50'
               : 'border-transparent text-gray-600 hover:bg-gray-50'
           }`}
         >

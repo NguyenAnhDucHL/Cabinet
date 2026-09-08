@@ -44,10 +44,10 @@ export function ProceedingSidebar({
         >
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <Folder
-              className={`h-5 w-5 flex-shrink-0 ${selectedId === item.id ? 'text-[#c8102e]' : 'text-gray-400'}`}
+              className={`h-5 w-5 flex-shrink-0 ${selectedId === item.id ? 'text-[var(--color-primary)]' : 'text-gray-400'}`}
             />
             <span
-              className={`text-sm truncate ${selectedId === item.id ? 'font-semibold text-[#c8102e]' : 'text-gray-700'}`}
+              className={`text-sm truncate ${selectedId === item.id ? 'font-semibold text-[var(--color-primary)]' : 'text-gray-700'}`}
             >
               {item.name}
             </span>

@@ -54,7 +54,7 @@ export function MonthPicker({ selectedMonth, selectedYear, onChange }) {
               onClick={() => handleSelect(m)}
               className={`py-2 rounded-md text-sm font-medium transition ${
                 m === selectedMonth && currentYear === selectedYear
-                  ? 'bg-[#c8102e] text-white'
+                  ? 'bg-[var(--color-primary)] text-white'
                   : 'text-[#1a202c] hover:bg-gray-100'
               }`}
             >

@@ -172,7 +172,7 @@ export function CabinetMeetingCreate({ onBack, onSaved }) {
                 return (
                   <div key={s.id} className="flex flex-col items-center gap-2 bg-white px-2">
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${isActive ? 'bg-[#c8102e] text-white border-2 border-[#c8102e]' : isPassed ? 'bg-white text-[#c8102e] border-2 border-[#c8102e]' : 'bg-white text-gray-400 border-2 border-gray-200'}`}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${isActive ? 'bg-[var(--color-primary)] text-white border-2 border-[var(--color-primary)]' : isPassed ? 'bg-white text-[var(--color-primary)] border-2 border-[var(--color-primary)]' : 'bg-white text-gray-400 border-2 border-gray-200'}`}
                     >
                       {isPassed ? <Check size={16} /> : s.id}
                     </div>
@@ -237,13 +237,16 @@ export function CabinetMeetingCreate({ onBack, onSaved }) {
               </Button>
             </div>
             <div className="flex items-center gap-3">
-              <Button variant="outline" className="text-[#c8102e] border-[#c8102e] hover:bg-red-50">
+              <Button
+                variant="outline"
+                className="text-[var(--color-primary)] border-[var(--color-primary)] hover:bg-red-50"
+              >
                 Lưu nháp
               </Button>
               {step < steps.length ? (
                 <Button
                   onClick={() => setStep((s) => s + 1)}
-                  className="bg-[#c8102e] hover:bg-red-700 text-white min-w-[120px]"
+                  className="bg-[var(--color-primary)] hover:bg-red-700 text-white min-w-[120px]"
                 >
                   Tiếp tục
                 </Button>
@@ -251,7 +254,7 @@ export function CabinetMeetingCreate({ onBack, onSaved }) {
                 <Button
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="bg-[#c8102e] hover:bg-red-700 text-white min-w-[120px]"
+                  className="bg-[var(--color-primary)] hover:bg-red-700 text-white min-w-[120px]"
                 >
                   {loading ? 'Đang lưu...' : 'Lưu phiên họp'}
                 </Button>

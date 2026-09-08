@@ -37,14 +37,10 @@ JWT_SECRET=Cabinet_Secure_Key_2026_ReplaceMe
 
 # Thông tin Push Notification (HTTPS là bắt buộc)
 VAPID_SUBJECT=mailto:admin@yourdomain.com
-
-# Ngrok (Nếu truy cập từ xa)
-NGROK_AUTHTOKEN=your_ngrok_token
-NGROK_DOMAIN=your_custom_domain.ngrok-free.app
 ```
 
 > [!IMPORTANT]
-> **Yêu cầu HTTPS:** Thông báo đẩy (Web Push) chỉ hoạt động trên môi trường **HTTPS**. Nếu chạy local, hãy dùng `localhost` hoặc link Ngrok `https://`.
+> **Yêu cầu HTTPS:** Thông báo đẩy (Web Push) chỉ hoạt động trên môi trường **HTTPS**. Nếu chạy local, hãy dùng `localhost`.
 
 ---
 
@@ -100,7 +96,6 @@ Liên hệ quản trị viên hệ thống để nhận thông tin đăng nhập
 > **Bắt buộc thay đổi mật khẩu ngay sau lần đăng nhập đầu tiên.**
 
 - **Địa chỉ truy cập nội bộ**: [https://localhost](https://localhost) hoặc IP của máy chủ.
-- **Địa chỉ truy cập từ xa**: Sử dụng link do Ngrok cung cấp (kiểm tra trong Docker logs của container ngrok).
 
 ---
 

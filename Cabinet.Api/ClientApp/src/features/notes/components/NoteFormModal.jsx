@@ -108,7 +108,7 @@ export function NoteFormModal({
               Hủy
             </Button>
             <Button
-              className="bg-[#c8102e] hover:bg-[#a50e27] text-white"
+              className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white"
               onClick={onSubmit}
               disabled={saving || !formMeetingId || !formContent.trim()}
             >

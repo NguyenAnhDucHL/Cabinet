@@ -48,7 +48,7 @@ export function MeetingPagination({
               <button
                 key={pageNum}
                 onClick={() => setCurrentPage(pageNum)}
-                className={`w-8 py-1.5 font-medium transition ${currentPage === pageNum ? 'bg-[#c8102e] text-white' : 'text-gray-700 hover:bg-gray-50'}`}
+                className={`w-8 py-1.5 font-medium transition ${currentPage === pageNum ? 'bg-[var(--color-primary)] text-white' : 'text-gray-700 hover:bg-gray-50'}`}
               >
                 {pageNum}
               </button>

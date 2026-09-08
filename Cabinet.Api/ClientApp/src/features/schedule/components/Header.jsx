@@ -19,10 +19,10 @@ export function Header({ user, onLogout, onOpenLogin }) {
   }, [user])
 
   return (
-    <header className="bg-white border-b-4 border-[#c8102e]">
+    <header className="bg-white border-b-4 border-[var(--color-primary)]">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 flex items-center justify-center bg-[#c8102e] rounded-full shadow-lg border-2 border-[#f5c518]">
+          <div className="w-16 h-16 flex items-center justify-center bg-[var(--color-primary)] rounded-full shadow-lg border-2 border-[#f5c518]">
             <svg viewBox="0 0 100 100" className="w-10 h-10">
               <polygon
                 points="50,10 61,35 88,35 66,53 74,78 50,62 26,78 34,53 12,35 39,35"
@@ -34,7 +34,7 @@ export function Header({ user, onLogout, onOpenLogin }) {
             <h1 className="text-2xl font-black text-[#0a3d8f] tracking-tighter uppercase leading-tight">
               Phòng họp không giấy tờ
             </h1>
-            <p className="text-[#c8102e] font-bold text-sm tracking-widest uppercase italic">
+            <p className="text-[var(--color-primary)] font-bold text-sm tracking-widest uppercase italic">
               UBND phường CẨM PHÁ
             </p>
           </div>

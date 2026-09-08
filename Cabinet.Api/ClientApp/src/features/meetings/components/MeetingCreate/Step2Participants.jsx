@@ -35,7 +35,7 @@ export function Step2Participants({
           <button
             key={tab.id}
             onClick={() => setParticipantTab(tab.id)}
-            className={`flex-1 pb-3 text-center font-semibold text-sm transition-colors border-b-2 ${participantTab === tab.id ? 'border-[#c8102e] text-[#c8102e]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+            className={`flex-1 pb-3 text-center font-semibold text-sm transition-colors border-b-2 ${participantTab === tab.id ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
             {tab.label}
           </button>
@@ -49,7 +49,7 @@ export function Step2Participants({
               <select
                 value={groupType}
                 onChange={(e) => setGroupType(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition bg-white"
               >
                 <option value="">-- Tất cả thành viên --</option>
                 {departments.map((d) => (

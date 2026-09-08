@@ -103,6 +103,10 @@ import { LoginPage } from './pages/Login.jsx'
 import PublicSchedule from './pages/PublicSchedule.jsx'
 import { CabinetAppShell } from './cabinet/CabinetAppShell.jsx'
 import './styles/globals.css'
+import { initTheme } from './lib/theme.js'
+
+// ── Apply saved theme before first render ──────────────────────────────────
+initTheme()
 
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ShieldAlert, LogOut, RefreshCw, AlertTriangle, Clock } from 'lucide-react'
@@ -125,7 +129,7 @@ class ErrorBoundary extends React.Component {
         <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
           <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 text-center">
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <AlertTriangle size={32} className="text-[#c8102e]" />
+              <AlertTriangle size={32} className="text-[var(--color-primary)]" />
             </div>
             <h2 className="text-lg font-bold text-gray-800 mb-2">Có lỗi xảy ra</h2>
             <p className="text-sm text-gray-500 mb-1">
@@ -134,7 +138,7 @@ class ErrorBoundary extends React.Component {
             <p className="text-xs text-gray-400 mb-6">Vui lòng tải lại trang để tiếp tục.</p>
             <button
               onClick={() => window.location.reload()}
-              className="flex items-center gap-2 mx-auto px-6 py-2.5 bg-[#c8102e] hover:bg-[#a50e27] text-white rounded-lg text-sm font-semibold transition"
+              className="flex items-center gap-2 mx-auto px-6 py-2.5 bg-[var(--color-primary)] hover:bg-[#a50e27] text-white rounded-lg text-sm font-semibold transition"
             >
               <RefreshCw size={14} />
               Tải lại trang

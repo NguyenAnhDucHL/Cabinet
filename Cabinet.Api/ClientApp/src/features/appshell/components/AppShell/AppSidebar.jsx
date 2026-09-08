@@ -9,104 +9,69 @@ import {
   ADMIN_SIDEBAR,
 } from '../../constants/navigation'
 
-export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSidebarCollapsed }) {
-  const hasSidebar =
-    activeNav === 'schedule' ||
-    activeNav === 'rooms' ||
-    activeNav === 'manage_meetings' ||
-    activeNav === 'library' ||
-    activeNav === 'admin'
+const SIDEBAR_MAPS = {
+  schedule: SCHEDULE_SIDEBAR,
+  rooms: ROOMS_SIDEBAR,
+  manage_meetings: MEETINGS_SIDEBAR,
+  library: LIBRARY_SIDEBAR,
+  admin: ADMIN_SIDEBAR,
+}
 
-  if (!hasSidebar) return null
+function SidebarItem({ item, index, activeSidebar, setActiveSidebar, isSidebarCollapsed }) {
+  const isActive = activeSidebar === index
+  return (
+    <button
+      onClick={() => setActiveSidebar(index)}
+      className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-all ${
+        isSidebarCollapsed ? 'justify-center' : ''
+      }`}
+      style={
+        isActive
+          ? {
+              background: 'var(--color-primary, #c8102e)',
+              color: '#ffffff',
+            }
+          : {}
+      }
+      onMouseEnter={(e) => {
+        if (!isActive) {
+          e.currentTarget.style.background =
+            'color-mix(in srgb, var(--color-primary, #c8102e) 8%, transparent)'
+          e.currentTarget.style.color = 'var(--color-primary, #c8102e)'
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!isActive) {
+          e.currentTarget.style.background = ''
+          e.currentTarget.style.color = ''
+        }
+      }}
+      title={isSidebarCollapsed ? item.label : undefined}
+    >
+      <item.icon size={20} className="shrink-0" />
+      {!isSidebarCollapsed && <span>{item.label}</span>}
+    </button>
+  )
+}
+
+export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSidebarCollapsed }) {
+  const items = SIDEBAR_MAPS[activeNav]
+  if (!items) return null
 
   return (
     <aside
       className={`${isSidebarCollapsed ? 'w-16' : 'w-56'} bg-white border-r border-gray-200 flex flex-col shrink-0 shadow-sm z-10 transition-all duration-300 overflow-hidden`}
     >
-      {activeNav === 'schedule' &&
-        SCHEDULE_SIDEBAR.map((item, i) => (
-          <button
-            key={item.label}
-            onClick={() => setActiveSidebar(i)}
-            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${
-              activeSidebar === i
-                ? 'bg-[#c8102e] text-white'
-                : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
-            } ${isSidebarCollapsed ? 'justify-center' : ''}`}
-            title={isSidebarCollapsed ? item.label : undefined}
-          >
-            <item.icon size={20} className="shrink-0" />
-            {!isSidebarCollapsed && <span>{item.label}</span>}
-          </button>
-        ))}
-
-      {activeNav === 'rooms' &&
-        ROOMS_SIDEBAR.map((item, i) => (
-          <button
-            key={item.label}
-            onClick={() => setActiveSidebar(i)}
-            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${
-              activeSidebar === i
-                ? 'bg-[#c8102e] text-white'
-                : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
-            } ${isSidebarCollapsed ? 'justify-center' : ''}`}
-            title={isSidebarCollapsed ? item.label : undefined}
-          >
-            <item.icon size={20} className="shrink-0" />
-            {!isSidebarCollapsed && <span>{item.label}</span>}
-          </button>
-        ))}
-
-      {activeNav === 'manage_meetings' &&
-        MEETINGS_SIDEBAR.map((item, i) => (
-          <button
-            key={item.label}
-            onClick={() => setActiveSidebar(i)}
-            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${
-              activeSidebar === i
-                ? 'bg-[#c8102e] text-white'
-                : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
-            } ${isSidebarCollapsed ? 'justify-center' : ''}`}
-            title={isSidebarCollapsed ? item.label : undefined}
-          >
-            <item.icon size={20} className="shrink-0" />
-            {!isSidebarCollapsed && <span>{item.label}</span>}
-          </button>
-        ))}
-
-      {activeNav === 'library' &&
-        LIBRARY_SIDEBAR.map((item, i) => (
-          <button
-            key={item.label}
-            onClick={() => setActiveSidebar(i)}
-            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${
-              activeSidebar === i
-                ? 'bg-[#c8102e] text-white'
-                : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
-            } ${isSidebarCollapsed ? 'justify-center' : ''}`}
-            title={isSidebarCollapsed ? item.label : undefined}
-          >
-            <item.icon size={20} className="shrink-0" />
-            {!isSidebarCollapsed && <span>{item.label}</span>}
-          </button>
-        ))}
-
-      {activeNav === 'admin' &&
-        ADMIN_SIDEBAR.map((item, i) => (
-          <button
-            key={item.label}
-            onClick={() => setActiveSidebar(i)}
-            className={`flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-left border-b border-gray-100 transition-colors ${
-              activeSidebar === i
-                ? 'bg-[#c8102e] text-white'
-                : 'text-gray-700 hover:bg-red-50 hover:text-[#c8102e]'
-            } ${isSidebarCollapsed ? 'justify-center' : ''}`}
-            title={isSidebarCollapsed ? item.label : undefined}
-          >
-            <item.icon size={20} className="shrink-0" />
-            {!isSidebarCollapsed && <span>{item.label}</span>}
-          </button>
-        ))}
+      {items.map((item, i) => (
+        <SidebarItem
+          key={item.label}
+          item={item}
+          index={i}
+          activeSidebar={activeSidebar}
+          setActiveSidebar={setActiveSidebar}
+          isSidebarCollapsed={isSidebarCollapsed}
+        />
+      ))}
 
       {/* Back to main system */}
       <div
@@ -114,7 +79,19 @@ export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSideb
       >
         <Button
           variant="outline"
-          className={`w-full text-gray-600 hover:text-[#c8102e] hover:bg-red-50 text-sm ${isSidebarCollapsed ? 'justify-center px-2' : 'justify-start'}`}
+          className={`w-full text-gray-600 text-sm ${isSidebarCollapsed ? 'justify-center px-2' : 'justify-start'}`}
+          style={{
+            '--hover-color': 'var(--color-primary, #c8102e)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'var(--color-primary, #c8102e)'
+            e.currentTarget.style.background =
+              'color-mix(in srgb, var(--color-primary, #c8102e) 6%, transparent)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = ''
+            e.currentTarget.style.background = ''
+          }}
           onClick={() => (window.location.href = '/')}
           title={isSidebarCollapsed ? 'Về hệ thống chính' : undefined}
         >

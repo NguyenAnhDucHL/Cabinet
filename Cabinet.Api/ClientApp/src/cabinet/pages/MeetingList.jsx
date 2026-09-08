@@ -88,13 +88,16 @@ export function MeetingList() {
           {isAdmin && (
             <Button
               onClick={() => setIsCreating(true)}
-              className="bg-[#c8102e] hover:bg-[#a50e27] text-white"
+              className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white"
             >
               <Plus className="w-4 h-4 mr-2" />
               Tạo phiên họp
             </Button>
           )}
-          <Button variant="outline" className="text-[#c8102e] border-[#c8102e] hover:bg-red-50">
+          <Button
+            variant="outline"
+            className="text-[var(--color-primary)] border-[var(--color-primary)] hover:bg-red-50"
+          >
             <Download className="w-4 h-4 mr-2" />
             Xuất file
           </Button>
@@ -128,7 +131,7 @@ export function MeetingList() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex-1 pb-3 text-center font-semibold text-sm transition-colors border-b-2 ${activeTab === tab.key ? 'border-[#c8102e] text-[#c8102e]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                className={`flex-1 pb-3 text-center font-semibold text-sm transition-colors border-b-2 ${activeTab === tab.key ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
               >
                 {tab.label}
               </button>

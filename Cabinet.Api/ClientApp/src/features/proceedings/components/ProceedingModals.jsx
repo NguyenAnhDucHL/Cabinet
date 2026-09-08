@@ -40,7 +40,7 @@ export function ProceedingCreateModal({
             <select
               value={formMeetingId}
               onChange={(e) => setFormMeetingId(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition bg-white"
             >
               <option value="">-- Chọn phiên họp --</option>
               {allMeetings.map((m) => (
@@ -64,7 +64,7 @@ export function ProceedingCreateModal({
               Hủy bỏ
             </Button>
             <Button
-              className="bg-[#c8102e] hover:bg-[#a50e27] text-white"
+              className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white"
               onClick={onSubmit}
               disabled={saving || !formName.trim()}
             >
@@ -104,7 +104,7 @@ export function ProceedingAddMeetingModal({
             <select
               value={addMeetingId}
               onChange={(e) => setAddMeetingId(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#c8102e]/25 focus:border-[#c8102e] transition bg-white"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition bg-white"
             >
               <option value="">-- Chọn phiên họp cần gắn --</option>
               {availableMeetings.length === 0 ? (

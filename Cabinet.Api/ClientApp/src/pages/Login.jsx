@@ -196,23 +196,13 @@ export function LoginPage({ onLoginSuccess }) {
                 </div>
               )}
             </form>
-
-            <div className="mt-8 flex flex-col items-center">
-              <button
-                type="button"
-                className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors font-medium text-sm"
-              >
-                <QrCode className="size-5" />
-                <span>Mã QR tải app</span>
-              </button>
-            </div>
           </div>
 
           {/* Footer Contacts */}
           <div className="mt-auto pt-6 flex items-center justify-center gap-6 text-[#e3001b] font-bold text-[13px]">
             <div className="flex items-center gap-2">
               <Phone className="size-4" />
-              <span>18008000-N7</span>
+              <span>02033 862 291</span>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="size-4" />

@@ -51,7 +51,7 @@ export function MeetingCard({ meeting, isOngoing, onJoin }) {
         )}
         <button
           onClick={() => onJoin(meeting)}
-          className="text-xs px-3 py-1.5 bg-[#c8102e] text-white rounded-md hover:bg-[#a50e27] transition shadow-sm font-medium"
+          className="text-xs px-3 py-1.5 bg-[var(--color-primary)] text-white rounded-md hover:bg-[#a50e27] transition shadow-sm font-medium"
         >
           {isOngoing ? 'Vào họp' : 'Chi tiết'}
         </button>

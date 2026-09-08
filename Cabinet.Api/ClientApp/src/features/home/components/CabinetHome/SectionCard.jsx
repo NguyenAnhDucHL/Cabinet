@@ -9,7 +9,7 @@ export function SectionCard({ title, count, children, showAction = false }) {
           {title} {count !== undefined && `(${count})`}
         </h2>
         {showAction && (
-          <button className="text-xs text-[#c8102e] border border-[#c8102e] px-2 py-0.5 rounded flex items-center hover:bg-red-50 transition">
+          <button className="text-xs text-[var(--color-primary)] border border-[var(--color-primary)] px-2 py-0.5 rounded flex items-center hover:bg-red-50 transition">
             Xem tất cả <ChevronRight size={12} className="ml-0.5" />
           </button>
         )}

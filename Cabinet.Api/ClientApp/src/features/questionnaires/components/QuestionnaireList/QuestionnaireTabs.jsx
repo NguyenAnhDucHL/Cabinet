@@ -11,13 +11,13 @@ export function QuestionnaireTabs({ activeTab, setActiveTab }) {
             onClick={() => setActiveTab(tab.id)}
             className={`py-4 text-sm font-medium border-b-2 transition-colors relative ${
               activeTab === tab.id
-                ? 'border-[#c8102e] text-[#c8102e]'
+                ? 'border-[var(--color-primary)] text-[var(--color-primary)]'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
             {tab.label}
             {activeTab === tab.id && (
-              <span className="absolute -bottom-[2px] left-0 w-full h-[2px] bg-[#c8102e] rounded-t-full shadow-[0_-2px_8px_rgba(200,16,46,0.5)]" />
+              <span className="absolute -bottom-[2px] left-0 w-full h-[2px] bg-[var(--color-primary)] rounded-t-full shadow-[0_-2px_8px_rgba(200,16,46,0.5)]" />
             )}
           </button>
         ))}

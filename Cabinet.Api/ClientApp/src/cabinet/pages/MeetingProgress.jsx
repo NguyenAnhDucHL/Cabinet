@@ -125,7 +125,7 @@ export function MeetingProgress({ meeting, onBack }) {
                 {meeting.startTime ? new Date(meeting.startTime).toLocaleString('vi-VN') : '-'}
               </div>
             </div>
-            <Button className="bg-[#c8102e] hover:bg-[#a50e27] text-white shrink-0">
+            <Button className="bg-[var(--color-primary)] hover:bg-[#a50e27] text-white shrink-0">
               <UserCheck size={16} className="mr-2" />
               Điểm danh
             </Button>
@@ -143,8 +143,8 @@ export function MeetingProgress({ meeting, onBack }) {
                   onClick={() => setActiveContent(1)}
                   className={`w-full text-left px-4 py-3 rounded-lg flex items-center justify-between transition-colors ${
                     activeContent === 1
-                      ? 'bg-[#c8102e] text-white font-semibold'
-                      : 'bg-white border border-[#c8102e] text-[#c8102e] hover:bg-red-50 font-medium'
+                      ? 'bg-[var(--color-primary)] text-white font-semibold'
+                      : 'bg-white border border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-red-50 font-medium'
                   }`}
                 >
                   <span>Nội dung 1</span>
@@ -154,8 +154,8 @@ export function MeetingProgress({ meeting, onBack }) {
                   onClick={() => setActiveContent(2)}
                   className={`w-full text-left px-4 py-3 rounded-lg flex items-center justify-between transition-colors ${
                     activeContent === 2
-                      ? 'bg-[#c8102e] text-white font-semibold'
-                      : 'bg-white border border-[#c8102e] text-[#c8102e] hover:bg-red-50 font-medium'
+                      ? 'bg-[var(--color-primary)] text-white font-semibold'
+                      : 'bg-white border border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-red-50 font-medium'
                   }`}
                 >
                   <span>Nội dung 2</span>
@@ -213,7 +213,7 @@ export function MeetingProgress({ meeting, onBack }) {
                                 href={`/${file}`}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="text-gray-400 hover:text-[#c8102e] p-1"
+                                className="text-gray-400 hover:text-[var(--color-primary)] p-1"
                                 title="Tải xuống"
                               >
                                 <Download size={16} />
@@ -252,11 +252,11 @@ export function MeetingProgress({ meeting, onBack }) {
 
       {/* Floating Notebook Button */}
       <div className="fixed right-0 top-[40%] z-40 flex items-center group cursor-pointer transition-transform translate-x-[calc(100%-3rem)] hover:translate-x-0">
-        <button className="bg-white border-y border-l border-[#c8102e] rounded-l-full flex items-center shadow-md overflow-hidden h-12">
-          <div className="bg-[#c8102e] text-white w-9 h-9 flex items-center justify-center rounded-md ml-1.5 shrink-0">
+        <button className="bg-white border-y border-l border-[var(--color-primary)] rounded-l-full flex items-center shadow-md overflow-hidden h-12">
+          <div className="bg-[var(--color-primary)] text-white w-9 h-9 flex items-center justify-center rounded-md ml-1.5 shrink-0">
             <Book size={18} />
           </div>
-          <span className="text-[#c8102e] font-bold px-3 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="text-[var(--color-primary)] font-bold px-3 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
             Sổ tay
           </span>
         </button>

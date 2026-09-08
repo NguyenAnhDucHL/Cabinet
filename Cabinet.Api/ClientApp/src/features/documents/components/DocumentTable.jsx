@@ -98,7 +98,7 @@ export function DocumentTable({ documents, loading, type, onRefresh }) {
           {(type === 'CaNhan' || type === 'DungChung') && (
             <Button
               onClick={() => setIsUploadOpen(true)}
-              className="bg-[#c8102e] hover:bg-red-700 text-white"
+              className="bg-[var(--color-primary)] hover:bg-red-700 text-white"
             >
               Tải lên tài liệu
             </Button>
