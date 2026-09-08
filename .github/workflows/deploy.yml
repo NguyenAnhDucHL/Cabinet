@@ -22,7 +22,6 @@ jobs:
             -e "ssh -o StrictHostKeyChecking=no" \
             --exclude '.git' \
             --exclude '.env' \
-            --exclude 'nginx/certs' \
             --exclude 'node_modules' \
             --exclude 'bin' \
             --exclude 'obj' \
