@@ -1,6 +1,0 @@
-#!/usr/bin/expect -f
-set timeout 120
-spawn ssh -o StrictHostKeyChecking=no root@14.225.172.225 "cd /opt/cabinet && docker-compose down && docker-compose up -d --build"
-expect "assword:"
-send "sMOh_1{k~*AczwlP$\r"
-expect eof

@@ -1,6 +1,0 @@
-#!/usr/bin/expect -f
-set timeout 30
-spawn scp -o StrictHostKeyChecking=no /Users/macbookpro/Cabinet/docker-compose.yml root@14.225.172.225:/opt/cabinet/docker-compose.yml
-expect "assword:"
-send "sMOh_1{k~*AczwlP$\r"
-expect eof
