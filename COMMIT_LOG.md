@@ -1951,3 +1951,10 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `.dockerignore` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(build): sửa lỗi dockerignore chặn thư mục Data của Core"`
+
+### [2026-09-08 10:37] Chuyển đổi chiến lược CI/CD build Image bằng GitHub Actions
+- **Mô tả**: Thay vì chạy `docker-compose build` trực tiếp trên server VNPT (dẫn đến lỗi hết dung lượng ổ cứng vì tải PaddleOCR và .NET 10 SDK nặng), pipeline được đổi sang build image trên hạ tầng của GitHub, sau đó đẩy lên GHCR (GitHub Container Registry). Server VNPT chỉ việc pull image về và chạy.
+- **Tệp thay đổi**:
+  - `.github/workflows/deploy.yml` (Sửa đổi)
+  - `docker-compose.yml` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(infra): chuyển đổi pipeline CI/CD sang build và lưu image tại GHCR để tránh full disk trên server"`
