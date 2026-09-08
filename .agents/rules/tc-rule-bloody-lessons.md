@@ -16,6 +16,13 @@ Mỗi khi fix một bug khó, tìm ra một lỗi do AI làm sai, hoặc cấu h
 - **[LỖI RESTART LOOP] Ngrok crash liên tục do thiếu Authtoken:** Khi khởi chạy docker-compose, service `ngrok` sẽ crash và restart liên tục nếu biến môi trường `NGROK_AUTHTOKEN` vẫn giữ giá trị mặc định (`your_new_ngrok_authtoken_here`).
   - **Bài học:** Nếu không thực sự cần expose public URL ra ngoài, nên xóa hẳn (hoặc comment lại) service `ngrok` trong `docker-compose.yml` để tiết kiệm tài nguyên và tránh spam log lỗi. (Đã xử lý ngày 2026-08-25).
 
+- **[LỖI DOCKER COMPOSE] Unsupported config option for services/volumes trên Ubuntu cũ:** Khi deploy lên server Ubuntu 20.04 (hoặc cũ hơn) dùng `docker-compose` v1, các option hiện đại như `platform` hoặc `network: host` trong block `build` sẽ gây lỗi chặn khởi động, và BẮT BUỘC phải có `version: '3.3'` ở dòng đầu tiên.
+  - **Nguyên nhân cốt lõi:** Phiên bản docker-compose trên server quá cũ không hỗ trợ cú pháp của Compose Spec mới.
+  - **Bài học:** Luôn giữ cấu trúc `docker-compose.yml` đơn giản nhất có thể và tương thích ngược với version cũ (giữ `version` ở dòng 1) nếu không chắc chắn về môi trường server.
+
+- **[LỖI XÓA NHẦM FILE .ENV] Rsync `--delete` xóa mất cấu hình mật khẩu trên Server:** Khi dùng GitHub Actions deploy qua lệnh `rsync --delete` để dọn dẹp thư mục, nếu file `.env` bị bỏ qua trong Git (`.gitignore`), Github Runner sẽ không có file này và `rsync` sẽ nhầm tưởng `.env` trên server là file rác cần xóa. Hậu quả là toàn bộ hệ thống bị mất JWT_SECRET và mật khẩu.
+  - **Bài học:** Nếu deploy dùng `rsync --delete`, **BẮT BUỘC** phải thêm `--exclude '.env'` (và các thư mục mount volume khác như `data_dump`) vào lệnh `rsync` để không vô tình xoá sạch cấu hình và dữ liệu của Production.
+
 ## 2. Database (SQLite & ADO.NET)
 
 - **[LỖI 500 — no such table] Bảng DB không tồn tại nhưng code không báo lỗi rõ ràng ở Frontend:** Khi tính năng Kỷ yếu (`CabinetProceedings.jsx`) được xây dựng, bảng `MeetingProceedings` và `MeetingProceedingItems` chưa được tạo trong SQLite. Backend ném exception `SQLite Error 1: no such table` nhưng Frontend chỉ thấy dropdown trống hoặc list rỗng do `.catch(() => {})` nuốt lỗi.
@@ -40,6 +47,12 @@ Mỗi khi fix một bug khó, tìm ra một lỗi do AI làm sai, hoặc cấu h
 - **[LỖI 401 — DROPDOWN TRỐNG] Global Fetch Interceptor KHÔNG inject JWT token vào request:** Interceptor trong `main.jsx` chỉ xử lý *response* (unwrap ApiResponse), nhưng KHÔNG tự động thêm `Authorization: Bearer <token>` vào *request*. Mọi component không truyền header thủ công sẽ gọi API → nhận 401 → `.catch(() => {})` nuốt lỗi → state luôn `[]` → dropdown/list trống. Lỗi này **cực kỳ khó debug** vì không có log rõ ràng.
   - **Nguyên nhân cốt lõi:** Design ban đầu dựa vào HttpOnly Cookie cho auth, nhưng một số endpoint yêu cầu Bearer token. Interceptor không đồng nhất được 2 luồng này.
   - **Bài học:** **ĐÃ FIX** — Interceptor trong `main.jsx` hiện tại tự động inject `Authorization: Bearer <token>` cho mọi request tới `/api/`. Nếu gặp dropdown trống bí ẩn, kiểm tra ngay: (1) `curl` thử endpoint → xem HTTP status, (2) Nếu 401 → vấn đề auth. Không được để `.catch(() => {})` im lặng khi debug. (Đã xử lý ngày 2026-08-25).
+
+- **[LỖI FETCH INTERCEPTOR] Thay đổi nội dung Body mà không xoá `content-length`:** Trong Global Fetch Interceptor, nếu bóc tách dữ liệu JSON và trả về một `new Response(JSON.stringify(data))` mới với kích thước byte lớn/nhỏ hơn bản gốc, mà vẫn giữ nguyên header `content-length` cũ → trình duyệt sẽ văng lỗi mạng `net::ERR_INCOMPLETE_CHUNKED_ENCODING` hoặc `Protocol Error`.
+  - **Bài học:** Bất cứ khi nào tạo `new Response()` sửa đổi body trong interceptor, **PHẢI GỌI** `newHeaders.delete('content-length')` trước khi gắn header mới vào response.
+
+- **[LỖI VÒNG LẶP LOGIN] Tự động refresh token bị sai ngữ cảnh:** Handler 401 tự động gọi `/api/auth/refresh` để lấy lại token là tốt. NHƯNG nếu user đang ở màn hình Đăng nhập (`/api/auth/login`), gõ sai mật khẩu (trả về 401), mà hệ thống lại tự động gọi `refresh` (và dùng cookie cũ) → có thể tạo ra lỗi vòng lặp hoặc cấp lại token cho session cũ.
+  - **Bài học:** BẮT BUỘC ngoại trừ API `/api/auth/login` ra khỏi luồng xử lý tự động của status 401 trong Interceptor.
 
 ## 5. Xử lý File & Hệ thống
 *(Chưa có ghi chú - AI Agent thêm vào khi có sự cố)*
