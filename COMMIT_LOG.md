@@ -1945,3 +1945,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `nginx/conf.d/default.conf` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "chore(infra): bổ sung domain hopkhonggiay vào nginx"`
+
+### [2026-09-08 09:03] Sửa lỗi build do .dockerignore
+- **Mô tả**: Sửa dòng `**/data` thành `/data` trong `.dockerignore` để tránh lỗi Docker build trên Ubuntu bỏ qua thư mục `Cabinet.Core/Data` (do Ubuntu phân biệt hoa thường và dockerignore regex match có thể gây lỗi thiếu thư mục Data/Interfaces). Xoá cấu hình ssl dư thừa trong repo do VP-Gateway đã đảm nhiệm SSL.
+- **Tệp thay đổi**:
+  - `.dockerignore` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(build): sửa lỗi dockerignore chặn thư mục Data của Core"`
