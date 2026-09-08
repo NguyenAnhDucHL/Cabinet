@@ -1939,3 +1939,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `docker-compose.yml` (Sửa đổi)
   - `.github/workflows/deploy.yml` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "chore(infra): giới hạn memory và dung lượng log cho docker"`
+
+### [2026-09-08 08:51] Cập nhật Nginx cấu hình Domain mới
+- **Mô tả**: Bổ sung `hopkhonggiay` vào danh sách `server_name` của Nginx để hệ thống ưu tiên nhận diện và xử lý request đến từ domain nội bộ này một cách chuẩn xác hơn. 
+- **Tệp thay đổi**:
+  - `nginx/conf.d/default.conf` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(infra): bổ sung domain hopkhonggiay vào nginx"`
