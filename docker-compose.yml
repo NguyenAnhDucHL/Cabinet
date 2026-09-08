@@ -5,7 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      network: host
     container_name: cabinet-system
     expose:
       - "5000"
@@ -46,7 +45,6 @@ services:
   # Container riêng biệt, cô lập hoàn toàn với backend
   clamav:
     image: clamav/clamav:latest
-    platform: linux/amd64
     container_name: doc-clamav
     environment:
       - CLAMAV_NO_FRESHCLAMD=false  # Cập nhật database virus tự động
@@ -58,7 +56,6 @@ services:
 
   nginx:
     image: nginx:alpine
-    platform: linux/amd64
     container_name: cabinet-nginx-proxy
     ports:
       - "8080:80"
