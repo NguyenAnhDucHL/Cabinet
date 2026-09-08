@@ -42,10 +42,13 @@ window.fetch = async (...args) => {
           }
         }
 
+        const newHeaders = new Headers(response.headers)
+        newHeaders.delete('content-length')
+
         const newResponse = new Response(JSON.stringify(unwrappedData), {
           status: response.status,
           statusText: response.statusText,
-          headers: response.headers,
+          headers: newHeaders,
         })
 
         Object.defineProperty(newResponse, 'url', { value: response.url })
@@ -56,6 +59,11 @@ window.fetch = async (...args) => {
     }
   }
   if (response.status === 401) {
+    // Không tự động refresh nếu là API login (tránh tình trạng login sai nhưng lại lấy token cũ)
+    if (args[0] && typeof args[0] === 'string' && args[0].includes('/api/auth/login')) {
+      return response
+    }
+
     // Tránh vòng lặp vô hạn nếu chính API refresh bị 401
     if (args[0] && typeof args[0] === 'string' && args[0].includes('/api/auth/refresh')) {
       document.dispatchEvent(new CustomEvent('auth:unauthorized'))

@@ -1912,3 +1912,16 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Core/Data/Repositories/IReportRepository.cs` (Mới)
   - `Cabinet.Core/Data/Repositories/ReportRepository.cs` (Mới)
 - **Lệnh git commit**: `git commit -m "feat(reports): bổ sung tính năng Báo cáo thống kê và Lưu vào thư viện"`
+
+### [2026-09-08 08:18] Thêm Github Actions Deploy tự động
+- **Mô tả**: Tạo script deploy tự động lên server VNPT bằng sshpass/rsync qua Github Actions. Xử lý sửa lỗi tương thích docker-compose đời cũ trên Ubuntu 20.04 (thêm version 3.3, bỏ platform). Khắc phục lỗi rsync xoá nhầm file .env.
+- **Tệp thay đổi**:
+  - `.github/workflows/deploy.yml` (Mới)
+  - `docker-compose.yml` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(infra): cấu hình github actions và sửa docker-compose tương thích server"`
+
+### [2026-09-08 08:26] Hoàn thiện Global Fetch Interceptor
+- **Mô tả**: Áp dụng Best Practice từ dự án Tool-Calendar vào Cabinet. Bổ sung đoạn code xoá `content-length` header khi unwrap dữ liệu JSON để tránh lỗi `net::ERR_INCOMPLETE_CHUNKED_ENCODING`. Bổ sung ngoại trừ API `/api/auth/login` khỏi 401 handler để tránh lỗi vòng lặp lấy nhầm token cũ.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/main.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(api): tối ưu fetch interceptor xoá content-length và bỏ qua login 401"`
