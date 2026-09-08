@@ -1,0 +1,42 @@
+name: Deploy to VNPT Server
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # Cho phép trigger thủ công từ giao diện GitHub
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+
+      - name: Sync files to server via rsync
+        run: |
+          export SSHPASS="${{ secrets.VNPT_PASS }}"
+          sshpass -e rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            --exclude '.git' \
+            --exclude 'node_modules' \
+            --exclude 'bin' \
+            --exclude 'obj' \
+            --exclude 'data_dump' \
+            ./ ${{ secrets.VNPT_USER }}@${{ secrets.VNPT_HOST }}:/opt/cabinet/
+
+      - name: Restart Docker containers on server
+        run: |
+          export SSHPASS="${{ secrets.VNPT_PASS }}"
+          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.VNPT_USER }}@${{ secrets.VNPT_HOST }} << 'EOF'
+            cd /opt/cabinet
+            
+            # Xóa container clamav cũ nếu có lỗi xung đột tên
+            docker rm -f doc-clamav || true
+            
+            # Build và khởi động lại
+            docker-compose down
+            docker-compose up -d --build
+          EOF
