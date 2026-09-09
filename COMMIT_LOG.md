@@ -1972,3 +1972,8 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `docker-compose.yml` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "chore(infra): xóa biến môi trường dư thừa GEMINI_API_KEY"`
+### [2026-09-09 11:02] Cấp quyền GITHUB_TOKEN để push Docker image lên GHCR
+- **Mô tả**: Sửa lỗi `denied: installation not allowed to Create organization package` khi Github Actions build và push Docker image lên Github Container Registry. Nguyên nhân do mặc định GITHUB_TOKEN không có quyền `packages: write`.
+- **Tệp thay đổi**:
+  - `.github/workflows/deploy.yml` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(infra): thêm quyền packages write cho workflow deploy"`
