@@ -1967,3 +1967,8 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `.github/workflows/deploy.yml` (Sửa đổi)
   - `docker-compose.yml` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "chore(infra): chuyển đổi pipeline CI/CD sang build và lưu image tại GHCR để tránh full disk trên server"`
+### [2026-09-09 10:43] Xóa biến môi trường dư thừa
+- **Mô tả**: Xóa GEMINI_API_KEY khỏi docker-compose.yml do không sử dụng nữa.
+- **Tệp thay đổi**:
+  - `docker-compose.yml` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(infra): xóa biến môi trường dư thừa GEMINI_API_KEY"`
