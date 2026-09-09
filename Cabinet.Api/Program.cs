@@ -92,6 +92,7 @@ builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IMeetingNoteRepository
 builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IMeetingFeedbackRepository, Cabinet.Core.Data.Repositories.MeetingFeedbackRepository>();
 builder.Services.AddScoped<Cabinet.Core.Data.Interfaces.IDocumentRepository, Cabinet.Core.Data.Repositories.DocumentRepository>();
 builder.Services.AddScoped<Cabinet.Core.Data.Repositories.IReportRepository, Cabinet.Core.Data.Repositories.ReportRepository>();
+builder.Services.AddScoped<Cabinet.Core.Data.Interfaces.IMeetingExecutionRepository, Cabinet.Core.Data.Repositories.MeetingExecutionRepository>();
 
 // Refactored Repositories
 builder.Services.AddScoped<ISettingRepository, SettingRepository>();

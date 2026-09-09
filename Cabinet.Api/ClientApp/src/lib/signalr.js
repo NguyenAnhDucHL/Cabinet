@@ -61,6 +61,23 @@ class SignalRService {
       document.dispatchEvent(new CustomEvent('realtime:document_updated'))
     })
 
+    // Meeting Execution Live Events
+    this.connection.on('NewSpeakingRequest', (data) => {
+      document.dispatchEvent(new CustomEvent('live:new_speaking_request', { detail: data }))
+    })
+    this.connection.on('SpeakingRequestUpdated', (data) => {
+      document.dispatchEvent(new CustomEvent('live:speaking_request_updated', { detail: data }))
+    })
+    this.connection.on('NewPoll', (data) => {
+      document.dispatchEvent(new CustomEvent('live:new_poll', { detail: data }))
+    })
+    this.connection.on('PollUpdated', (data) => {
+      document.dispatchEvent(new CustomEvent('live:poll_updated', { detail: data }))
+    })
+    this.connection.on('NewComment', (data) => {
+      document.dispatchEvent(new CustomEvent('live:new_comment', { detail: data }))
+    })
+
     // 🔔 Giai đoạn 5: Real-time Orchestration
     this.connection.on('AttendanceUpdated', (data) => {
       console.log('[SignalR] AttendanceUpdated:', data)

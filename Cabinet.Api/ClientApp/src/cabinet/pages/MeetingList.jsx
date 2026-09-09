@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 
 import { MeetingDetail } from './MeetingDetail'
 import { MeetingProgress } from './MeetingProgress'
+import { LiveMeetingRoom } from '../../features/meeting_execution/components/LiveMeetingRoom'
 import { MeetingModal } from '../components/MeetingModal'
 import { CabinetMeetingCreate } from './CabinetMeetingCreate'
 import { useMeetingList } from '../../features/meetings/hooks/useMeetingList'
@@ -69,7 +70,14 @@ export function MeetingList() {
 
   if (selectedMeeting) {
     if (showProgress)
-      return <MeetingProgress meeting={selectedMeeting} onBack={() => setShowProgress(false)} />
+      return (
+        <LiveMeetingRoom 
+          meeting={selectedMeeting} 
+          onBack={() => setShowProgress(false)} 
+          currentUserRole={localStorage.getItem('user_role')}
+          currentUserId={parseInt(localStorage.getItem('user_id') || '0')}
+        />
+      )
     return (
       <MeetingDetail
         meeting={selectedMeeting}

@@ -1994,3 +1994,22 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `nginx/` (Xóa: toàn bộ cấu hình nginx nội bộ)
   - `.github/workflows/deploy.yml` (Sửa đổi: thêm lệnh reload proxy)
 - **Lệnh git commit**: `git commit -m "chore(infra): toi uu kien truc mang, go bo nginx noi bo, fix triet de 502 bad gateway"`
+
+### [2026-09-09 12:15] feat(meetings): triển khai tính năng Diễn biến phiên họp trực tiếp (Live Meeting Execution)
+- **Mô tả**: Bổ sung các tính năng điều hành cuộc họp thời gian thực bao gồm Đăng ký phát biểu, Biểu quyết trực tiếp, và Thảo luận thông qua SignalR và SQLite.
+- **Tệp thay đổi**:
+  - `migration_meeting_execution.sql` (Mới)
+  - `Cabinet.Core/Models/MeetingExecutionModels.cs` (Mới)
+  - `Cabinet.Core/Data/Interfaces/IMeetingExecutionRepository.cs` (Mới)
+  - `Cabinet.Core/Data/Repositories/MeetingExecutionRepository.cs` (Mới)
+  - `Cabinet.Api/Controllers/Cabinet/MeetingExecutionController.cs` (Mới)
+  - `Cabinet.Api/Program.cs` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/lib/signalr.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meeting_execution/api/meetingExecutionApi.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/meeting_execution/hooks/useMeetingLive.js` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/meeting_execution/components/SpeakingQueuePanel.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/meeting_execution/components/VotingPanel.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/meeting_execution/components/LiveCommentsPanel.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/features/meeting_execution/components/LiveMeetingRoom.jsx` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingList.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(meetings): triển khai tính năng Diễn biến phiên họp trực tiếp"`
