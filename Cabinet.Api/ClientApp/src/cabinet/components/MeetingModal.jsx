@@ -40,6 +40,20 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false)
   const [programFiles, setProgramFiles] = useState([])
   const [invitationFiles, setInvitationFiles] = useState([])
+  const [existingProgramFiles, setExistingProgramFiles] = useState(() => {
+    try {
+      return meeting?.programFilePaths ? JSON.parse(meeting.programFilePaths) : []
+    } catch {
+      return []
+    }
+  })
+  const [existingInvitationFiles, setExistingInvitationFiles] = useState(() => {
+    try {
+      return meeting?.invitationFilePaths ? JSON.parse(meeting.invitationFilePaths) : []
+    } catch {
+      return []
+    }
+  })
   const programFileRef = useRef(null)
   const invitationFileRef = useRef(null)
 
@@ -152,6 +166,8 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
       expectedAttendees: parseInt(form.expectedAttendees) || 0,
       externalParticipants: form.externalParticipants.trim() || null,
       participantUserIds: form.participantUserIds,
+      programFilePaths: existingProgramFiles,
+      invitationFilePaths: existingInvitationFiles,
     }
 
     const url = isEdit
@@ -448,14 +464,31 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                         setProgramFiles((prev) => [...prev, ...Array.from(e.target.files)])
                     }}
                   />
-                  {programFiles.length > 0 && (
+                  {(existingProgramFiles.length > 0 || programFiles.length > 0) && (
                     <ul className="mt-2 space-y-1">
-                      {programFiles.map((f, i) => (
+                      {existingProgramFiles.map((path, i) => (
                         <li
-                          key={i}
+                          key={`exist-${i}`}
                           className="flex items-center justify-between text-xs text-gray-600 bg-gray-50 px-3 py-1.5 rounded"
                         >
-                          <span className="truncate font-medium">{f.name}</span>
+                          <span className="truncate font-medium">{path.split('/').pop()}</span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setExistingProgramFiles((prev) => prev.filter((_, idx) => idx !== i))
+                            }
+                            className="text-gray-400 hover:text-red-500 ml-2 shrink-0"
+                          >
+                            <X size={13} />
+                          </button>
+                        </li>
+                      ))}
+                      {programFiles.map((f, i) => (
+                        <li
+                          key={`new-${i}`}
+                          className="flex items-center justify-between text-xs text-green-700 bg-green-50 px-3 py-1.5 rounded"
+                        >
+                          <span className="truncate font-medium">{f.name} (Mới)</span>
                           <button
                             type="button"
                             onClick={() =>
@@ -505,14 +538,33 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                         setInvitationFiles((prev) => [...prev, ...Array.from(e.target.files)])
                     }}
                   />
-                  {invitationFiles.length > 0 && (
+                  {(existingInvitationFiles.length > 0 || invitationFiles.length > 0) && (
                     <ul className="mt-2 space-y-1">
-                      {invitationFiles.map((f, i) => (
+                      {existingInvitationFiles.map((path, i) => (
                         <li
-                          key={i}
+                          key={`exist-${i}`}
                           className="flex items-center justify-between text-xs text-gray-600 bg-gray-50 px-3 py-1.5 rounded"
                         >
-                          <span className="truncate font-medium">{f.name}</span>
+                          <span className="truncate font-medium">{path.split('/').pop()}</span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setExistingInvitationFiles((prev) =>
+                                prev.filter((_, idx) => idx !== i)
+                              )
+                            }
+                            className="text-gray-400 hover:text-red-500 ml-2 shrink-0"
+                          >
+                            <X size={13} />
+                          </button>
+                        </li>
+                      ))}
+                      {invitationFiles.map((f, i) => (
+                        <li
+                          key={`new-${i}`}
+                          className="flex items-center justify-between text-xs text-green-700 bg-green-50 px-3 py-1.5 rounded"
+                        >
+                          <span className="truncate font-medium">{f.name} (Mới)</span>
                           <button
                             type="button"
                             onClick={() =>

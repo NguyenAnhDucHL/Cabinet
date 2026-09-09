@@ -1,3 +1,9 @@
+### [2026-09-09 17:34] Fix lỗi mất tài liệu đính kèm khi sửa phiên họp
+- **Mô tả**: Sửa lỗi Form chỉnh sửa phiên họp không hiển thị các tài liệu/giấy mời đã upload trước đó. Thêm state `existingProgramFiles` và `existingInvitationFiles`, hiển thị chúng trên giao diện (cho phép xóa bớt), đồng thời gửi kèm danh sách file cũ vào `FormData` để backend không ghi đè mất dữ liệu.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/components/MeetingModal.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): hiển thị file cũ và không ghi đè mất tài liệu khi sửa phiên họp"`
+
 ### [2026-09-09 17:23] Bổ sung tính năng Upload tài liệu và Giấy mời họp vào form Tạo/Sửa phiên họp
 - **Mô tả**: Bổ sung giao diện UI cho phép kéo thả/chọn file đính kèm (Tài liệu họp, Giấy mời họp) ở form Tạo/Sửa phiên họp (tab Nội dung họp). Chỉnh sửa hàm `handleSubmit` sử dụng `FormData` để gửi các file được chọn (`programFiles`, `invitationFiles`) về backend API. Việc này giúp đồng bộ tính năng Frontend với mô tả trong Hướng dẫn sử dụng và Backend (MeetingsController).
 - **Tệp thay đổi**:
