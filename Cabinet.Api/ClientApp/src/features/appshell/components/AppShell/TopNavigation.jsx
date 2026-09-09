@@ -33,19 +33,7 @@ export function TopNavigation({
         }}
       />
 
-      <button
-        className="px-3 h-full flex items-center transition"
-        style={{ '--tw-hover-bg': 'var(--color-sidebar-mid, #a50d25)' }}
-        onMouseEnter={(e) =>
-          (e.currentTarget.style.background = 'var(--color-sidebar-mid, #a50d25)')
-        }
-        onMouseLeave={(e) => (e.currentTarget.style.background = '')}
-        onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-      >
-        <Menu size={20} />
-      </button>
-
-      <nav className="flex items-center h-full flex-1 overflow-x-auto">
+      <nav className="flex items-center h-full flex-1 overflow-x-auto ml-4">
         {NAV_ITEMS.map((item) => (
           <button
             key={item.id}

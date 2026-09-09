@@ -14,6 +14,7 @@ import {
   List,
   Search,
   BarChart3,
+  LayoutList,
 } from 'lucide-react'
 
 export const NAV_ITEMS = [
@@ -41,7 +42,7 @@ export const ROOMS_SIDEBAR = [
 ]
 
 export const MEETINGS_SIDEBAR = [
-  { icon: List, label: 'Danh sách phiên họp' },
+  { icon: LayoutList, label: 'Danh sách phiên họp' },
   { icon: FileText, label: 'Kỷ yếu phiên họp' },
   { icon: Search, label: 'Tra cứu kết luận phiên họp' },
   { icon: BookOpen, label: 'Quản lý sổ tay' },

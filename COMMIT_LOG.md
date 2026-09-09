@@ -1,3 +1,12 @@
+### [2026-09-09 11:55] Thống nhất giao diện đóng mở Menu (Sidebar UX Fix)
+- **Mô tả**: Sửa lỗi UX gây nhầm lẫn biểu tượng 'Danh sách phiên họp' (3 gạch) với nút mở rộng/thu gọn Menu. Chuyển nút Hamburger toggle (Menu) từ thanh Header đỏ trên cùng xuống tích hợp cố định ở đầu thanh Sidebar trắng bên trái. Đổi icon của Danh sách phiên họp thành `LayoutList` để tránh hiểu lầm. Đảm bảo giao diện mọi tab đều có nút thu gọn/mở rộng Menu đồng nhất.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/CabinetAppShell.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/appshell/components/AppShell/AppSidebar.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/appshell/components/AppShell/TopNavigation.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/appshell/constants/navigation.js` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style(ui): thong nhat trai nghiem dong mo sidebar, chuyen vi tri hamburger toggle va doi icon tranh nham lan"`
+
 ### [2026-09-09 10:12] Cấu hình SSL HTTPS cho domain hopkhonggiay.vpdtcampha.vn
 - **Mô tả**: Bật HTTPS cho domain chính thức `hopkhonggiay.vpdtcampha.vn` sử dụng SSL wildcard `*.vpdtcampha.vn` do GlobalSign cấp. Trước đó nginx chỉ lắng nghe port 80 và block HTTPS bị comment out. Đã copy fullchain cert + private key vào `nginx/certs/`, viết lại `nginx/conf.d/default.conf` với redirect HTTP→HTTPS và đổi docker-compose ports từ 8080/8443 sang 80/443.
 - **Tệp thay đổi**:

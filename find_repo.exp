@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+set host $env(VNPT_HOST)
+set user $env(VNPT_USER)
+set pass $env(VNPT_PASS)
+set timeout -1
+
+spawn ssh -o StrictHostKeyChecking=no $user@$host "find /root /opt /home /var/www -maxdepth 5 -type d -name '.git' 2>/dev/null"
+expect {
+    -re "(?i)password:" { send "$pass\r"; exp_continue }
+    eof
+}

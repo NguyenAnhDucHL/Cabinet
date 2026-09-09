@@ -165,6 +165,7 @@ export function CabinetAppShell({ children }) {
           activeSidebar={activeSidebar}
           setActiveSidebar={setActiveSidebar}
           isSidebarCollapsed={isSidebarCollapsed}
+          setIsSidebarCollapsed={setIsSidebarCollapsed}
         />
 
         <main className="flex-1 bg-gray-50 overflow-hidden relative flex flex-col">

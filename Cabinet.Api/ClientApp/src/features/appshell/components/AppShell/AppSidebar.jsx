@@ -54,7 +54,13 @@ function SidebarItem({ item, index, activeSidebar, setActiveSidebar, isSidebarCo
   )
 }
 
-export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSidebarCollapsed }) {
+export function AppSidebar({
+  activeNav,
+  activeSidebar,
+  setActiveSidebar,
+  isSidebarCollapsed,
+  setIsSidebarCollapsed,
+}) {
   const items = SIDEBAR_MAPS[activeNav]
   if (!items) return null
 
@@ -62,6 +68,32 @@ export function AppSidebar({ activeNav, activeSidebar, setActiveSidebar, isSideb
     <aside
       className={`${isSidebarCollapsed ? 'w-16' : 'w-56'} bg-white border-r border-gray-200 flex flex-col shrink-0 shadow-sm z-10 transition-all duration-300 overflow-hidden`}
     >
+      <button
+        onClick={() => setIsSidebarCollapsed && setIsSidebarCollapsed(!isSidebarCollapsed)}
+        className={`flex items-center gap-3 px-4 py-3.5 text-gray-500 hover:text-gray-900 hover:bg-gray-50 border-b border-gray-100 transition-all ${
+          isSidebarCollapsed ? 'justify-center' : ''
+        }`}
+        title={isSidebarCollapsed ? 'Mở rộng Menu' : 'Thu gọn Menu'}
+      >
+        <div className="shrink-0 size-5 flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="4" x2="20" y1="12" y2="12" />
+            <line x1="4" x2="20" y1="6" y2="6" />
+            <line x1="4" x2="20" y1="18" y2="18" />
+          </svg>
+        </div>
+        {!isSidebarCollapsed && <span className="text-sm font-medium">Thu gọn Menu</span>}
+      </button>
       {items.map((item, i) => (
         <SidebarItem
           key={item.label}
