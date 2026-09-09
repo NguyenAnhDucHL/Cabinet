@@ -4,7 +4,8 @@ const BASE_URL = '/api/phonghopkhonggiayto/execution/meetings'
 
 export const meetingExecutionApi = {
   // Speaking Requests
-  getSpeakingRequests: (meetingId) => fetch(`${BASE_URL}/${meetingId}/speak-requests`).then((r) => r.json()),
+  getSpeakingRequests: (meetingId) =>
+    fetch(`${BASE_URL}/${meetingId}/speak-requests`).then((r) => r.json()),
   requestToSpeak: (meetingId) =>
     fetch(`${BASE_URL}/${meetingId}/speak-requests`, { method: 'POST' }).then((r) => r.json()),
   updateSpeakingRequest: (meetingId, id, status) =>

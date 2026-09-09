@@ -71,9 +71,9 @@ export function MeetingList() {
   if (selectedMeeting) {
     if (showProgress)
       return (
-        <LiveMeetingRoom 
-          meeting={selectedMeeting} 
-          onBack={() => setShowProgress(false)} 
+        <LiveMeetingRoom
+          meeting={selectedMeeting}
+          onBack={() => setShowProgress(false)}
           currentUserRole={localStorage.getItem('user_role')}
           currentUserId={parseInt(localStorage.getItem('user_id') || '0')}
         />

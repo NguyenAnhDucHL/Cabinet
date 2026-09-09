@@ -29,26 +29,37 @@ export function LiveCommentsPanel({ meetingId, comments, currentUserId }) {
       </h3>
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto flex flex-col gap-3 pr-2">
-        {comments.length === 0 && <p className="text-sm text-muted-foreground text-center mt-10">Chưa có bình luận nào.</p>}
+        {comments.length === 0 && (
+          <p className="text-sm text-muted-foreground text-center mt-10">Chưa có bình luận nào.</p>
+        )}
         {comments.map((cmt) => {
           const isMe = cmt.userId === currentUserId
           return (
-            <div key={cmt.id} className={`flex flex-col max-w-[85%] ${isMe ? 'self-end items-end' : 'self-start items-start'}`}>
-              <span className="text-xs text-muted-foreground mb-1 px-1">{isMe ? 'Bạn' : cmt.userName}</span>
-              <div className={`px-3 py-2 rounded-lg text-sm ${isMe ? 'bg-primary text-primary-foreground rounded-tr-none' : 'bg-muted rounded-tl-none'}`}>
+            <div
+              key={cmt.id}
+              className={`flex flex-col max-w-[85%] ${isMe ? 'self-end items-end' : 'self-start items-start'}`}
+            >
+              <span className="text-xs text-muted-foreground mb-1 px-1">
+                {isMe ? 'Bạn' : cmt.userName}
+              </span>
+              <div
+                className={`px-3 py-2 rounded-lg text-sm ${isMe ? 'bg-primary text-primary-foreground rounded-tr-none' : 'bg-muted rounded-tl-none'}`}
+              >
                 {cmt.content}
               </div>
-              <span className="text-[10px] text-muted-foreground mt-1 px-1">{new Date(cmt.createdAt).toLocaleTimeString()}</span>
+              <span className="text-[10px] text-muted-foreground mt-1 px-1">
+                {new Date(cmt.createdAt).toLocaleTimeString()}
+              </span>
             </div>
           )
         })}
       </div>
 
       <form onSubmit={handleSend} className="flex gap-2 shrink-0 mt-2">
-        <Input 
-          placeholder="Nhập ý kiến..." 
-          value={content} 
-          onChange={(e) => setContent(e.target.value)} 
+        <Input
+          placeholder="Nhập ý kiến..."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
           className="flex-1"
         />
         <Button type="submit" size="icon" disabled={!content.trim()}>

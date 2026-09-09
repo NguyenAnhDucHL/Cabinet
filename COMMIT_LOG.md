@@ -2013,3 +2013,10 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/features/meeting_execution/components/LiveMeetingRoom.jsx` (Mới)
   - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingList.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "feat(meetings): triển khai tính năng Diễn biến phiên họp trực tiếp"`
+
+### [2026-09-09 13:48] chore(frontend): dọn dẹp các thư viện npm thừa
+- **Mô tả**: Dọn dẹp và gỡ bỏ các thư viện npm không còn sử dụng (`@radix-ui/react-*`, `date-fns`, `i18next`, v.v.) do `shadcn/ui` đã sử dụng trực tiếp `radix-ui` tổng hợp, giúp package.json nhẹ và gọn gàng hơn.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/package.json` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/package-lock.json` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(frontend): xoá các thư viện npm không sử dụng để làm nhẹ dự án"`
