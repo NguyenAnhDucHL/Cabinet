@@ -1977,3 +1977,11 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `.github/workflows/deploy.yml` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "chore(infra): thêm quyền packages write cho workflow deploy"`
+
+### [2026-09-09 11:31] Tối ưu kiến trúc hạ tầng mạng
+- **Mô tả**: Gỡ bỏ Nginx proxy nội bộ dư thừa để tối ưu hiệu năng và RAM giống hệ thống lichcongtac. Định tuyến trực tiếp từ Nginx Proxy Gateway vào container cabinet-system:5000. Thêm lệnh reload Gateway tự động vào deploy.yml để khắc phục triệt để lỗi 502 Bad Gateway mỗi khi cập nhật hệ thống.
+- **Tệp thay đổi**:
+  - `docker-compose.yml` (Sửa đổi: xóa service nginx)
+  - `nginx/` (Xóa: toàn bộ cấu hình nginx nội bộ)
+  - `.github/workflows/deploy.yml` (Sửa đổi: thêm lệnh reload proxy)
+- **Lệnh git commit**: `git commit -m "chore(infra): toi uu kien truc mang, go bo nginx noi bo, fix triet de 502 bad gateway"`

@@ -57,10 +57,15 @@ jobs:
             # Xóa container clamav cũ nếu có lỗi xung đột tên
             docker rm -f doc-clamav || true
             
+            # Xóa sạch các container cũ không còn trong cấu hình (VD: Nginx nội bộ)
+            docker-compose down --remove-orphans
+            
             # Pull image mới nhất từ GHCR
             docker-compose pull cabinet-backend
             
-            # Khởi động lại (Bỏ --build để không build trên server)
-            docker-compose down
+            # Khởi động lại
             docker-compose --compatibility up -d
+
+            # Tải lại Proxy tổng (để bắt IP mới của cabinet-system)
+            docker exec nginx-proxy nginx -s reload
           EOF
