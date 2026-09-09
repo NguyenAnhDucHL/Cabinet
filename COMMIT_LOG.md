@@ -1,3 +1,12 @@
+### [2026-09-09 10:12] Cấu hình SSL HTTPS cho domain hopkhonggiay.vpdtcampha.vn
+- **Mô tả**: Bật HTTPS cho domain chính thức `hopkhonggiay.vpdtcampha.vn` sử dụng SSL wildcard `*.vpdtcampha.vn` do GlobalSign cấp. Trước đó nginx chỉ lắng nghe port 80 và block HTTPS bị comment out. Đã copy fullchain cert + private key vào `nginx/certs/`, viết lại `nginx/conf.d/default.conf` với redirect HTTP→HTTPS và đổi docker-compose ports từ 8080/8443 sang 80/443.
+- **Tệp thay đổi**:
+  - `nginx/conf.d/default.conf` (Sửa đổi — bật HTTPS, redirect 80→443, SSL GlobalSign)
+  - `nginx/certs/fullchain.pem` (Mới — cert chain: domain + intermediate + root)
+  - `nginx/certs/privkey.pem` (Mới — private key tương ứng)
+  - `docker-compose.yml` (Sửa đổi — đổi nginx ports 8080:80→80:80, 8443:443→443:443)
+- **Lệnh git commit**: `git commit -m "chore(infra): cấu hình SSL HTTPS GlobalSign cho domain hopkhonggiay.vpdtcampha.vn"`
+
 ### [2026-09-08 08:05] Khắc phục lỗi N+1 Query trong QuestionnaireRepository
 - **Mô tả**: Sửa lỗi N+1 Query trong hàm `GetQuestionnaireWithDetailsAsync`. Trước đó, vòng lặp `foreach` thực hiện N truy vấn để lấy Options cho từng câu hỏi (N câu hỏi = N truy vấn). Đã chuyển sang sử dụng mệnh đề `IN (...)` để lấy toàn bộ Options cho tất cả câu hỏi chỉ bằng 1 câu truy vấn duy nhất, cải thiện đáng kể hiệu năng khi tải chi tiết Phiếu lấy ý kiến.
 - **Tệp thay đổi**:
