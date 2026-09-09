@@ -1,3 +1,9 @@
+### [2026-09-09 17:23] Bổ sung tính năng Upload tài liệu và Giấy mời họp vào form Tạo/Sửa phiên họp
+- **Mô tả**: Bổ sung giao diện UI cho phép kéo thả/chọn file đính kèm (Tài liệu họp, Giấy mời họp) ở form Tạo/Sửa phiên họp (tab Nội dung họp). Chỉnh sửa hàm `handleSubmit` sử dụng `FormData` để gửi các file được chọn (`programFiles`, `invitationFiles`) về backend API. Việc này giúp đồng bộ tính năng Frontend với mô tả trong Hướng dẫn sử dụng và Backend (MeetingsController).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/components/MeetingModal.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(meetings): bổ sung tính năng upload tài liệu và giấy mời vào giao diện tạo/sửa phiên họp"`
+
 ### [2026-09-09 11:55] Thống nhất giao diện đóng mở Menu (Sidebar UX Fix)
 - **Mô tả**: Sửa lỗi UX gây nhầm lẫn biểu tượng 'Danh sách phiên họp' (3 gạch) với nút mở rộng/thu gọn Menu. Chuyển nút Hamburger toggle (Menu) từ thanh Header đỏ trên cùng xuống tích hợp cố định ở đầu thanh Sidebar trắng bên trái. Đổi icon của Danh sách phiên họp thành `LayoutList` để tránh hiểu lầm. Đảm bảo giao diện mọi tab đều có nút thu gọn/mở rộng Menu đồng nhất.
 - **Tệp thay đổi**:

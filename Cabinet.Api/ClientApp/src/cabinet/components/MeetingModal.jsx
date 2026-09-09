@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   X,
   Calendar,
@@ -15,6 +15,7 @@ import {
   Loader2,
   ChevronDown,
   Trash2,
+  Upload,
 } from 'lucide-react'
 import { ConfirmationModal } from '@/components/ui/confirmation-modal'
 
@@ -37,6 +38,10 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
   const [activeSection, setActiveSection] = useState('basic')
   const [searchQuery, setSearchQuery] = useState('')
   const [showConfirmDelete, setShowConfirmDelete] = useState(false)
+  const [programFiles, setProgramFiles] = useState([])
+  const [invitationFiles, setInvitationFiles] = useState([])
+  const programFileRef = useRef(null)
+  const invitationFileRef = useRef(null)
 
   const [form, setForm] = useState({
     title: meeting?.title || '',
@@ -156,6 +161,9 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
 
     const fd = new FormData()
     fd.append('requestJson', JSON.stringify(body))
+
+    programFiles.forEach((f) => fd.append('programFiles', f))
+    invitationFiles.forEach((f) => fd.append('invitationFiles', f))
 
     try {
       const res = await fetch(url, { method, body: fd })
@@ -402,6 +410,122 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                     placeholder="Các ghi chú, yêu cầu đặc biệt cho phiên họp..."
                     className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/25 focus:border-[var(--color-primary)] transition resize-none"
                   />
+                </div>
+
+                {/* Tài liệu họp */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    Tài liệu họp
+                  </label>
+                  <div
+                    className="border-2 border-dashed border-gray-300 rounded-lg px-4 py-5 text-center cursor-pointer hover:border-[var(--color-primary)] hover:bg-red-50/30 transition"
+                    onClick={() => programFileRef.current?.click()}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault()
+                      if (e.dataTransfer.files) {
+                        setProgramFiles((prev) => [...prev, ...Array.from(e.dataTransfer.files)])
+                      }
+                    }}
+                  >
+                    <Upload size={20} className="mx-auto text-[var(--color-primary)] mb-1" />
+                    <p className="text-sm">
+                      <span className="text-[var(--color-primary)] font-semibold">Chọn file</span>
+                      <span className="text-gray-500"> hoặc Kéo thả từ máy tính</span>
+                    </p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Hỗ trợ định dạng: .doc, .docx, .xls, .xlsx, .ppt, .pptx, .pdf
+                    </p>
+                  </div>
+                  <input
+                    ref={programFileRef}
+                    type="file"
+                    multiple
+                    accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf"
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files)
+                        setProgramFiles((prev) => [...prev, ...Array.from(e.target.files)])
+                    }}
+                  />
+                  {programFiles.length > 0 && (
+                    <ul className="mt-2 space-y-1">
+                      {programFiles.map((f, i) => (
+                        <li
+                          key={i}
+                          className="flex items-center justify-between text-xs text-gray-600 bg-gray-50 px-3 py-1.5 rounded"
+                        >
+                          <span className="truncate font-medium">{f.name}</span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setProgramFiles((prev) => prev.filter((_, idx) => idx !== i))
+                            }
+                            className="text-gray-400 hover:text-red-500 ml-2 shrink-0"
+                          >
+                            <X size={13} />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {/* Giấy mời họp */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                    Giấy mời họp
+                  </label>
+                  <div
+                    className="border-2 border-dashed border-gray-300 rounded-lg px-4 py-5 text-center cursor-pointer hover:border-[var(--color-primary)] hover:bg-red-50/30 transition"
+                    onClick={() => invitationFileRef.current?.click()}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault()
+                      if (e.dataTransfer.files) {
+                        setInvitationFiles((prev) => [...prev, ...Array.from(e.dataTransfer.files)])
+                      }
+                    }}
+                  >
+                    <Upload size={20} className="mx-auto text-[var(--color-primary)] mb-1" />
+                    <p className="text-sm">
+                      <span className="text-[var(--color-primary)] font-semibold">
+                        Chọn file giấy mời
+                      </span>
+                    </p>
+                  </div>
+                  <input
+                    ref={invitationFileRef}
+                    type="file"
+                    multiple
+                    accept=".pdf,.doc,.docx"
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files)
+                        setInvitationFiles((prev) => [...prev, ...Array.from(e.target.files)])
+                    }}
+                  />
+                  {invitationFiles.length > 0 && (
+                    <ul className="mt-2 space-y-1">
+                      {invitationFiles.map((f, i) => (
+                        <li
+                          key={i}
+                          className="flex items-center justify-between text-xs text-gray-600 bg-gray-50 px-3 py-1.5 rounded"
+                        >
+                          <span className="truncate font-medium">{f.name}</span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setInvitationFiles((prev) => prev.filter((_, idx) => idx !== i))
+                            }
+                            className="text-gray-400 hover:text-red-500 ml-2 shrink-0"
+                          >
+                            <X size={13} />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             )}
