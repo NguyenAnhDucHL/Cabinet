@@ -190,7 +190,9 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
 
       const contentType = res.headers.get('content-type') || ''
       if (!contentType.includes('application/json')) {
-        setError(`Lỗi hệ thống (${res.status}): Máy chủ phản hồi sai định dạng (có thể do Nginx chặn).`)
+        setError(
+          `Lỗi hệ thống (${res.status}): Máy chủ phản hồi sai định dạng (có thể do Nginx chặn).`
+        )
         return
       }
 

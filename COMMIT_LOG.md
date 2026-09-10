@@ -2046,3 +2046,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/cabinet/components/MeetingModal.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(meetings): bắt lỗi Nginx 413 trả về HTML thay vì crash frontend"`
+
+### [2026-09-10 15:00] Format code bằng Prettier
+- **Mô tả**: Định dạng lại file MeetingModal.jsx theo chuẩn dự án.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/components/MeetingModal.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style: format code by prettier"`
