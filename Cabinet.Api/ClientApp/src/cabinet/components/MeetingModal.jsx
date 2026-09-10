@@ -183,6 +183,17 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
 
     try {
       const res = await fetch(url, { method, body: fd })
+      if (res.status === 413) {
+        setError('Tổng dung lượng file tải lên quá lớn, máy chủ đã từ chối (Lỗi 413).')
+        return
+      }
+
+      const contentType = res.headers.get('content-type') || ''
+      if (!contentType.includes('application/json')) {
+        setError(`Lỗi hệ thống (${res.status}): Máy chủ phản hồi sai định dạng (có thể do Nginx chặn).`)
+        return
+      }
+
       const json = await res.json()
       if (!res.ok || json.success === false) {
         setError(json.message || 'Có lỗi xảy ra, vui lòng thử lại.')

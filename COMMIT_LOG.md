@@ -2039,3 +2039,10 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/Program.cs` (Sửa đổi)
   - `Cabinet.Api/Controllers/Cabinet/MeetingsController.cs` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(meetings): bắt lỗi upload file và tăng max size lên 100MB"`
+
+### [2026-09-10 14:53] Sửa lỗi parse JSON khi Nginx proxy chặn dung lượng lớn
+- **Mô tả**: Khi người dùng tải lên nhiều file có tổng dung lượng vượt qua cấu hình `client_max_body_size` của Nginx proxy thật (server đang host domain hopkhonggiay.vpdtcampha.vn), Nginx trả về lỗi `413 Request Entity Too Large` dạng trang HTML. Hàm `res.json()` của fetch sẽ gây crash lỗi cú pháp (SyntaxError), nảy vào `catch` và báo "Không thể kết nối đến máy chủ" sai lệch bản chất.
+- Đã thêm kiểm tra `res.status === 413` và `content-type.includes('application/json')` vào `MeetingModal.jsx` để hiển thị đúng lỗi 413 do Nginx chặn.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/components/MeetingModal.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): bắt lỗi Nginx 413 trả về HTML thay vì crash frontend"`
