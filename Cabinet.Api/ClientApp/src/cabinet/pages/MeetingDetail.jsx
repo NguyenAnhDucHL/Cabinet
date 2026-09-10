@@ -1,4 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
+
+function getOriginalFileName(path) {
+  if (!path) return ''
+  const filename = path.split('/').pop()
+  const match = filename.match(/^[a-f0-9]{32}_(.*)/i)
+  return match ? match[1] : filename
+}
+
 import {
   ArrowLeft,
   Plus,
@@ -271,15 +279,16 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                         invitationFiles.map((file, i) => (
                           <div key={i} className="flex items-center gap-2 group">
                             <a
-                              href={file}
+                              href={`/api/files/download?path=${encodeURIComponent(file)}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="font-semibold text-[var(--color-primary)] hover:underline truncate max-w-[250px]"
+                              title={getOriginalFileName(file)}
                             >
-                              {file.split('/').pop()}
+                              {getOriginalFileName(file)}
                             </a>
                             <a
-                              href={file}
+                              href={`/api/files/download?path=${encodeURIComponent(file)}`}
                               download
                               className="text-gray-400 hover:text-[var(--color-primary)] transition-colors"
                               title="Tải xuống"
@@ -300,15 +309,16 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
                         programFiles.map((file, i) => (
                           <div key={i} className="flex items-center gap-2 group">
                             <a
-                              href={file}
+                              href={`/api/files/download?path=${encodeURIComponent(file)}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="font-semibold text-[var(--color-primary)] hover:underline truncate max-w-[250px]"
+                              title={getOriginalFileName(file)}
                             >
-                              {file.split('/').pop()}
+                              {getOriginalFileName(file)}
                             </a>
                             <a
-                              href={file}
+                              href={`/api/files/download?path=${encodeURIComponent(file)}`}
                               download
                               className="text-gray-400 hover:text-[var(--color-primary)] transition-colors"
                               title="Tải xuống"

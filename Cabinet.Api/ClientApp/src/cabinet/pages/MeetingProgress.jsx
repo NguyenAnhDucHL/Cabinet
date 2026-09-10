@@ -210,7 +210,7 @@ export function MeetingProgress({ meeting, onBack }) {
                                 {idx + 1}. {getFileName(file)}
                               </span>
                               <a
-                                href={`/${file}`}
+                                href={`/api/files/download?path=${encodeURIComponent(file)}`}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="text-gray-400 hover:text-[var(--color-primary)] p-1"

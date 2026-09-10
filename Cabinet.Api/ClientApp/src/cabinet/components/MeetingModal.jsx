@@ -1,5 +1,13 @@
 /* eslint-disable */
 import React, { useState, useEffect, useRef } from 'react'
+
+function getOriginalFileName(path) {
+  if (!path) return ''
+  const filename = path.split('/').pop()
+  const match = filename.match(/^[a-f0-9]{32}_(.*)/i)
+  return match ? match[1] : filename
+}
+
 import {
   X,
   Calendar,
@@ -484,7 +492,15 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                           key={`exist-${i}`}
                           className="flex items-center justify-between text-xs text-gray-600 bg-gray-50 px-3 py-1.5 rounded"
                         >
-                          <span className="truncate font-medium">{path.split('/').pop()}</span>
+                          <a
+                            href={`/api/files/download?path=${encodeURIComponent(path)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="truncate font-medium text-blue-600 hover:underline"
+                            title={getOriginalFileName(path)}
+                          >
+                            {getOriginalFileName(path)}
+                          </a>
                           <button
                             type="button"
                             onClick={() =>
@@ -558,7 +574,15 @@ export function MeetingModal({ meeting, onClose, onSaved }) {
                           key={`exist-${i}`}
                           className="flex items-center justify-between text-xs text-gray-600 bg-gray-50 px-3 py-1.5 rounded"
                         >
-                          <span className="truncate font-medium">{path.split('/').pop()}</span>
+                          <a
+                            href={`/api/files/download?path=${encodeURIComponent(path)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="truncate font-medium text-blue-600 hover:underline"
+                            title={getOriginalFileName(path)}
+                          >
+                            {getOriginalFileName(path)}
+                          </a>
                           <button
                             type="button"
                             onClick={() =>

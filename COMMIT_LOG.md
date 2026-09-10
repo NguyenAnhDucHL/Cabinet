@@ -2052,3 +2052,13 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/cabinet/components/MeetingModal.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "style: format code by prettier"`
+### [2026-09-10 15:35] Sửa lỗi tải và hiển thị tên file tài liệu
+- **Mô tả**: Bổ sung API `GET /api/files/download` để cho phép tải file đã upload an toàn (vượt qua middleware chặn static files) và tự động xóa chuỗi GUID (32 ký tự hệ lục phân) khỏi tên file khi hiển thị và tải xuống trên UI, giúp người dùng nhìn thấy đúng tên gốc. Cập nhật các Component React liên quan để sử dụng thẻ `<a>` thay vì `<span>` để cho phép click để tải.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/Controllers/Cabinet/FilesController.cs` (Mới)
+  - `Cabinet.Api/ClientApp/src/cabinet/components/MeetingModal.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingProgress.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/documents/components/DocumentTable.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/SaveToLibraryModal.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(api): them api tai file va sua loi hien thi ten file UI"`

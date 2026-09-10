@@ -45,10 +45,11 @@ export function SaveToLibraryModal({ open, onOpenChange, meeting, onSaved }) {
       const uniqueDocs = [...new Set(docs)].map((path) => {
         // Extract filename from path
         const parts = path.split('/')
-        const name = parts[parts.length - 1]
+        let name = parts[parts.length - 1]
         // Remove uuid prefix if any
-        if (name.length > 36 && name.includes('-')) {
-          // Very simple heuristic, but we'll just keep the original name to be safe
+        const match = name.match(/^[a-f0-9]{32}_(.*)/i)
+        if (match) {
+          name = match[1]
         }
         return { name, path }
       })

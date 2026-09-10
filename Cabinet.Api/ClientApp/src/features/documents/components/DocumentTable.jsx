@@ -211,7 +211,10 @@ export function DocumentTable({ documents, loading, type, onRefresh }) {
                         />
                       </Button>
                       <Button variant="ghost" size="icon" title="Tải xuống" asChild>
-                        <a href={doc.filePath} download>
+                        <a
+                          href={`/api/files/download?path=${encodeURIComponent(doc.filePath)}`}
+                          download
+                        >
                           <Download className="w-4 h-4 text-blue-600" />
                         </a>
                       </Button>
