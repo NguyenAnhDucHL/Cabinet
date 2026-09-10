@@ -287,18 +287,25 @@ namespace Cabinet.Api.Controllers.Cabinet
                     return BadRequest(ApiResponse.Fail("Vui lòng nhập tên/địa điểm phòng họp khác."));
             }
 
-            var newProgramFiles = await HandleFileUploads(programFiles);
-            if (newProgramFiles.Count > 0)
+            try
             {
-                request.ProgramFilePaths ??= new List<string>();
-                request.ProgramFilePaths.AddRange(newProgramFiles);
-            }
+                var newProgramFiles = await HandleFileUploads(programFiles);
+                if (newProgramFiles.Count > 0)
+                {
+                    request.ProgramFilePaths ??= new List<string>();
+                    request.ProgramFilePaths.AddRange(newProgramFiles);
+                }
 
-            var newInvitationFiles = await HandleFileUploads(invitationFiles);
-            if (newInvitationFiles.Count > 0)
+                var newInvitationFiles = await HandleFileUploads(invitationFiles);
+                if (newInvitationFiles.Count > 0)
+                {
+                    request.InvitationFilePaths ??= new List<string>();
+                    request.InvitationFilePaths.AddRange(newInvitationFiles);
+                }
+            }
+            catch (Exception ex)
             {
-                request.InvitationFilePaths ??= new List<string>();
-                request.InvitationFilePaths.AddRange(newInvitationFiles);
+                return BadRequest(ApiResponse.Fail($"Lỗi khi tải file lên: {ex.Message}"));
             }
 
             var creatorId = GetCurrentUserId();
@@ -331,19 +338,27 @@ namespace Cabinet.Api.Controllers.Cabinet
             if (request.EndTime <= request.StartTime)
                 return BadRequest(ApiResponse.Fail("Thời gian kết thúc phải sau thời gian bắt đầu."));
 
-            var newProgramFiles = await HandleFileUploads(programFiles);
-            if (newProgramFiles.Count > 0)
+            try
             {
-                request.ProgramFilePaths ??= new List<string>();
-                request.ProgramFilePaths.AddRange(newProgramFiles);
+                var newProgramFiles = await HandleFileUploads(programFiles);
+                if (newProgramFiles.Count > 0)
+                {
+                    request.ProgramFilePaths ??= new List<string>();
+                    request.ProgramFilePaths.AddRange(newProgramFiles);
+                }
+
+                var newInvitationFiles = await HandleFileUploads(invitationFiles);
+                if (newInvitationFiles.Count > 0)
+                {
+                    request.InvitationFilePaths ??= new List<string>();
+                    request.InvitationFilePaths.AddRange(newInvitationFiles);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.Fail($"Lỗi khi tải file lên: {ex.Message}"));
             }
 
-            var newInvitationFiles = await HandleFileUploads(invitationFiles);
-            if (newInvitationFiles.Count > 0)
-            {
-                request.InvitationFilePaths ??= new List<string>();
-                request.InvitationFilePaths.AddRange(newInvitationFiles);
-            }
 
             var success = await _meetingRepo.UpdateAsync(id, request);
             if (!success)

@@ -2032,3 +2032,10 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/package.json` (Sửa đổi)
   - `Cabinet.Api/ClientApp/package-lock.json` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "chore(frontend): xoá các thư viện npm không sử dụng để làm nhẹ dự án"`
+
+### [2026-09-10 14:15] Sửa lỗi kích thước và quyền ghi khi tải tài liệu họp
+- **Mô tả**: Tăng giới hạn tải file trong Kestrel và FormOptions lên 100MB để khắc phục lỗi không thể upload các file tài liệu PDF kích thước lớn. Thêm khối `try/catch` vào `HandleFileUploads` ở `MeetingsController` để bắt và trả về thông báo lỗi 400 rõ ràng nếu có lỗi phân quyền đọc/ghi trên thư mục (tránh việc lỗi ngầm ném Exception làm backend sập và trả về lỗi generic).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/Program.cs` (Sửa đổi)
+  - `Cabinet.Api/Controllers/Cabinet/MeetingsController.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): bắt lỗi upload file và tăng max size lên 100MB"`

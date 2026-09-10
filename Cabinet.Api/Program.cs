@@ -32,6 +32,16 @@ builder.Services.AddMemoryCache(); // ✅ Dashboard stats caching
 // Đăng ký SignalR
 builder.Services.AddSignalR();
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 104857600; // 100 MB
+});
+
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600; // 100 MB
+});
+
 // Cấu hình Rate Limiting để chống tấn công DoS/Spam
 builder.Services.AddRateLimiter(options =>
 {
