@@ -56,8 +56,7 @@ export function MeetingFilters({
           </PopoverTrigger>
           <PopoverContent
             align="end"
-            className="w-[220px] p-0 rounded-xl flex flex-col overflow-hidden"
-            style={{ maxHeight: 'calc(var(--radix-popover-content-available-height) - 16px)' }}
+            className="w-[220px] p-0 rounded-xl flex flex-col overflow-hidden max-h-[85vh]"
           >
             <div className="p-4 border-b border-gray-100 shrink-0">
               <h3 className="font-bold text-gray-800">Cấu hình hiển thị cột</h3>
@@ -150,8 +149,7 @@ export function MeetingFilters({
           </PopoverTrigger>
           <PopoverContent
             align="end"
-            className="w-[320px] p-0 rounded-xl flex flex-col overflow-hidden"
-            style={{ maxHeight: 'calc(var(--radix-popover-content-available-height) - 16px)' }}
+            className="w-[320px] p-0 rounded-xl flex flex-col overflow-hidden max-h-[85vh]"
           >
             <div className="p-4 border-b border-gray-100 shrink-0">
               <h3 className="font-bold text-gray-800">Bộ lọc</h3>

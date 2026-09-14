@@ -2107,3 +2107,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(meetings): cấu hình chiều cao tối đa cho popover bộ lọc vừa khít màn hình"`
+
+### [2026-09-14 13:46] Sửa lỗi Popover bị khuyết do biến CSS không hoạt động
+- **Mô tả**: Thay thế `var(--radix-popover-content-available-height)` bằng class `max-h-[85vh]` để đảm bảo tương thích với phiên bản Radix UI hiện tại. Giới hạn Popover ở mức 85% chiều cao màn hình giúp Radix tự động đẩy Popover lên trên (shift) để luôn hiển thị trọn vẹn trong Viewport.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): sử dụng max-h 85vh cho popover để tránh tràn màn hình"`
