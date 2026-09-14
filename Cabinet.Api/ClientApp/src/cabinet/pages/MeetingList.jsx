@@ -38,9 +38,56 @@ export function MeetingList() {
   const [confirmMeeting, setConfirmMeeting] = useState(null)
   const [saveLibraryMeeting, setSaveLibraryMeeting] = useState(null)
 
+  const [filters, setFilters] = useState({
+    attendanceStatus: 'all',
+    status: 'all',
+    type: 'all',
+    format: 'all',
+    location: '',
+    presider: '',
+  })
+
   const filteredMeetings = meetings.filter((m) => {
     const matchSearch = m.title?.toLowerCase().includes(searchQuery.toLowerCase())
     if (!matchSearch) return false
+
+    // Lọc theo Trạng thái tham gia (attendanceStatus)
+    if (filters.attendanceStatus !== 'all') {
+      const myStatus = m.attendanceStatus === 'Có tham gia' ? 'Tham gia' : m.attendanceStatus
+      if (myStatus !== filters.attendanceStatus) return false
+    }
+
+    // Lọc theo Trạng thái phiên họp (status)
+    if (filters.status !== 'all') {
+      let mappedStatus = m.status
+      if (mappedStatus === 'Hoàn thành') mappedStatus = 'Đã họp'
+      if (mappedStatus === 'Hủy') mappedStatus = 'Đã hủy'
+      if (mappedStatus !== filters.status) return false
+    }
+
+    // Lọc theo Loại phiên họp
+    if (filters.type !== 'all' && m.meetingType !== filters.type) return false
+
+    // Lọc theo Hình thức họp
+    if (filters.format !== 'all') {
+      const isOnline = !!m.onlineMeetingUrl
+      if (filters.format === 'Họp trực tuyến' && !isOnline) return false
+      if (filters.format === 'Họp thường' && isOnline) return false
+    }
+
+    // Lọc theo Địa điểm
+    if (
+      filters.location &&
+      (!m.location || !m.location.toLowerCase().includes(filters.location.toLowerCase()))
+    )
+      return false
+
+    // Lọc theo Chủ trì
+    if (
+      filters.presider &&
+      (!m.presider || !m.presider.toLowerCase().includes(filters.presider.toLowerCase()))
+    )
+      return false
 
     if (activeTab === 'prepare') {
       const noDocs =
@@ -51,6 +98,7 @@ export function MeetingList() {
     // For 'invited' tab, filter out 'all' logic if admin wants only invited (handled by backend though)
     return true
   })
+
   const paginatedMeetings = filteredMeetings.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
@@ -152,6 +200,8 @@ export function MeetingList() {
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             fetchMeetings={fetchMeetings}
+            filters={filters}
+            setFilters={setFilters}
           />
 
           <MeetingTable

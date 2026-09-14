@@ -2080,3 +2080,10 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Core/Data/Repositories/MeetingRepository.cs` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(meetings): bổ sung m.InvitationSentAt vào query get my meetings"`
+
+### [2026-09-14 12:48] Cập nhật bộ lọc danh sách phiên họp
+- **Mô tả**: Bổ sung các tùy chọn lọc dữ liệu (Trạng thái tham gia, Trạng thái phiên họp, Hình thức họp, Loại phiên họp) theo chuẩn giao diện UI/UX. Thêm mới các ô lọc bằng text cho Địa điểm và Chủ trì. Thêm dữ liệu mẫu vào DB để kiểm thử bộ lọc.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingList.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(meetings): cập nhật giao diện bộ lọc danh sách phiên họp"`

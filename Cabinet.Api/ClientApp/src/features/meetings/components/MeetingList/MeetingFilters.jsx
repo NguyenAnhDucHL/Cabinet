@@ -11,7 +11,17 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-export function MeetingFilters({ searchQuery, setSearchQuery, fetchMeetings }) {
+export function MeetingFilters({
+  searchQuery,
+  setSearchQuery,
+  fetchMeetings,
+  filters,
+  setFilters,
+}) {
+  const updateFilter = (key, value) => {
+    setFilters((prev) => ({ ...prev, [key]: value }))
+  }
+
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
       <h2 className="text-lg font-bold text-gray-800">Danh sách phiên họp</h2>
@@ -46,28 +56,109 @@ export function MeetingFilters({ searchQuery, setSearchQuery, fetchMeetings }) {
               Bộ lọc
             </Button>
           </PopoverTrigger>
-          <PopoverContent align="end" className="w-[320px] p-4 rounded-xl">
+          <PopoverContent
+            align="end"
+            className="w-[320px] p-4 rounded-xl max-h-[80vh] overflow-y-auto"
+          >
             <h3 className="font-bold text-gray-800 mb-4">Bộ lọc</h3>
             <div className="space-y-4">
-              {[
-                'Trạng thái tham gia',
-                'Trạng thái phiên họp',
-                'Loại phiên họp',
-                'Hình thức họp',
-              ].map((lbl) => (
-                <div key={lbl} className="space-y-1.5">
-                  <label className="text-xs font-semibold text-gray-600">{lbl}</label>
-                  <Select defaultValue="all">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Tất cả" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Tất cả</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              ))}
-              <Button className="w-full bg-[var(--color-primary)] hover:bg-[#a50e27] text-white">
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-600">Trạng thái tham gia</label>
+                <Select
+                  value={filters?.attendanceStatus || 'all'}
+                  onValueChange={(val) => updateFilter('attendanceStatus', val)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Tất cả" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Tất cả</SelectItem>
+                    <SelectItem value="Tham gia">Tham gia</SelectItem>
+                    <SelectItem value="Chưa xác nhận">Chưa xác nhận</SelectItem>
+                    <SelectItem value="Vắng mặt">Vắng mặt</SelectItem>
+                    <SelectItem value="Báo vắng">Báo vắng</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-600">Trạng thái phiên họp</label>
+                <Select
+                  value={filters?.status || 'all'}
+                  onValueChange={(val) => updateFilter('status', val)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Tất cả" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Tất cả</SelectItem>
+                    <SelectItem value="Sắp diễn ra">Sắp diễn ra</SelectItem>
+                    <SelectItem value="Đang diễn ra">Đang diễn ra</SelectItem>
+                    <SelectItem value="Đã họp">Đã họp</SelectItem>
+                    <SelectItem value="Đã hủy">Đã hủy</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-600">Loại phiên họp</label>
+                <Select
+                  value={filters?.type || 'all'}
+                  onValueChange={(val) => updateFilter('type', val)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Tất cả" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Tất cả</SelectItem>
+                    <SelectItem value="Họp giao ban">Họp giao ban</SelectItem>
+                    <SelectItem value="Họp chuyên đề">Họp chuyên đề</SelectItem>
+                    <SelectItem value="Họp bất thường">Họp bất thường</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-600">Hình thức họp</label>
+                <Select
+                  value={filters?.format || 'all'}
+                  onValueChange={(val) => updateFilter('format', val)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Tất cả" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Tất cả</SelectItem>
+                    <SelectItem value="Họp thường">Họp thường</SelectItem>
+                    <SelectItem value="Họp trực tuyến">Họp trực tuyến</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-600">Địa điểm</label>
+                <Input
+                  placeholder="Nhập địa điểm..."
+                  className="h-9 text-sm"
+                  value={filters?.location || ''}
+                  onChange={(e) => updateFilter('location', e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-600">Chủ trì</label>
+                <Input
+                  placeholder="Nhập tên người chủ trì..."
+                  className="h-9 text-sm"
+                  value={filters?.presider || ''}
+                  onChange={(e) => updateFilter('presider', e.target.value)}
+                />
+              </div>
+
+              <Button
+                className="w-full bg-[var(--color-primary)] hover:bg-[#a50e27] text-white"
+                onClick={fetchMeetings}
+              >
                 Lọc dữ liệu
               </Button>
             </div>
