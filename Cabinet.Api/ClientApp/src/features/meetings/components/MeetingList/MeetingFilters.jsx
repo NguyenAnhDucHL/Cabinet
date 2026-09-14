@@ -54,9 +54,16 @@ export function MeetingFilters({
               <SlidersHorizontal size={16} />
             </Button>
           </PopoverTrigger>
-          <PopoverContent align="end" className="w-[220px] p-4 rounded-xl">
-            <h3 className="font-bold text-gray-800 mb-3">Cấu hình hiển thị cột</h3>
-            <div className="space-y-3">
+          <PopoverContent
+            align="end"
+            className="w-[220px] p-0 rounded-xl flex flex-col overflow-hidden"
+            style={{ maxHeight: 'calc(var(--radix-popover-content-available-height) - 16px)' }}
+          >
+            <div className="p-4 border-b border-gray-100 shrink-0">
+              <h3 className="font-bold text-gray-800">Cấu hình hiển thị cột</h3>
+            </div>
+
+            <div className="p-4 space-y-3 overflow-y-auto flex-1">
               <label className="flex items-center gap-2 text-sm font-medium cursor-pointer">
                 <Checkbox
                   checked={Object.values(visibleColumns).every((v) => v)}
@@ -100,8 +107,11 @@ export function MeetingFilters({
                   {col.label}
                 </label>
               ))}
+            </div>
+
+            <div className="p-4 border-t border-gray-100 shrink-0">
               <Button
-                className="w-full bg-[#c8102e] hover:bg-[#a50e27] text-white mt-4"
+                className="w-full bg-[#c8102e] hover:bg-[#a50e27] text-white"
                 onClick={() =>
                   setVisibleColumns({
                     stt: true,
@@ -138,12 +148,16 @@ export function MeetingFilters({
               Bộ lọc
             </Button>
           </PopoverTrigger>
-          <PopoverContent align="end" className="w-[320px] p-0 rounded-xl flex flex-col">
+          <PopoverContent
+            align="end"
+            className="w-[320px] p-0 rounded-xl flex flex-col overflow-hidden"
+            style={{ maxHeight: 'calc(var(--radix-popover-content-available-height) - 16px)' }}
+          >
             <div className="p-4 border-b border-gray-100 shrink-0">
               <h3 className="font-bold text-gray-800">Bộ lọc</h3>
             </div>
 
-            <div className="p-4 space-y-4 max-h-[60vh] overflow-y-auto">
+            <div className="p-4 space-y-4 overflow-y-auto flex-1">
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-gray-600">Trạng thái tham gia</label>
                 <Select

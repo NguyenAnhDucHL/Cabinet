@@ -2101,3 +2101,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(meetings): cố định vị trí hiển thị nút lọc dữ liệu trong bộ lọc"`
+
+### [2026-09-14 13:38] Sửa lỗi Popover hiển thị tràn màn hình (Overflow)
+- **Mô tả**: Sử dụng biến CSS `--radix-popover-content-available-height` kết hợp với `maxHeight` để giới hạn chiều cao tối đa của Popover Content sao cho tự động vừa khít với kích thước cửa sổ trình duyệt (viewport). Sửa cho cả nút Bộ lọc và nút Cấu hình hiển thị cột.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): cấu hình chiều cao tối đa cho popover bộ lọc vừa khít màn hình"`
