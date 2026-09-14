@@ -147,19 +147,15 @@ builder.Services.AddSingleton<IClamAvService, ClamAvService>();  // Virus scanni
 builder.Services.AddHostedService<BackupService>();               // Auto DB backup mỗi 6h
 
 // Cấu hình JWT - Bắt buộc phải có trong biến môi trường hoặc appsettings
-var jwtSecret = builder.Configuration["JWT_SECRET"]
-                ?? Environment.GetEnvironmentVariable("JWT_SECRET");
+// ✅ Quản lý Khóa RSA cho JWT Bất đối xứng (Asymmetric JWT)
+var rsaKeyManager = new Cabinet.Core.Services.Security.RsaKeyManager();
+builder.Services.AddSingleton(rsaKeyManager);
 
-// Nếu không có secret → DỪNG ứng dụng ngay, không cho chạy với key rỗng/yếu
-if (string.IsNullOrWhiteSpace(jwtSecret) || jwtSecret.Length < 32)
-{
-    throw new InvalidOperationException(
-        "[SECURITY FATAL] JWT_SECRET chưa được cấu hình hoặc quá ngắn (tối thiểu 32 ký tự).\n" +
-        "Vui lòng thêm JWT_SECRET vào file .env hoặc biến môi trường hệ thống.\n" +
-        "Tạo secret mạnh bằng lệnh: openssl rand -base64 64");
-}
+// Thêm các repository bảo mật nâng cao
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<ISecurityLogRepository, SecurityLogRepository>();
 
-var key = jwtSecret;
+// Cấu hình JWT - Đã chuyển sang dùng RS256 thay cho HS256
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -172,9 +168,10 @@ builder.Services.AddAuthentication(x =>
     x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+        IssuerSigningKey = rsaKeyManager.GetKey(),
         ValidateIssuer = false,
-        ValidateAudience = false
+        ValidateAudience = false,
+        ClockSkew = TimeSpan.Zero // Hết hạn là hết hạn ngay
     };
     x.Events = new JwtBearerEvents
     {

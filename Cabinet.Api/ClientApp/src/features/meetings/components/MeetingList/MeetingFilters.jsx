@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/select'
 
 export function MeetingFilters({
+  meetings = [],
   searchQuery,
   setSearchQuery,
   fetchMeetings,
@@ -30,6 +31,12 @@ export function MeetingFilters({
   const updateFilter = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }))
   }
+
+  const uniqueLocations = [
+    ...new Set(meetings.map((m) => m.location || m.roomName).filter(Boolean)),
+  ]
+  const uniquePresiders = [...new Set(meetings.map((m) => m.presider).filter(Boolean))]
+  const uniqueTypes = [...new Set(meetings.map((m) => m.meetingType).filter(Boolean))]
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -75,6 +82,7 @@ export function MeetingFilters({
                       presider: checked,
                       type: checked,
                       status: checked,
+                      format: checked,
                       actions: checked,
                     })
                   }}
@@ -196,22 +204,42 @@ export function MeetingFilters({
 
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-gray-600">Địa điểm</label>
-                <Input
-                  placeholder="Nhập địa điểm..."
-                  className="h-9 text-sm"
-                  value={filters?.location || ''}
-                  onChange={(e) => updateFilter('location', e.target.value)}
-                />
+                <Select
+                  value={filters?.location || 'all'}
+                  onValueChange={(val) => updateFilter('location', val)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Tất cả" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Tất cả</SelectItem>
+                    {uniqueLocations.map((loc) => (
+                      <SelectItem key={loc} value={loc}>
+                        {loc}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-gray-600">Chủ trì</label>
-                <Input
-                  placeholder="Nhập tên người chủ trì..."
-                  className="h-9 text-sm"
-                  value={filters?.presider || ''}
-                  onChange={(e) => updateFilter('presider', e.target.value)}
-                />
+                <Select
+                  value={filters?.presider || 'all'}
+                  onValueChange={(val) => updateFilter('presider', val)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Tất cả" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Tất cả</SelectItem>
+                    {uniquePresiders.map((p) => (
+                      <SelectItem key={p} value={p}>
+                        {p}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-1.5">
@@ -225,9 +253,11 @@ export function MeetingFilters({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Tất cả</SelectItem>
-                    <SelectItem value="Họp giao ban">Họp giao ban</SelectItem>
-                    <SelectItem value="Họp chuyên đề">Họp chuyên đề</SelectItem>
-                    <SelectItem value="Họp bất thường">Họp bất thường</SelectItem>
+                    {uniqueTypes.map((t) => (
+                      <SelectItem key={t} value={t}>
+                        {t}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

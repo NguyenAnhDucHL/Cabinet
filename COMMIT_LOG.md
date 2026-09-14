@@ -2119,3 +2119,25 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/features/meeting_execution/components/LiveMeetingRoom.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "style(meetings): loại bỏ màn hình trình chiếu minh họa trong phòng họp trực tuyến"`
+### [2026-09-14 14:12] Nâng cấp Login Security lên chuẩn Enterprise (Port từ Tool-Calendar)
+- **Mô tả**: Áp dụng kiến trúc bảo mật từ Tool-Calendar sang Cabinet. Thay thế thuật toán JWT từ HS256 sang RS256 (bất đối xứng) sử dụng `RsaKeyManager`. Bổ sung quản lý phiên (Session Tracking) và ghi nhật ký bảo mật chi tiết (Security Logs) để theo dõi các truy cập đáng ngờ và hỗ trợ Kick thiết bị khi có đăng nhập mới.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Services/Security/RsaKeyManager.cs` (Mới)
+  - `Cabinet.Core/Data/Repositories/SessionRepository.cs` (Mới)
+  - `Cabinet.Core/Data/Repositories/SecurityLogRepository.cs` (Mới)
+  - `Cabinet.Api/Controllers/AuthController.cs` (Sửa đổi)
+  - `Cabinet.Api/Program.cs` (Sửa đổi)
+  - `data_dump/documents.db` (Sửa đổi - Thêm bảng UserSessions và SecurityLogs)
+- **Lệnh git commit**: `git commit -m "feat(auth): áp dụng bảo mật đăng nhập Enterprise (RS256, Session Tracking, Security Logs)"`
+
+### [2026-09-14 14:26] Khắc phục lỗi hiển thị phiên họp cá nhân hôm nay & Bộ lọc dropdown
+- **Mô tả**:
+  - Sửa lỗi không hiển thị dữ liệu ở tab "Phiên họp cá nhân được mời": Do status badge fallback không đúng khiến giá trị string API trả về như "Báo vắng", "Chưa xác nhận", "Tham gia" không match được với config UI.
+  - Sửa "Địa điểm", "Chủ trì", "Loại phiên họp" từ Input text tĩnh sang Dropdown Select động lấy dữ liệu theo đúng source code.
+  - Bổ sung cấu hình hiển thị cột "Hình thức họp" (Họp trực tuyến/Họp thường) vào bảng.
+  - Bổ sung hành động "Màn hình trình chiếu" vào menu Dropdown của các phiên họp trong bảng (theo yêu cầu/minh họa Màn hình trình chiếu).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingList.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingTable.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): hien thi the status chinh xac va them tuy chon bo loc dong"`

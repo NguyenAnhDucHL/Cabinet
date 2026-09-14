@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
-import { Eye, MoreVertical, CheckCircle2, FolderPlus, Trash2, Inbox } from 'lucide-react'
+import {
+  Eye,
+  MoreVertical,
+  CheckCircle2,
+  FolderPlus,
+  Trash2,
+  Inbox,
+  MonitorPlay,
+} from 'lucide-react'
 import { ConfirmationModal } from '@/components/ui/confirmation-modal'
 import {
   DropdownMenu,
@@ -12,6 +20,8 @@ import { ATTENDANCE_STATUS } from '../../../../constants/meeting'
 
 const getStatusBadge = (status) => {
   switch (status) {
+    case 'Tham gia':
+    case 'Có tham gia':
     case ATTENDANCE_STATUS.JOINED:
     case ATTENDANCE_STATUS.PROCESSED:
       return (
@@ -19,6 +29,7 @@ const getStatusBadge = (status) => {
           Tham gia
         </span>
       )
+    case 'Chưa xác nhận':
     case ATTENDANCE_STATUS.PENDING:
     case ATTENDANCE_STATUS.UNPROCESSED:
       return (
@@ -26,6 +37,13 @@ const getStatusBadge = (status) => {
           Chưa xác nhận
         </span>
       )
+    case 'Báo vắng':
+      return (
+        <span className="px-3 py-1 bg-yellow-100 text-yellow-700 font-semibold rounded-full text-xs">
+          Báo vắng
+        </span>
+      )
+    case 'Vắng mặt':
     case ATTENDANCE_STATUS.ABSENT:
       return (
         <span className="px-3 py-1 bg-red-100 text-red-700 font-semibold rounded-full text-xs">
@@ -34,8 +52,43 @@ const getStatusBadge = (status) => {
       )
     default:
       return (
+        <span className="px-3 py-1 bg-gray-100 text-gray-700 font-semibold rounded-full text-xs">
+          {status || 'Không rõ'}
+        </span>
+      )
+  }
+}
+
+const getMeetingStatusBadge = (status) => {
+  switch (status) {
+    case 'Sắp diễn ra':
+      return (
+        <span className="px-3 py-1 bg-yellow-100 text-yellow-700 font-semibold rounded-full text-xs">
+          Sắp diễn ra
+        </span>
+      )
+    case 'Đang diễn ra':
+      return (
+        <span className="px-3 py-1 bg-blue-100 text-blue-700 font-semibold rounded-full text-xs">
+          Đang diễn ra
+        </span>
+      )
+    case 'Hoàn thành':
+      return (
         <span className="px-3 py-1 bg-green-100 text-green-700 font-semibold rounded-full text-xs">
-          Tham gia
+          Hoàn thành
+        </span>
+      )
+    case 'Hủy':
+      return (
+        <span className="px-3 py-1 bg-red-100 text-red-700 font-semibold rounded-full text-xs">
+          Hủy
+        </span>
+      )
+    default:
+      return (
+        <span className="px-3 py-1 bg-gray-100 text-gray-700 font-semibold rounded-full text-xs">
+          {status || 'Không rõ'}
         </span>
       )
   }
@@ -151,7 +204,11 @@ export function MeetingTable({
                     <td className="px-4 py-3 text-gray-600">{m.meetingType || 'Chưa phân loại'}</td>
                   )}
                   {visibleColumns?.status && (
-                    <td className="px-4 py-3 text-center">{getStatusBadge(m.attendanceStatus)}</td>
+                    <td className="px-4 py-3 text-center">
+                      {activeTab === 'invited'
+                        ? getStatusBadge(m.attendanceStatus)
+                        : getMeetingStatusBadge(m.status)}
+                    </td>
                   )}
                   {visibleColumns?.actions && (
                     <td className="px-4 py-3 text-center">
@@ -188,6 +245,10 @@ export function MeetingTable({
                             >
                               <CheckCircle2 size={16} />
                               <span>Xác nhận tham gia</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="gap-2 cursor-pointer rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#1a202c] py-2 outline-none">
+                              <MonitorPlay size={16} />
+                              <span>Màn hình trình chiếu</span>
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               className="gap-2 cursor-pointer rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#1a202c] py-2 outline-none"

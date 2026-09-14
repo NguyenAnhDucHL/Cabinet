@@ -55,6 +55,7 @@ export function MeetingList() {
     presider: true,
     type: true,
     status: true,
+    format: true,
     actions: true,
   })
 
@@ -87,18 +88,16 @@ export function MeetingList() {
     }
 
     // Lọc theo Địa điểm
-    if (
-      filters.location &&
-      (!m.location || !m.location.toLowerCase().includes(filters.location.toLowerCase()))
-    )
-      return false
+    if (filters.location && filters.location !== 'all') {
+      const loc = m.location || m.roomName || ''
+      if (!loc.toLowerCase().includes(filters.location.toLowerCase())) return false
+    }
 
     // Lọc theo Chủ trì
-    if (
-      filters.presider &&
-      (!m.presider || !m.presider.toLowerCase().includes(filters.presider.toLowerCase()))
-    )
-      return false
+    if (filters.presider && filters.presider !== 'all') {
+      if (!m.presider || !m.presider.toLowerCase().includes(filters.presider.toLowerCase()))
+        return false
+    }
 
     if (activeTab === 'prepare') {
       const noDocs =
@@ -119,9 +118,9 @@ export function MeetingList() {
     return (
       <CabinetMeetingCreate
         onBack={() => setIsCreating(false)}
-        onSaved={() => {
+        onCreated={() => {
           setIsCreating(false)
-          fetchMeetings(activeTab)
+          fetchMeetings()
         }}
       />
     )
