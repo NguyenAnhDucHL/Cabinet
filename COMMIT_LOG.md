@@ -2074,3 +2074,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Core/Data/Repositories/MeetingRepository.cs` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(meetings): hiển thị phiên họp do chính user tạo trong danh sách cá nhân"`
+
+### [2026-09-14 12:28] Fix lỗi SqliteDataReader trong GetByParticipantAsync
+- **Mô tả**: Sửa lỗi 500 do thiếu cột `m.InvitationSentAt` trong câu query SELECT của `GetByParticipantAsync`, gây ra lỗi IndexOutOfRangeException khi hàm `MapMeeting` đọc cột này.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Data/Repositories/MeetingRepository.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): bổ sung m.InvitationSentAt vào query get my meetings"`

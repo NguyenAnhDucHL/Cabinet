@@ -127,7 +127,7 @@ namespace Cabinet.Core.Data.Repositories
                 SELECT m.Id, m.Title, m.StartTime, m.EndTime, m.RoomId, m.Status, m.CreatorId, m.CreatedAt,
                        m.Location, m.Presider, m.PreparingUnit, m.Content, m.Notes, m.OrganizingUnit,
                        COALESCE(m.ExpectedAttendees, 0) as ExpectedAttendees,
-                       m.ExternalParticipants, m.MeetingType, m.OnlineMeetingUrl, m.ProgramFilePaths, m.InvitationFilePaths,
+                       m.ExternalParticipants, m.MeetingType, m.OnlineMeetingUrl, m.ProgramFilePaths, m.InvitationFilePaths, m.InvitationSentAt,
                        r.Name as RoomName, u.FullName as CreatorName,
                        COALESCE(mp.AttendanceStatus, 'Tham gia') as MyAttendanceStatus
                 FROM Meetings m
