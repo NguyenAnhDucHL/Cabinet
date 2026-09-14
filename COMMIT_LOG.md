@@ -2113,3 +2113,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(meetings): sử dụng max-h 85vh cho popover để tránh tràn màn hình"`
+
+### [2026-09-14 13:57] Xóa Màn hình trình chiếu minh họa khỏi Phòng họp trực tuyến
+- **Mô tả**: Dựa trên tài liệu HDSD (Hướng dẫn sử dụng) của hệ thống thực tế không có chức năng "Màn hình trình chiếu", tiến hành xóa khối giao diện minh họa này (Mockup) trong trang Phòng họp trực tuyến để phù hợp với yêu cầu thực tế.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/meeting_execution/components/LiveMeetingRoom.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style(meetings): loại bỏ màn hình trình chiếu minh họa trong phòng họp trực tuyến"`

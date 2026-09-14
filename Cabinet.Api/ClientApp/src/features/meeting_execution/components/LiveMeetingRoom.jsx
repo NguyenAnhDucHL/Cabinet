@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArrowLeft, Users, FileText } from 'lucide-react'
+import { ArrowLeft, Users } from 'lucide-react'
 import { useMeetingLive } from '../hooks/useMeetingLive'
 import { SpeakingQueuePanel } from './SpeakingQueuePanel'
 import { VotingPanel } from './VotingPanel'
@@ -39,18 +39,6 @@ export function LiveMeetingRoom({ meeting, onBack, currentUserRole, currentUserI
         <div className="max-w-7xl mx-auto h-full grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Main Content & Speakers */}
           <div className="lg:col-span-2 flex flex-col gap-6">
-            {/* Live Streaming Placeholder or Document View */}
-            <div className="bg-black/90 rounded-xl aspect-video flex items-center justify-center text-white/50 border border-gray-200 shadow-sm relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-4">
-                <p className="text-white font-medium">Màn hình trình chiếu (Minh họa)</p>
-                <p className="text-white/70 text-sm">
-                  Chủ tọa đang chia sẻ tài liệu:{' '}
-                  {meeting.documents?.[0]?.name || 'Báo cáo tổng kết'}
-                </p>
-              </div>
-              <FileText className="w-16 h-16 opacity-20" />
-            </div>
-
             {/* Speaking Queue */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
               <SpeakingQueuePanel
