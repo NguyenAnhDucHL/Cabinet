@@ -2208,3 +2208,16 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/Properties/launchSettings.json` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "chore(api): config local DB_PATH in launchSettings to point to data_dump/documents.db"`
+
+### [2026-09-14 18:09] chore(test): xóa các file test cũ của tính năng OCR và sửa lỗi namespace
+- **Mô tả**: Dự án đã loại bỏ tính năng OCR (như DocumentRecord, IOcrService, v.v.) nhưng các file test liên quan trong `Cabinet.Tests` vẫn còn, gây ra nhiều lỗi khi build (CS0246 type not found). Đã xóa các file test không còn tồn tại tính năng (`NewRegexTest.cs`, `OcrAutomationTests.cs`, `OcrStressTests.cs`, `OcrTextRegexTests.cs`, `RealDocumentTests.cs`, `RuleExtractionTests.cs`, `BusinessFlowTests.cs`) và sửa namespace `Cabinet.Core` trong `IntegrationTestBase.cs` để giải quyết lỗi compile.
+- **Tệp thay đổi**:
+  - `Cabinet.Tests/NewRegexTest.cs` (Xóa)
+  - `Cabinet.Tests/OcrAutomationTests.cs` (Xóa)
+  - `Cabinet.Tests/OcrStressTests.cs` (Xóa)
+  - `Cabinet.Tests/OcrTextRegexTests.cs` (Xóa)
+  - `Cabinet.Tests/RealDocumentTests.cs` (Xóa)
+  - `Cabinet.Tests/RuleExtractionTests.cs` (Xóa)
+  - `Cabinet.Tests/BusinessFlowTests.cs` (Xóa)
+  - `Cabinet.Tests/IntegrationTestBase.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(test): remove deprecated OCR tests and fix namespace references"`

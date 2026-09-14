@@ -77,13 +77,6 @@ namespace Cabinet.Tests
             }
         }
 
-        protected void CreateUser(string username, string password, string role)
-        {
-            using var scope = Factory.Services.CreateScope();
-            var userRepo = scope.ServiceProvider.GetRequiredService<Cabinet.Core.Data.Interfaces.IUserRepository>();
-            userRepo.Register(username, password, role);
-        }
-
         public virtual void Dispose()
         {
             Client.Dispose();
