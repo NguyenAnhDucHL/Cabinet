@@ -2068,3 +2068,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Core/Data/DatabaseService.cs` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(db): ưu tiên dùng WAL mode cho SQLite và fallback về DELETE khi có lỗi Docker Windows"`
+
+### [2026-09-14 12:19] Hiển thị phiên họp do chính user tạo
+- **Mô tả**: Sửa lỗi danh sách "Phiên họp cá nhân được mời" không hiển thị phiên họp nếu người tạo không tự thêm chính mình vào danh sách đại biểu tham dự. Cập nhật câu truy vấn SQL để bao gồm điều kiện `m.CreatorId = @userId`.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Data/Repositories/MeetingRepository.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): hiển thị phiên họp do chính user tạo trong danh sách cá nhân"`

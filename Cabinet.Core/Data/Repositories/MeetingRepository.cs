@@ -129,12 +129,12 @@ namespace Cabinet.Core.Data.Repositories
                        COALESCE(m.ExpectedAttendees, 0) as ExpectedAttendees,
                        m.ExternalParticipants, m.MeetingType, m.OnlineMeetingUrl, m.ProgramFilePaths, m.InvitationFilePaths,
                        r.Name as RoomName, u.FullName as CreatorName,
-                       mp.AttendanceStatus as MyAttendanceStatus
+                       COALESCE(mp.AttendanceStatus, 'Tham gia') as MyAttendanceStatus
                 FROM Meetings m
                 LEFT JOIN MeetingParticipants mp ON m.Id = mp.MeetingId AND mp.UserId = @userId
                 LEFT JOIN Rooms r ON m.RoomId = r.Id
                 LEFT JOIN Users u ON m.CreatorId = u.Id
-                WHERE mp.UserId = @userId
+                WHERE mp.UserId = @userId OR m.CreatorId = @userId
                 ORDER BY m.StartTime DESC";
 
             using var cmd = new SqliteCommand(sql, connection);
