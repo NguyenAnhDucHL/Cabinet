@@ -138,12 +138,12 @@ export function MeetingFilters({
               Bộ lọc
             </Button>
           </PopoverTrigger>
-          <PopoverContent
-            align="end"
-            className="w-[320px] p-4 rounded-xl max-h-[80vh] overflow-y-auto"
-          >
-            <h3 className="font-bold text-gray-800 mb-4">Bộ lọc</h3>
-            <div className="space-y-4">
+          <PopoverContent align="end" className="w-[320px] p-0 rounded-xl flex flex-col">
+            <div className="p-4 border-b border-gray-100 shrink-0">
+              <h3 className="font-bold text-gray-800">Bộ lọc</h3>
+            </div>
+
+            <div className="p-4 space-y-4 max-h-[60vh] overflow-y-auto">
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-gray-600">Trạng thái tham gia</label>
                 <Select
@@ -183,6 +183,26 @@ export function MeetingFilters({
               </div>
 
               <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-600">Địa điểm</label>
+                <Input
+                  placeholder="Nhập địa điểm..."
+                  className="h-9 text-sm"
+                  value={filters?.location || ''}
+                  onChange={(e) => updateFilter('location', e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-600">Chủ trì</label>
+                <Input
+                  placeholder="Nhập tên người chủ trì..."
+                  className="h-9 text-sm"
+                  value={filters?.presider || ''}
+                  onChange={(e) => updateFilter('presider', e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-gray-600">Loại phiên họp</label>
                 <Select
                   value={filters?.type || 'all'}
@@ -216,29 +236,11 @@ export function MeetingFilters({
                   </SelectContent>
                 </Select>
               </div>
+            </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-gray-600">Địa điểm</label>
-                <Input
-                  placeholder="Nhập địa điểm..."
-                  className="h-9 text-sm"
-                  value={filters?.location || ''}
-                  onChange={(e) => updateFilter('location', e.target.value)}
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-gray-600">Chủ trì</label>
-                <Input
-                  placeholder="Nhập tên người chủ trì..."
-                  className="h-9 text-sm"
-                  value={filters?.presider || ''}
-                  onChange={(e) => updateFilter('presider', e.target.value)}
-                />
-              </div>
-
+            <div className="p-4 border-t border-gray-100 shrink-0">
               <Button
-                className="w-full bg-[var(--color-primary)] hover:bg-[#a50e27] text-white"
+                className="w-full bg-[#c8102e] hover:bg-[#a50e27] text-white"
                 onClick={fetchMeetings}
               >
                 Lọc dữ liệu

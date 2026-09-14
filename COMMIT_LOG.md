@@ -2095,3 +2095,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingTable.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "feat(meetings): thêm tính năng cấu hình hiển thị cột bảng phiên họp"`
+
+### [2026-09-14 12:58] Cố định nút "Lọc dữ liệu" trên giao diện bộ lọc
+- **Mô tả**: Sắp xếp lại thứ tự các ô nhập (Trạng thái tham gia -> Trạng thái phiên họp -> Địa điểm -> Chủ trì -> Loại phiên họp -> Hình thức họp) cho đồng nhất với thiết kế mong muốn. Cấu trúc lại PopoverContent của Bộ lọc thành dạng Sticky Footer để nút "Lọc dữ liệu" luôn hiển thị dưới cùng màn hình mà không cần scroll.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): cố định vị trí hiển thị nút lọc dữ liệu trong bộ lọc"`
