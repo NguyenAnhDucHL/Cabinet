@@ -2147,3 +2147,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingTable.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "style(meetings): xoa tinh nang man hinh trinh chieu khoi bang"`
+
+### [2026-09-14 14:43] Format mã nguồn
+- **Mô tả**: Format mã nguồn `useMeetingList.js`.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/meetings/hooks/useMeetingList.js` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style(meetings): format ma nguon"`
