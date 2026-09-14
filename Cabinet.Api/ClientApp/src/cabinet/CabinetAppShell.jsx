@@ -59,7 +59,8 @@ export function CabinetAppShell({ children }) {
     try {
       const response = await fetch('/api/notification')
       if (response.ok) {
-        const data = await response.json()
+        const res = await response.json()
+        const data = res.data || []
         setNotifications(data)
         setNotifCount(data.filter((n) => !n.isRead).length)
       }

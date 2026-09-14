@@ -2189,3 +2189,10 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(meetings): sua loi popover bo loc bi khuyet duoi man hinh"`
+
+### [2026-09-14 17:33] Sửa lỗi nút thông báo không hoạt động (Crash Popover)
+- **Mô tả**: API `/api/notification` trả về chuỗi JSON theo format `ApiResponse<T>` (`{ success: true, data: [...] }`). Tuy nhiên, `AppShell.jsx` và `CabinetAppShell.jsx` lại nhầm tưởng kết quả trực tiếp là mảng và truyền object vào state `notifications`, dẫn đến việc component `NotificationsPopover` bị crash khi thực hiện hàm `notifications.map` khi click mở danh sách thông báo. Đã sửa lại logic bóc tách `res.data` trước khi cập nhật state.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/shell/AppShell.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/cabinet/CabinetAppShell.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(notify): sửa lỗi crash popover thông báo do parse sai ApiResponse object"`

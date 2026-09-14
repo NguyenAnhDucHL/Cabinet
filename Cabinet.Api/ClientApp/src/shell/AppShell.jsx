@@ -185,7 +185,8 @@ export function AppShell() {
         headers: { Authorization: `Bearer ${localStorage.getItem('auth_token')}` },
       })
       if (response.ok) {
-        const data = await response.json()
+        const res = await response.json()
+        const data = res.data || []
         setNotifications(data)
         const unreadCount = data.filter((n) => !n.isRead).length
         setNotifCount(unreadCount)
