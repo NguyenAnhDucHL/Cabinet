@@ -17,7 +17,7 @@ namespace Cabinet.Core.Data.Repositories
 
         public SystemConfigRepository(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection") 
+            _connectionString = configuration.GetConnectionString("DefaultConnection")
                 ?? $"Data Source={Environment.GetEnvironmentVariable("DB_PATH") ?? "data_dump/documents.db"}";
         }
 

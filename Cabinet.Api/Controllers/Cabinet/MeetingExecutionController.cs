@@ -50,7 +50,7 @@ namespace Cabinet.Api.Controllers.Cabinet
             var req = await _repo.GetSpeakingRequestAsync(id);
             // Broadcast to meeting group
             await _hubContext.Clients.Group($"Meeting_{meetingId}").SendAsync("NewSpeakingRequest", req);
-            
+
             return Ok(ApiResponse<SpeakingRequest>.Ok(req));
         }
 
@@ -82,7 +82,7 @@ namespace Cabinet.Api.Controllers.Cabinet
             var userId = GetCurrentUserId();
             var pollId = await _repo.CreatePollAsync(meetingId, dto.Title, userId, dto.Options);
             var poll = await _repo.GetPollAsync(pollId);
-            
+
             await _hubContext.Clients.Group($"Meeting_{meetingId}").SendAsync("NewPoll", poll);
             return Ok(ApiResponse<MeetingPoll>.Ok(poll));
         }
@@ -95,7 +95,7 @@ namespace Cabinet.Api.Controllers.Cabinet
 
             var poll = await _repo.GetPollAsync(pollId);
             await _hubContext.Clients.Group($"Meeting_{meetingId}").SendAsync("PollUpdated", poll);
-            
+
             return Ok(ApiResponse.Ok("Đã cập nhật biểu quyết."));
         }
 
@@ -112,7 +112,7 @@ namespace Cabinet.Api.Controllers.Cabinet
 
             return Ok(ApiResponse.Ok("Bình chọn thành công."));
         }
-        
+
         [HttpGet("{meetingId}/polls/{pollId}/my-vote")]
         public async Task<IActionResult> GetMyVote(int meetingId, int pollId)
         {
@@ -135,12 +135,12 @@ namespace Cabinet.Api.Controllers.Cabinet
         {
             var userId = GetCurrentUserId();
             var id = await _repo.AddCommentAsync(meetingId, userId, dto.Content);
-            
+
             var comments = await _repo.GetCommentsAsync(meetingId);
             var comment = comments.FirstOrDefault(c => c.Id == id);
-            
+
             await _hubContext.Clients.Group($"Meeting_{meetingId}").SendAsync("NewComment", comment);
-            
+
             return Ok(ApiResponse<MeetingComment>.Ok(comment));
         }
     }

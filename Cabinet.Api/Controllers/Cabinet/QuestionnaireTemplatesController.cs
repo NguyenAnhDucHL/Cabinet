@@ -36,7 +36,7 @@ namespace Cabinet.Api.Controllers.Cabinet
             var newId = await _repo.CreateAsync(template);
             template.Id = newId;
             template.CreatedAt = DateTime.UtcNow;
-            
+
             return Ok(ApiResponse<QuestionnaireTemplate>.Ok(template));
         }
 

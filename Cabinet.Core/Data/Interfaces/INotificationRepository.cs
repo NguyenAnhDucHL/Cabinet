@@ -9,7 +9,7 @@ namespace Cabinet.Core.Data.Interfaces
         Task<List<Core.Models.NotificationRecord>> GetNotificationsAsync(int userId, int limit = 50);
         Task MarkNotificationAsReadAsync(int id);
         Task MarkAllNotificationsAsReadAsync(int userId);
-        
+
         Task<List<PushSubscription>> GetPushSubscriptionsAsync(int userId);
         Task InsertPushSubscriptionAsync(PushSubscription sub);
         Task DeletePushSubscriptionAsync(string endpoint);

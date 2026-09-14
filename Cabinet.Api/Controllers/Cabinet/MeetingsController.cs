@@ -110,7 +110,7 @@ namespace Cabinet.Api.Controllers.Cabinet
             int stt = 1;
             int presentCount = 0;
             int absentCount = 0;
-            foreach(var p in meeting.Participants)
+            foreach (var p in meeting.Participants)
             {
                 var isAbsent = p.AttendanceStatus == "Vắng mặt" || p.AttendanceStatus == "Báo vắng";
                 if (isAbsent) absentCount++;
@@ -144,7 +144,7 @@ namespace Cabinet.Api.Controllers.Cabinet
         </tr>";
 
             int qStt = 1;
-            foreach(var q in questionnaires)
+            foreach (var q in questionnaires)
             {
                 // Thống kê kết quả có thể chi tiết hơn, nhưng tạm thời xuất danh sách phiếu.
                 html += $@"<tr>
@@ -366,7 +366,7 @@ namespace Cabinet.Api.Controllers.Cabinet
 
             var updated = await _meetingRepo.GetByIdAsync(id);
             await _hubContext.Clients.All.SendAsync("MeetingUpdated");
-            
+
             return Ok(ApiResponse.Ok(updated, "Cập nhật phiên họp thành công."));
         }
 
@@ -400,7 +400,7 @@ namespace Cabinet.Api.Controllers.Cabinet
             var success = await _meetingRepo.CancelAsync(id);
             if (!success)
                 return NotFound(ApiResponse.Fail("Không tìm thấy phiên họp."));
-                
+
             await _hubContext.Clients.All.SendAsync("MeetingUpdated");
             return Ok(ApiResponse.Ok(null, "Đã hủy phiên họp."));
         }

@@ -16,9 +16,9 @@ namespace Cabinet.Core.Data.Repositories
         public DocumentRepository(IConfiguration configuration)
         {
             string? configConnString = configuration.GetConnectionString("DefaultConnection");
-            if (!string.IsNullOrEmpty(configConnString)) 
-            { 
-                _connectionString = configConnString; 
+            if (!string.IsNullOrEmpty(configConnString))
+            {
+                _connectionString = configConnString;
             }
             else
             {
@@ -38,7 +38,7 @@ namespace Cabinet.Core.Data.Repositories
                 SELECT Id, Name, ParentId, Type, CreatorId, CreatedAt
                 FROM DocumentFolders
                 WHERE Type = @Type ";
-            
+
             cmd.Parameters.AddWithValue("@Type", type);
 
             if (creatorId.HasValue && type == "CaNhan")
@@ -117,7 +117,7 @@ namespace Cabinet.Core.Data.Repositories
                 INSERT INTO DocumentFolders (Name, ParentId, Type, CreatorId)
                 VALUES (@Name, @ParentId, @Type, @CreatorId);
                 SELECT last_insert_rowid();";
-                
+
             cmd.Parameters.AddWithValue("@Name", folder.Name);
             cmd.Parameters.AddWithValue("@ParentId", folder.ParentId.HasValue ? folder.ParentId.Value : DBNull.Value);
             cmd.Parameters.AddWithValue("@Type", folder.Type ?? (object)DBNull.Value);
@@ -137,7 +137,7 @@ namespace Cabinet.Core.Data.Repositories
                 UPDATE DocumentFolders 
                 SET Name = @Name, ParentId = @ParentId
                 WHERE Id = @Id";
-                
+
             cmd.Parameters.AddWithValue("@Id", folder.Id);
             cmd.Parameters.AddWithValue("@Name", folder.Name);
             cmd.Parameters.AddWithValue("@ParentId", folder.ParentId.HasValue ? folder.ParentId.Value : DBNull.Value);
@@ -170,7 +170,7 @@ namespace Cabinet.Core.Data.Repositories
                 SELECT Id, Name, FileType, FilePath, DocumentType, IssuingAuthority, FolderId, CreatorId, Type, CreatedAt
                 FROM Documents
                 WHERE Type = @Type ";
-            
+
             cmd.Parameters.AddWithValue("@Type", type);
 
             if (creatorId.HasValue && type == "CaNhan")
@@ -214,7 +214,7 @@ namespace Cabinet.Core.Data.Repositories
                 INNER JOIN UserImportantDocuments uid ON d.Id = uid.DocumentId
                 WHERE uid.UserId = @UserId
                 ORDER BY d.CreatedAt DESC";
-            
+
             cmd.Parameters.AddWithValue("@UserId", userId);
 
             using var reader = await cmd.ExecuteReaderAsync();
@@ -240,7 +240,7 @@ namespace Cabinet.Core.Data.Repositories
                 INNER JOIN DocumentShares ds ON d.Id = ds.DocumentId
                 WHERE ds.SharedWithUserId = @UserId
                 ORDER BY d.CreatedAt DESC";
-            
+
             cmd.Parameters.AddWithValue("@UserId", userId);
 
             using var reader = await cmd.ExecuteReaderAsync();
@@ -269,7 +269,7 @@ namespace Cabinet.Core.Data.Repositories
             if (await reader.ReadAsync())
             {
                 var doc = MapDocument(reader);
-                
+
                 // If a userId is provided, check if it is marked as important
                 if (currentUserId.HasValue)
                 {
@@ -281,7 +281,7 @@ namespace Cabinet.Core.Data.Repositories
                     var exists = await checkCmd.ExecuteScalarAsync();
                     if (exists != null) doc.IsImportant = true;
                 }
-                
+
                 return doc;
             }
             return null;
@@ -297,7 +297,7 @@ namespace Cabinet.Core.Data.Repositories
                 INSERT INTO Documents (Name, FileType, FilePath, DocumentType, IssuingAuthority, FolderId, CreatorId, Type)
                 VALUES (@Name, @FileType, @FilePath, @DocumentType, @IssuingAuthority, @FolderId, @CreatorId, @Type);
                 SELECT last_insert_rowid();";
-                
+
             cmd.Parameters.AddWithValue("@Name", document.Name);
             cmd.Parameters.AddWithValue("@FileType", document.FileType ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@FilePath", document.FilePath ?? (object)DBNull.Value);
@@ -322,7 +322,7 @@ namespace Cabinet.Core.Data.Repositories
                 SET Name = @Name, FileType = @FileType, FilePath = @FilePath, 
                     DocumentType = @DocumentType, IssuingAuthority = @IssuingAuthority, FolderId = @FolderId
                 WHERE Id = @Id";
-                
+
             cmd.Parameters.AddWithValue("@Id", document.Id);
             cmd.Parameters.AddWithValue("@Name", document.Name);
             cmd.Parameters.AddWithValue("@FileType", document.FileType ?? (object)DBNull.Value);

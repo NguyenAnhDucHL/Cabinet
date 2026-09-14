@@ -2062,3 +2062,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/features/documents/components/DocumentTable.jsx` (Sửa đổi)
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/SaveToLibraryModal.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "feat(api): them api tai file va sua loi hien thi ten file UI"`
+
+### [2026-09-14 12:02] Ưu tiên bật chế độ WAL cho SQLite, có fallback sang DELETE
+- **Mô tả**: Bật lại chế độ Write-Ahead Logging (WAL) để tăng tối đa hiệu năng đọc/ghi đồng thời trên môi trường Production (Linux). Thêm cơ chế tự động fallback về chế độ DELETE trong trường hợp gặp lỗi "disk I/O error" khi chạy qua bind mount của Docker Desktop trên Windows.
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Data/DatabaseService.cs` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(db): ưu tiên dùng WAL mode cho SQLite và fallback về DELETE khi có lỗi Docker Windows"`

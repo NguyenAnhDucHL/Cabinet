@@ -6,11 +6,11 @@ namespace Cabinet.Models
         public int MeetingId { get; set; }
         public string? MeetingTitle { get; set; }
         public string Title { get; set; } = string.Empty;
-        
+
         // Cũ
         public int AssignedTo { get; set; }
         public string? AssignedToName { get; set; }
-        
+
         // Mới
         public int? TemplateId { get; set; }
         public string? Type { get; set; }

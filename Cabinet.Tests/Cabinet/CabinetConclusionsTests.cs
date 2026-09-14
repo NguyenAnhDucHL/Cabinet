@@ -49,7 +49,7 @@ namespace Cabinet.Tests.Cabinet
             // Assert
             getRes.EnsureSuccessStatusCode();
             var getResult = await getRes.Content.ReadFromJsonAsync<ApiResponse<MeetingConclusion>>();
-            
+
             getResult.Should().NotBeNull();
             getResult!.Success.Should().BeTrue();
             getResult.Data.Should().NotBeNull();
@@ -84,7 +84,7 @@ namespace Cabinet.Tests.Cabinet
             // Assert
             updateRes.EnsureSuccessStatusCode();
             var updateResult = await updateRes.Content.ReadFromJsonAsync<ApiResponse<MeetingConclusion>>();
-            
+
             updateResult.Should().NotBeNull();
             updateResult!.Success.Should().BeTrue();
             updateResult.Data.Should().NotBeNull();

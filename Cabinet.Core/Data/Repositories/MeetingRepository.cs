@@ -150,8 +150,8 @@ namespace Cabinet.Core.Data.Repositories
                     {
                         MeetingId = meeting.Id,
                         UserId = userId,
-                        AttendanceStatus = reader["MyAttendanceStatus"] == DBNull.Value || string.IsNullOrWhiteSpace(reader["MyAttendanceStatus"].ToString()) 
-                            ? "Chưa xác nhận" 
+                        AttendanceStatus = reader["MyAttendanceStatus"] == DBNull.Value || string.IsNullOrWhiteSpace(reader["MyAttendanceStatus"].ToString())
+                            ? "Chưa xác nhận"
                             : reader["MyAttendanceStatus"].ToString()
                     }
                 };
@@ -249,10 +249,10 @@ namespace Cabinet.Core.Data.Repositories
                 cmd.Parameters.AddWithValue("@external", (object?)req.ExternalParticipants ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@meetingType", (object?)req.MeetingType ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@onlineMeetingUrl", (object?)req.OnlineMeetingUrl ?? DBNull.Value);
-                
+
                 string programPathsJson = JsonSerializer.Serialize(req.ProgramFilePaths ?? new List<string>());
                 cmd.Parameters.AddWithValue("@programFilePaths", programPathsJson);
-                
+
                 string invPathsJson = JsonSerializer.Serialize(req.InvitationFilePaths ?? new List<string>());
                 cmd.Parameters.AddWithValue("@invitationFilePaths", invPathsJson);
 
@@ -319,10 +319,10 @@ namespace Cabinet.Core.Data.Repositories
                 cmd.Parameters.AddWithValue("@external", (object?)req.ExternalParticipants ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@meetingType", (object?)req.MeetingType ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@onlineMeetingUrl", (object?)req.OnlineMeetingUrl ?? DBNull.Value);
-                
+
                 string programPathsJson = JsonSerializer.Serialize(req.ProgramFilePaths ?? new List<string>());
                 cmd.Parameters.AddWithValue("@programFilePaths", programPathsJson);
-                
+
                 string invPathsJson = JsonSerializer.Serialize(req.InvitationFilePaths ?? new List<string>());
                 cmd.Parameters.AddWithValue("@invitationFilePaths", invPathsJson);
                 cmd.Parameters.AddWithValue("@id", id);

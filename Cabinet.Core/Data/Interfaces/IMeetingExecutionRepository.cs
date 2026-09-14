@@ -20,7 +20,7 @@ namespace Cabinet.Core.Data.Interfaces
         Task<MeetingPoll?> GetPollAsync(int pollId);
         Task<int> CreatePollAsync(int meetingId, string title, int creatorId, List<string> options);
         Task<bool> UpdatePollStatusAsync(int pollId, string status);
-        
+
         // Votes
         Task<bool> CastVoteAsync(int pollId, int userId, int optionId);
         Task<List<MeetingPollVote>> GetUserVotesAsync(int pollId, int userId);

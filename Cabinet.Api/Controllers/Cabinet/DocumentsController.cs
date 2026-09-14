@@ -76,7 +76,7 @@ namespace Cabinet.Api.Controllers.Cabinet
 
             existing.Name = model.Name;
             existing.ParentId = model.ParentId;
-            
+
             await _repo.UpdateFolderAsync(existing);
             return Ok(ApiResponse.Ok("Cập nhật thành công"));
         }
@@ -112,7 +112,7 @@ namespace Cabinet.Api.Controllers.Cabinet
             {
                 if (string.IsNullOrEmpty(type)) return BadRequest(ApiResponse.Fail("Type is required"));
                 docs = await _repo.GetDocumentsAsync(type, type == "CaNhan" ? currentUserId : null, folderId);
-                
+
                 // For personal docs or shared, we might want to know if they are marked important by this user
                 // Let's populate the important flag. This could be slow in a loop, but fine for now.
                 // Ideally this should be a JOIN in GetDocumentsAsync, but keeping it simple.

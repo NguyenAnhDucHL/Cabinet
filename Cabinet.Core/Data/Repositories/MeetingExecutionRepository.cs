@@ -79,12 +79,12 @@ namespace Cabinet.Core.Data.Repositories
             using var conn = new SqliteConnection(_connectionString);
             await conn.OpenAsync();
             using var cmd = conn.CreateCommand();
-            
+
             // Check if already pending/approved
             cmd.CommandText = "SELECT COUNT(1) FROM MeetingSpeakingRequests WHERE MeetingId = @MeetingId AND UserId = @UserId AND Status IN ('Pending', 'Approved')";
             cmd.Parameters.AddWithValue("@MeetingId", meetingId);
             cmd.Parameters.AddWithValue("@UserId", userId);
-            
+
             var exists = Convert.ToInt64(await cmd.ExecuteScalarAsync()) > 0;
             if (exists) return 0; // Already requested
 
@@ -92,7 +92,7 @@ namespace Cabinet.Core.Data.Repositories
                 INSERT INTO MeetingSpeakingRequests (MeetingId, UserId, Status)
                 VALUES (@MeetingId, @UserId, 'Pending');
                 SELECT last_insert_rowid();";
-            
+
             return Convert.ToInt32(await cmd.ExecuteScalarAsync());
         }
 
@@ -113,7 +113,7 @@ namespace Cabinet.Core.Data.Repositories
             using var conn = new SqliteConnection(_connectionString);
             await conn.OpenAsync();
             using var cmd = conn.CreateCommand();
-            
+
             // Fetch Polls
             cmd.CommandText = @"
                 SELECT p.Id, p.MeetingId, p.Title, p.Status, p.CreatorId, p.CreatedAt,
@@ -122,7 +122,7 @@ namespace Cabinet.Core.Data.Repositories
                 WHERE p.MeetingId = @MeetingId
                 ORDER BY p.CreatedAt DESC";
             cmd.Parameters.AddWithValue("@MeetingId", meetingId);
-            
+
             using var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -138,7 +138,7 @@ namespace Cabinet.Core.Data.Repositories
                 });
             }
             reader.Close();
-            
+
             // Fetch Options for all polls
             if (polls.Count > 0)
             {
@@ -149,7 +149,7 @@ namespace Cabinet.Core.Data.Repositories
                     FROM MeetingPollOptions o
                     WHERE o.PollId IN (SELECT Id FROM MeetingPolls WHERE MeetingId = @MeetingId)";
                 optCmd.Parameters.AddWithValue("@MeetingId", meetingId);
-                
+
                 using var optReader = await optCmd.ExecuteReaderAsync();
                 while (await optReader.ReadAsync())
                 {
@@ -171,7 +171,7 @@ namespace Cabinet.Core.Data.Repositories
         {
             using var conn = new SqliteConnection(_connectionString);
             await conn.OpenAsync();
-            
+
             MeetingPoll? poll = null;
             using var cmd = conn.CreateCommand();
             cmd.CommandText = @"
@@ -180,7 +180,7 @@ namespace Cabinet.Core.Data.Repositories
                 FROM MeetingPolls p
                 WHERE p.Id = @PollId";
             cmd.Parameters.AddWithValue("@PollId", pollId);
-            
+
             using var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
@@ -206,7 +206,7 @@ namespace Cabinet.Core.Data.Repositories
                     FROM MeetingPollOptions o
                     WHERE o.PollId = @PollId";
                 optCmd.Parameters.AddWithValue("@PollId", pollId);
-                
+
                 using var optReader = await optCmd.ExecuteReaderAsync();
                 while (await optReader.ReadAsync())
                 {
@@ -238,7 +238,7 @@ namespace Cabinet.Core.Data.Repositories
                 cmd.Parameters.AddWithValue("@MeetingId", meetingId);
                 cmd.Parameters.AddWithValue("@Title", title);
                 cmd.Parameters.AddWithValue("@CreatorId", creatorId);
-                
+
                 int pollId = Convert.ToInt32(cmd.ExecuteScalar());
 
                 foreach (var opt in options)
@@ -279,7 +279,7 @@ namespace Cabinet.Core.Data.Repositories
             using var conn = new SqliteConnection(_connectionString);
             await conn.OpenAsync();
             using var cmd = conn.CreateCommand();
-            
+
             // Check if poll is open
             cmd.CommandText = "SELECT Status FROM MeetingPolls WHERE Id = @PollId";
             cmd.Parameters.AddWithValue("@PollId", pollId);
@@ -294,7 +294,7 @@ namespace Cabinet.Core.Data.Repositories
             insCmd.Parameters.AddWithValue("@PollId", pollId);
             insCmd.Parameters.AddWithValue("@UserId", userId);
             insCmd.Parameters.AddWithValue("@OptionId", optionId);
-            
+
             try
             {
                 return (await insCmd.ExecuteNonQueryAsync()) > 0;
@@ -317,7 +317,7 @@ namespace Cabinet.Core.Data.Repositories
                 WHERE PollId = @PollId AND UserId = @UserId";
             cmd.Parameters.AddWithValue("@PollId", pollId);
             cmd.Parameters.AddWithValue("@UserId", userId);
-            
+
             using var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -345,7 +345,7 @@ namespace Cabinet.Core.Data.Repositories
                 WHERE c.MeetingId = @MeetingId
                 ORDER BY c.CreatedAt ASC";
             cmd.Parameters.AddWithValue("@MeetingId", meetingId);
-            
+
             using var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -374,7 +374,7 @@ namespace Cabinet.Core.Data.Repositories
             cmd.Parameters.AddWithValue("@MeetingId", meetingId);
             cmd.Parameters.AddWithValue("@UserId", userId);
             cmd.Parameters.AddWithValue("@Content", content);
-            
+
             return Convert.ToInt32(await cmd.ExecuteScalarAsync());
         }
     }

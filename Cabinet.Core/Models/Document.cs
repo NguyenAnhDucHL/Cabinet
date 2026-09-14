@@ -10,7 +10,7 @@ namespace Cabinet.Core.Models
         public string? Type { get; set; } // "DungChung" or "CaNhan"
         public int? CreatorId { get; set; }
         public DateTime? CreatedAt { get; set; }
-        
+
         // Navigation properties equivalent for UI
         public int ChildrenCount { get; set; }
     }
@@ -27,7 +27,7 @@ namespace Cabinet.Core.Models
         public int? CreatorId { get; set; }
         public string? Type { get; set; } // "DungChung" or "CaNhan"
         public DateTime? CreatedAt { get; set; }
-        
+
         // Joined properties
         public bool IsImportant { get; set; } // Marked by current user
         public bool IsSharedWithMe { get; set; }

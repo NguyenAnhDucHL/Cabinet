@@ -19,7 +19,7 @@ namespace Cabinet.Core.Data.Interfaces
         Task<List<Document>> GetImportantDocumentsAsync(int userId);
         Task<List<Document>> GetSharedWithMeDocumentsAsync(int userId);
         Task<Document?> GetDocumentByIdAsync(int id, int? currentUserId = null);
-        
+
         Task<int> InsertDocumentAsync(Document document);
         Task<bool> UpdateDocumentAsync(Document document);
         Task<bool> DeleteDocumentAsync(int id);

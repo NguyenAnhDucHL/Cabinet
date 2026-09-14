@@ -30,8 +30,8 @@ namespace Cabinet.Api.Controllers.Cabinet
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] string title, [FromForm] int? templateId, 
-            [FromForm] string? type, [FromForm] string? content, [FromForm] string? assignedUserIdsStr, 
+        public async Task<IActionResult> Create([FromForm] string title, [FromForm] int? templateId,
+            [FromForm] string? type, [FromForm] string? content, [FromForm] string? assignedUserIdsStr,
             [FromForm] DateTime deadline, [FromForm] List<IFormFile>? files)
         {
             if (string.IsNullOrWhiteSpace(title))
@@ -61,9 +61,12 @@ namespace Cabinet.Api.Controllers.Cabinet
             var assignedUsers = new List<int>();
             if (!string.IsNullOrEmpty(assignedUserIdsStr))
             {
-                try {
+                try
+                {
                     assignedUsers = System.Text.Json.JsonSerializer.Deserialize<List<int>>(assignedUserIdsStr) ?? new List<int>();
-                } catch {
+                }
+                catch
+                {
                     // Ignore parse errors, maybe they sent comma separated string?
                 }
             }
@@ -98,7 +101,7 @@ namespace Cabinet.Api.Controllers.Cabinet
                 return BadRequest(ApiResponse.Fail("Không thể gửi phiếu. Phiếu có thể đã được gửi trước đó."));
 
             await _hubContext.Clients.Group($"Meeting_{detail.Questionnaire.MeetingId}").SendAsync("QuestionnaireSent");
-            
+
             return Ok(ApiResponse.Ok(null, "Đã gửi phiếu lấy ý kiến đến các thành viên."));
         }
 
@@ -136,7 +139,7 @@ namespace Cabinet.Api.Controllers.Cabinet
                 return BadRequest(ApiResponse.Fail("Không thể lưu câu trả lời."));
 
             await _hubContext.Clients.Group($"Meeting_{detail.Questionnaire.MeetingId}").SendAsync("QuestionnaireResponded");
-            
+
             return Ok(ApiResponse.Ok(null, "Đã gửi câu trả lời thành công."));
         }
 

@@ -18,7 +18,7 @@ namespace Cabinet.Api.Controllers.Cabinet
         private readonly INotificationManager _notificationManager;
 
         public MeetingConclusionsController(
-            IMeetingConclusionRepository repo, 
+            IMeetingConclusionRepository repo,
             IMeetingRepository meetingRepo,
             INotificationManager notificationManager)
         {
@@ -71,7 +71,7 @@ namespace Cabinet.Api.Controllers.Cabinet
         </tr>";
 
             int stt = 1;
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 html += $@"<tr>
             <td>{stt++}</td>

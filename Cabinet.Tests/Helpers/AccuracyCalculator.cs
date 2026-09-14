@@ -1,4 +1,4 @@
-﻿namespace Cabinet.Tests.Helpers
+namespace Cabinet.Tests.Helpers
 {
     public static class AccuracyCalculator
     {

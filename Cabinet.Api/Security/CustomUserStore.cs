@@ -130,9 +130,9 @@ namespace Cabinet.Api.Security
         public async Task ResetAccessFailedCountAsync(User user, CancellationToken ct)
         {
             user.AccessFailedCount = 0;
-            user.FailedLoginCount  = 0;
-            user.LockoutEnd        = null;
-            user.LockoutUntil      = null;
+            user.FailedLoginCount = 0;
+            user.LockoutEnd = null;
+            user.LockoutUntil = null;
             await _userRepository.ResetAccessFailedCountAsync(user.Id);
         }
 
@@ -144,7 +144,7 @@ namespace Cabinet.Api.Security
 
         public async Task SetLockoutEndDateAsync(User user, DateTimeOffset? lockoutEnd, CancellationToken ct)
         {
-            user.LockoutEnd   = lockoutEnd;
+            user.LockoutEnd = lockoutEnd;
             user.LockoutUntil = lockoutEnd?.UtcDateTime;
             await _userRepository.UpdateLockoutAsync(user.Id, user.AccessFailedCount, lockoutEnd);
         }

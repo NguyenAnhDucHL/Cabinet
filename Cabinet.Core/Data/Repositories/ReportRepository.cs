@@ -9,7 +9,7 @@ namespace Cabinet.Core.Data.Repositories
 
         public ReportRepository(IConfiguration config)
         {
-            _connectionString = config.GetConnectionString("DefaultConnection") 
+            _connectionString = config.GetConnectionString("DefaultConnection")
                 ?? "Data Source=/app/data/documents.db";
         }
 
@@ -26,7 +26,7 @@ namespace Cabinet.Core.Data.Repositories
                     (SELECT COUNT(*) FROM MeetingParticipants WHERE AttendanceStatus = 'Có tham gia') AS TotalParticipants,
                     (SELECT COUNT(*) FROM Questionnaires) AS TotalQuestionnaires
             ";
-            
+
             using var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
@@ -38,7 +38,7 @@ namespace Cabinet.Core.Data.Repositories
                 // For chart: Meetings by Month (current year)
                 var monthlyMeetings = await GetMonthlyMeetingsAsync(conn, DateTime.Now.Year);
 
-                return new 
+                return new
                 {
                     TotalMeetings = totalMeetings,
                     OngoingMeetings = ongoingMeetings,
@@ -127,7 +127,7 @@ namespace Cabinet.Core.Data.Repositories
             {
                 var start = reader.IsDBNull(2) ? "" : reader.GetString(2);
                 var end = reader.IsDBNull(3) ? "" : reader.GetString(3);
-                
+
                 list.Add(new
                 {
                     Id = reader.GetInt32(0),

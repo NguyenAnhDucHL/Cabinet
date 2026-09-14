@@ -23,7 +23,7 @@ namespace Cabinet.Core.Data.Repositories
 
         public QuestionnaireRepository(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection") 
+            _connectionString = configuration.GetConnectionString("DefaultConnection")
                 ?? $"Data Source={Environment.GetEnvironmentVariable("DB_PATH") ?? "data_dump/documents.db"}";
         }
 
@@ -42,7 +42,7 @@ namespace Cabinet.Core.Data.Repositories
             cmd.Parameters.AddWithValue("@MeetingId", meetingId);
 
             using var reader = await cmd.ExecuteReaderAsync();
-            while(await reader.ReadAsync())
+            while (await reader.ReadAsync())
             {
                 list.Add(new Questionnaire
                 {
@@ -99,7 +99,7 @@ namespace Cabinet.Core.Data.Repositories
                     Deadline = DateTime.Parse(reader["Deadline"]?.ToString() ?? DateTime.UtcNow.ToString()),
                     Status = reader["Status"]?.ToString() ?? "Chưa trả lời",
                     CreatedAt = DateTime.Parse(reader["CreatedAt"]?.ToString() ?? DateTime.UtcNow.ToString()),
-                    
+
                     // New fields
                     TemplateId = reader["TemplateId"] != DBNull.Value ? Convert.ToInt32(reader["TemplateId"]) : null,
                     Type = reader["Type"]?.ToString(),

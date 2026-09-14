@@ -1,4 +1,4 @@
-﻿namespace Cabinet.Models
+namespace Cabinet.Models
 {
     public class PushSubscription
     {

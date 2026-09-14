@@ -22,7 +22,7 @@ namespace Cabinet.Models
         public string? OrganizingUnit { get; set; }    // Đơn vị tổ chức
         public int ExpectedAttendees { get; set; }     // Số lượng đại biểu dự kiến
         public string? ExternalParticipants { get; set; } // Khách mời ngoài cơ quan
-        
+
         public string? MeetingType { get; set; } // Loại phiên họp
         public string? OnlineMeetingUrl { get; set; } // Link họp trực tuyến
         public string? ProgramFilePaths { get; set; } // JSON array of paths

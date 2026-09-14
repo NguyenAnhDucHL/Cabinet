@@ -21,7 +21,7 @@ namespace Cabinet.Core.Data.Interfaces
         Task UpdateLockoutAsync(int userId, int accessFailedCount, DateTimeOffset? lockoutEnd);
         // Reset bộ đếm sai sau khi đăng nhập thành công
         Task ResetAccessFailedCountAsync(int userId);
-        
+
         // Cập nhật Refresh Token
         Task UpdateRefreshTokenAsync(int userId, string? refreshToken, DateTime? expiryTime);
         Task<User?> GetUserByRefreshTokenAsync(string refreshToken);

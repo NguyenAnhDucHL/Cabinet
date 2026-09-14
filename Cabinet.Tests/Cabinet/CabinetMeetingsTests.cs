@@ -42,7 +42,7 @@ namespace Cabinet.Tests.Cabinet
             var meetingRes = await Client.PostAsJsonAsync("/api/phonghopkhonggiayto/meetings", meetingRequest);
             var meetingContent = await meetingRes.Content.ReadAsStringAsync();
             if (!meetingRes.IsSuccessStatusCode) throw new Exception(meetingContent);
-            
+
             var result = await meetingRes.Content.ReadFromJsonAsync<ApiResponse<Meeting>>();
 
             // Assert
@@ -82,7 +82,7 @@ namespace Cabinet.Tests.Cabinet
             // Assert
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadFromJsonAsync<ApiResponse<object>>();
-            
+
             result.Should().NotBeNull();
             result!.Success.Should().BeTrue();
         }

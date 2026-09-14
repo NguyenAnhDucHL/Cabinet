@@ -30,7 +30,7 @@ namespace Cabinet.Tests.Cabinet
             // Assert
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadFromJsonAsync<ApiResponse<Room>>();
-            
+
             result.Should().NotBeNull();
             result!.Success.Should().BeTrue();
             result.Data.Should().NotBeNull();
@@ -50,7 +50,7 @@ namespace Cabinet.Tests.Cabinet
             // Assert
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<Room>>>();
-            
+
             result.Should().NotBeNull();
             result!.Success.Should().BeTrue();
             result.Data.Should().NotBeNull();

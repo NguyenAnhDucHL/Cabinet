@@ -19,7 +19,7 @@ namespace Cabinet.Api.Controllers.Cabinet
 
             // Giải mã URL (nếu có)
             path = Uri.UnescapeDataString(path);
-            
+
             // Xóa / ở đầu nếu có để Path.Combine an toàn
             path = path.TrimStart('/', '\\');
 

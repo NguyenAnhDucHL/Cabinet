@@ -17,13 +17,13 @@ public static class FileSignatureValidator
     // Tham khảo: https://en.wikipedia.org/wiki/List_of_file_signatures
     private static readonly Dictionary<string, List<byte[]>> Signatures = new(StringComparer.OrdinalIgnoreCase)
     {
-        [".pdf"]  = new() { new byte[] { 0x25, 0x50, 0x44, 0x46 } },           // %PDF
-        [".doc"]  = new() { new byte[] { 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1 } }, // OLE2 (Word 97-2003)
-        [".xls"]  = new() { new byte[] { 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1 } }, // OLE2 (Excel 97-2003)
+        [".pdf"] = new() { new byte[] { 0x25, 0x50, 0x44, 0x46 } },           // %PDF
+        [".doc"] = new() { new byte[] { 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1 } }, // OLE2 (Word 97-2003)
+        [".xls"] = new() { new byte[] { 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1 } }, // OLE2 (Excel 97-2003)
         [".docx"] = new() { new byte[] { 0x50, 0x4B, 0x03, 0x04 } },           // PK (ZIP-based: docx/xlsx/pptx)
         [".xlsx"] = new() { new byte[] { 0x50, 0x4B, 0x03, 0x04 } },           // PK (ZIP-based)
-        [".png"]  = new() { new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A } }, // PNG
-        [".jpg"]  = new() {
+        [".png"] = new() { new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A } }, // PNG
+        [".jpg"] = new() {
             new byte[] { 0xFF, 0xD8, 0xFF, 0xE0 },   // JPEG/JFIF
             new byte[] { 0xFF, 0xD8, 0xFF, 0xE1 },   // JPEG/EXIF
             new byte[] { 0xFF, 0xD8, 0xFF, 0xE8 },   // JPEG/SPIFF
@@ -39,13 +39,13 @@ public static class FileSignatureValidator
     // ─── Kích thước file tối đa cho từng loại ────────────────────────────────
     private static readonly Dictionary<string, long> MaxFileSizes = new(StringComparer.OrdinalIgnoreCase)
     {
-        [".pdf"]  = 50 * 1024 * 1024,   // 50MB
-        [".doc"]  = 30 * 1024 * 1024,   // 30MB
+        [".pdf"] = 50 * 1024 * 1024,   // 50MB
+        [".doc"] = 30 * 1024 * 1024,   // 30MB
         [".docx"] = 30 * 1024 * 1024,   // 30MB
-        [".xls"]  = 20 * 1024 * 1024,   // 20MB
+        [".xls"] = 20 * 1024 * 1024,   // 20MB
         [".xlsx"] = 20 * 1024 * 1024,   // 20MB
-        [".png"]  = 10 * 1024 * 1024,   // 10MB
-        [".jpg"]  = 10 * 1024 * 1024,   // 10MB
+        [".png"] = 10 * 1024 * 1024,   // 10MB
+        [".jpg"] = 10 * 1024 * 1024,   // 10MB
         [".jpeg"] = 10 * 1024 * 1024,   // 10MB
     };
 

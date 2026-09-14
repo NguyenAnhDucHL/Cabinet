@@ -18,7 +18,7 @@ namespace Cabinet.Core.Data.Repositories
 
         public QuestionnaireTemplateRepository(IConfiguration configuration)
         {
-            var dbPath = Environment.GetEnvironmentVariable("DB_PATH") 
+            var dbPath = Environment.GetEnvironmentVariable("DB_PATH")
                 ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Cabinet", "documents.db");
             _connectionString = $"Data Source={dbPath};Pooling=True;Default Timeout=30;Cache=Shared";
         }

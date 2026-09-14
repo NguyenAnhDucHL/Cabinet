@@ -24,7 +24,7 @@ namespace Cabinet.Tests
         {
             // Arrange
             string text = "UBND TỈNH QUẢNG NINH\nSỞ Y TẾ\n\nSố: 148 /SYT-NVY\nV/v phòng chống dịch bệnh\n...";
-            
+
             // Act
             var result = await _service.ParseTextAsync(text, "test.pdf");
 
@@ -39,7 +39,7 @@ namespace Cabinet.Tests
         {
             // Arrange
             string text = "UBND TỈNH\nSố: f0/SYT-NVY\nV/v báo cáo ngày f1 tháng lO năm 2026\n...";
-            
+
             // Act
             var result = await _service.ParseTextAsync(text, "test.pdf");
 

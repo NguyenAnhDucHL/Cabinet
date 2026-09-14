@@ -20,7 +20,7 @@ namespace Cabinet.Api.Controllers
         public UsersController(IUserRepository userRepository, UserManager<User> userManager, IConfiguration configuration)
         {
             _userRepository = userRepository;
-            _userManager    = userManager;
+            _userManager = userManager;
             var dbPath = Environment.GetEnvironmentVariable("DB_PATH")
                 ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Cabinet", "documents.db");
             _connectionString = $"Data Source={dbPath};Pooling=True;Default Timeout=30;Cache=Shared";
@@ -88,7 +88,7 @@ namespace Cabinet.Api.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
-            if (user == null) 
+            if (user == null)
                 return NotFound(ApiResponse.Fail("Không tìm thấy người dùng."));
             return Ok(ApiResponse.Ok(user));
         }
@@ -125,7 +125,7 @@ namespace Cabinet.Api.Controllers
         public async Task<IActionResult> Update(int id, [FromBody] UserUpdateRequest request)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
-            if (user == null) 
+            if (user == null)
                 return NotFound(ApiResponse.Fail("Không tìm thấy người dùng."));
 
             // Nếu có đổi mật khẩu → validate trước khi lưu
@@ -163,10 +163,10 @@ namespace Cabinet.Api.Controllers
                 }
             }
 
-            user.FullName    = request.FullName;
-            user.Email       = request.Email;
+            user.FullName = request.FullName;
+            user.Email = request.Email;
             user.PhoneNumber = request.PhoneNumber;
-            user.Role        = request.Role;
+            user.Role = request.Role;
             user.DepartmentId = request.DepartmentId;
 
             await _userRepository.UpdateUserAsync(user);
@@ -224,7 +224,7 @@ namespace Cabinet.Api.Controllers
                 {
                     var checkPassword = await _userManager.CheckPasswordAsync(identityUser, request.OldPassword);
                     if (!checkPassword) return BadRequest(ApiResponse.Fail("Mật khẩu hiện tại không chính xác."));
-                    
+
                     var (isValid, errorMessage) = ValidatePassword(request.NewPassword);
                     if (!isValid) return BadRequest(ApiResponse.Fail(errorMessage));
 

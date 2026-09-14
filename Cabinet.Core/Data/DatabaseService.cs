@@ -32,15 +32,25 @@ namespace Cabinet.Data
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
-            // Sử dụng DELETE thay vì WAL vì WAL bị lỗi "disk I/O error" trên Docker Desktop Windows
-            try 
+            // Ưu tiên sử dụng WAL để tối đa hóa hiệu năng đọc/ghi đồng thời trên Production (Linux).
+            // Nếu gặp lỗi "disk I/O error" trên Docker Desktop Windows, tự động fallback về DELETE mode.
+            try
             {
-                using var walCmd = new SqliteCommand("PRAGMA journal_mode=DELETE; PRAGMA synchronous=NORMAL; PRAGMA busy_timeout=5000;", connection);
+                using var walCmd = new SqliteCommand("PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA busy_timeout=5000;", connection);
                 walCmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[DB Warning] Could not set DELETE mode: {ex.Message}");
+                Console.WriteLine($"[DB Warning] Không thể bật WAL mode (thường do Docker Desktop Windows): {ex.Message}. Đang chuyển về DELETE mode...");
+                try
+                {
+                    using var fallbackCmd = new SqliteCommand("PRAGMA journal_mode=DELETE; PRAGMA synchronous=NORMAL; PRAGMA busy_timeout=5000;", connection);
+                    fallbackCmd.ExecuteNonQuery();
+                }
+                catch (Exception fallbackEx)
+                {
+                    Console.WriteLine($"[DB Error] Không thể bật DELETE mode: {fallbackEx.Message}");
+                }
             }
 
 
