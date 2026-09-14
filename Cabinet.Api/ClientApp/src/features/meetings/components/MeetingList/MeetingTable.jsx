@@ -1,13 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Eye,
-  MoreVertical,
-  CheckCircle2,
-  FolderPlus,
-  Trash2,
-  Inbox,
-  MonitorPlay,
-} from 'lucide-react'
+import { Eye, MoreVertical, CheckCircle2, FolderPlus, Trash2, Inbox } from 'lucide-react'
 import { ConfirmationModal } from '@/components/ui/confirmation-modal'
 import {
   DropdownMenu,
@@ -245,10 +237,6 @@ export function MeetingTable({
                             >
                               <CheckCircle2 size={16} />
                               <span>Xác nhận tham gia</span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="gap-2 cursor-pointer rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#1a202c] py-2 outline-none">
-                              <MonitorPlay size={16} />
-                              <span>Màn hình trình chiếu</span>
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               className="gap-2 cursor-pointer rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#1a202c] py-2 outline-none"

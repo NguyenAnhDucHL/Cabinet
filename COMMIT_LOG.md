@@ -2141,3 +2141,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingTable.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(meetings): hien thi the status chinh xac va them tuy chon bo loc dong"`
+
+### [2026-09-14 14:36] Xóa tính năng Màn hình trình chiếu (Minh họa)
+- **Mô tả**: Xóa tính năng "Màn hình trình chiếu" khỏi menu tác vụ của các phiên họp trong `MeetingTable` vì tài liệu HDSD không yêu cầu (hiểu nhầm ý người dùng ở commit trước).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingTable.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "style(meetings): xoa tinh nang man hinh trinh chieu khoi bang"`
