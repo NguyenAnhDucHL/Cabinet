@@ -2196,3 +2196,15 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/shell/AppShell.jsx` (Sửa đổi)
   - `Cabinet.Api/ClientApp/src/cabinet/CabinetAppShell.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "fix(notify): sửa lỗi crash popover thông báo do parse sai ApiResponse object"`
+
+### [2026-09-14 17:45] chore(api): cấu hình appsettings.Development.json trỏ đúng vào data_dump/documents.db
+- **Mô tả**: Khi chạy `dotnet run` locally (môi trường Development), hệ thống tự động fallback tạo một database trống tại `ApplicationData` (gây lỗi missing column FailedLoginCount và lỗi "Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau" khi đăng nhập). Thêm `appsettings.Development.json` cấu hình `DefaultConnection` trỏ tới `../data_dump/documents.db` để sử dụng đúng cơ sở dữ liệu mẫu có sẵn.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/appsettings.Development.json` (Mới)
+- **Lệnh git commit**: `git commit -m "chore(api): config local connection string to point to data_dump/documents.db"`
+
+### [2026-09-14 17:47] chore(api): cấu hình DB_PATH trong launchSettings.json
+- **Mô tả**: Khi chạy `dotnet run` locally (môi trường Development), hệ thống tự động fallback tạo một database trống tại `ApplicationData` (gây lỗi missing column FailedLoginCount và lỗi "Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau" khi đăng nhập). Thêm biến môi trường `DB_PATH` vào `launchSettings.json` trỏ tới `../data_dump/documents.db` để sử dụng đúng cơ sở dữ liệu mẫu có sẵn.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/Properties/launchSettings.json` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "chore(api): config local DB_PATH in launchSettings to point to data_dump/documents.db"`
