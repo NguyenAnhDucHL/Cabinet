@@ -2153,3 +2153,9 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
 - **Tệp thay đổi**:
   - `Cabinet.Api/ClientApp/src/features/meetings/hooks/useMeetingList.js` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "style(meetings): format ma nguon"`
+
+### [2026-09-14 15:06] Sửa lỗi Popover bị khuyết dưới màn hình
+- **Mô tả**: Sửa lỗi Popover "Bộ lọc" và "Cấu hình cột" không tự lật lên trên (flip) khi sát đáy màn hình. Thay đổi `max-h-[85vh]` thành `var(--radix-popover-content-available-height)` và thêm `collisionPadding={16}` để Radix UI tự tính toán và flip popover chính xác.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): sua loi popover bo loc bi khuyet duoi man hinh"`
