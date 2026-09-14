@@ -12,8 +12,8 @@ namespace Cabinet.Core.Data.Interfaces
         // Speaking Requests
         Task<List<SpeakingRequest>> GetSpeakingRequestsAsync(int meetingId);
         Task<SpeakingRequest?> GetSpeakingRequestAsync(int id);
-        Task<int> CreateSpeakingRequestAsync(int meetingId, int userId);
-        Task<bool> UpdateSpeakingRequestStatusAsync(int id, string status);
+        Task<int> CreateSpeakingRequestAsync(int meetingId, int userId, string? topic);
+        Task<bool> UpdateSpeakingRequestStatusAsync(int id, string status, int? durationMinutes = null);
 
         // Polls
         Task<List<MeetingPoll>> GetPollsAsync(int meetingId);

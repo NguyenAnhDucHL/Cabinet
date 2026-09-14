@@ -41,10 +41,10 @@ namespace Cabinet.Api.Controllers.Cabinet
         }
 
         [HttpPost("{meetingId}/speak-requests")]
-        public async Task<IActionResult> RequestToSpeak(int meetingId)
+        public async Task<IActionResult> RequestToSpeak(int meetingId, [FromBody] CreateSpeakRequestDto dto)
         {
             var userId = GetCurrentUserId();
-            var id = await _repo.CreateSpeakingRequestAsync(meetingId, userId);
+            var id = await _repo.CreateSpeakingRequestAsync(meetingId, userId, dto.Topic);
             if (id == 0) return BadRequest(ApiResponse.Fail("Bạn đã gửi yêu cầu phát biểu rồi."));
 
             var req = await _repo.GetSpeakingRequestAsync(id);
@@ -58,7 +58,7 @@ namespace Cabinet.Api.Controllers.Cabinet
         public async Task<IActionResult> UpdateSpeakingRequestStatus(int meetingId, int id, [FromBody] UpdateStatusDto dto)
         {
             // Security: In a real app, verify the current user is the Presider/Admin
-            var success = await _repo.UpdateSpeakingRequestStatusAsync(id, dto.Status);
+            var success = await _repo.UpdateSpeakingRequestStatusAsync(id, dto.Status, dto.DurationMinutes);
             if (!success) return NotFound(ApiResponse.Fail("Không tìm thấy yêu cầu phát biểu."));
 
             var req = await _repo.GetSpeakingRequestAsync(id);
@@ -149,6 +149,12 @@ namespace Cabinet.Api.Controllers.Cabinet
     public class UpdateStatusDto
     {
         public string Status { get; set; } = string.Empty;
+        public int? DurationMinutes { get; set; }
+    }
+
+    public class CreateSpeakRequestDto
+    {
+        public string? Topic { get; set; }
     }
 
     public class CreatePollDto

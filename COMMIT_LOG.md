@@ -1,3 +1,33 @@
+### [2026-09-14 17:26] Sửa lỗi hiển thị Popover cấu hình và bộ lọc bị che khuất
+- **Mô tả**: Sửa lỗi giao diện khi cuộn xuống cuối trang, các menu thả xuống (bộ lọc, cấu hình cột, menu hành động) bị tràn ra ngoài màn hình. Đã thêm `side="top"` và `collisionPadding` vào các `PopoverContent` và `DropdownMenuContent` để chúng tự động đẩy lên trên.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingTable.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): hien thi popover chong tran man hinh o danh sach phien hop"`
+
+### [2026-09-14 17:22] Kích hoạt tabs Chờ phát biểu / Bác bỏ trong Chi tiết phiên họp
+- **Mô tả**: Sửa lỗi click tab "Bác bỏ" không hoạt động trong trang Thông tin phiên họp. Chuyển đổi giao diện tab từ tĩnh sang động (state `activeSpeakTab`), tích hợp API gọi danh sách đăng ký phát biểu thực tế thay vì bảng trống.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): kich hoat tab cho phat bieu va bac bo o chi tiet phien hop"`
+
+### [2026-09-14 17:21] Kích hoạt tabs Chờ phát biểu / Bác bỏ trong Chi tiết phiên họp
+- **Mô tả**: Sửa lỗi click tab "Bác bỏ" không hoạt động trong trang Thông tin phiên họp. Chuyển đổi giao diện tab từ tĩnh sang động (state `activeSpeakTab`), tích hợp API gọi danh sách đăng ký phát biểu thực tế thay vì bảng trống.
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingDetail.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "fix(meetings): kich hoat tab cho phat bieu va bac bo o chi tiet phien hop"`
+
+### [2026-09-14 17:15] Cập nhật tính năng Giơ tay phát biểu: Nhập nội dung và thời lượng
+- **Mô tả**: Thay đổi tính năng "Giơ tay phát biểu". Người tham gia khi giơ tay có thể nhập nội dung cần phát biểu (Topic). Chủ trì/Admin khi duyệt phát biểu có thể thiết lập thời gian cho phép (DurationMinutes). Đã migrate thêm cột `Topic` và `DurationMinutes` vào bảng `MeetingSpeakingRequests` (SQLite), cập nhật model và DTO tương ứng trên Backend (C#), và bổ sung Modal nhập dữ liệu bằng shadcn/ui Dialog trên Frontend (React).
+- **Tệp thay đổi**:
+  - `Cabinet.Core/Data/Repositories/MeetingExecutionRepository.cs` (Sửa đổi)
+  - `Cabinet.Core/Data/Interfaces/IMeetingExecutionRepository.cs` (Sửa đổi)
+  - `Cabinet.Core/Models/MeetingExecutionModels.cs` (Sửa đổi)
+  - `Cabinet.Api/Controllers/Cabinet/MeetingExecutionController.cs` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meeting_execution/api/meetingExecutionApi.js` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meeting_execution/components/SpeakingQueuePanel.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(meetings): bo sung nhap noi dung va thoi luong cho tinh nang gio tay phat bieu"`
+
 ### [2026-09-09 17:34] Fix lỗi mất tài liệu đính kèm khi sửa phiên họp
 - **Mô tả**: Sửa lỗi Form chỉnh sửa phiên họp không hiển thị các tài liệu/giấy mời đã upload trước đó. Thêm state `existingProgramFiles` và `existingInvitationFiles`, hiển thị chúng trên giao diện (cho phép xóa bớt), đồng thời gửi kèm danh sách file cũ vào `FormData` để backend không ghi đè mất dữ liệu.
 - **Tệp thay đổi**:

@@ -6,13 +6,17 @@ export const meetingExecutionApi = {
   // Speaking Requests
   getSpeakingRequests: (meetingId) =>
     fetch(`${BASE_URL}/${meetingId}/speak-requests`).then((r) => r.json()),
-  requestToSpeak: (meetingId) =>
-    fetch(`${BASE_URL}/${meetingId}/speak-requests`, { method: 'POST' }).then((r) => r.json()),
-  updateSpeakingRequest: (meetingId, id, status) =>
+  requestToSpeak: (meetingId, topic) =>
+    fetch(`${BASE_URL}/${meetingId}/speak-requests`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic }),
+    }).then((r) => r.json()),
+  updateSpeakingRequest: (meetingId, id, status, durationMinutes) =>
     fetch(`${BASE_URL}/${meetingId}/speak-requests/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status }),
+      body: JSON.stringify({ status, durationMinutes }),
     }).then((r) => r.json()),
 
   // Polls

@@ -39,6 +39,9 @@ import { NotebookModal } from '../../features/meetings/components/MeetingDetail/
 import { signalRService } from '../../lib/signalr'
 import { toast } from 'sonner'
 
+import { meetingExecutionApi } from '../../features/meeting_execution/api/meetingExecutionApi'
+import { Badge } from '@/components/ui/badge'
+
 export function MeetingDetail({ meeting, onBack, onViewProgress }) {
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(false)
   const [isParticipantsModalOpen, setIsParticipantsModalOpen] = useState(false)
@@ -47,6 +50,19 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
   const [isAbsenceModalOpen, setIsAbsenceModalOpen] = useState(false)
   const [absenceReason, setAbsenceReason] = useState('')
   const [absenceSaving, setAbsenceSaving] = useState(false)
+
+  const [speakRequests, setSpeakRequests] = useState([])
+  const [activeSpeakTab, setActiveSpeakTab] = useState('pending')
+
+  useEffect(() => {
+    if (meeting?.id) {
+      meetingExecutionApi.getSpeakingRequests(meeting.id).then((res) => {
+        if (res?.data) {
+          setSpeakRequests(res.data)
+        }
+      })
+    }
+  }, [meeting?.id])
 
   // Giai đoạn 5: SignalR Meeting Group
   useEffect(() => {
@@ -457,7 +473,7 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
               </AccordionSection>
 
               <AccordionSection
-                title="Danh sách đăng ký phát biểu"
+                title={`Danh sách đăng ký phát biểu (${speakRequests.length})`}
                 count={0}
                 rightAction={
                   <button className="text-gray-400 hover:text-gray-600 font-medium text-xl leading-none ml-2">
@@ -467,28 +483,92 @@ export function MeetingDetail({ meeting, onBack, onViewProgress }) {
               >
                 <div className="border border-gray-200 rounded-lg overflow-hidden">
                   <div className="flex border-b border-gray-200">
-                    <button className="flex-1 py-3 text-center font-bold text-sm text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] bg-white">
+                    <button
+                      onClick={() => setActiveSpeakTab('pending')}
+                      className={`flex-1 py-3 text-center font-bold text-sm ${
+                        activeSpeakTab === 'pending'
+                          ? 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] bg-white'
+                          : 'text-gray-600 hover:bg-gray-50'
+                      }`}
+                    >
                       Chờ phát biểu
                     </button>
-                    <button className="flex-1 py-3 text-center font-bold text-sm text-gray-600 hover:bg-gray-50">
+                    <button
+                      onClick={() => setActiveSpeakTab('rejected')}
+                      className={`flex-1 py-3 text-center font-bold text-sm ${
+                        activeSpeakTab === 'rejected'
+                          ? 'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)] bg-white'
+                          : 'text-gray-600 hover:bg-gray-50'
+                      }`}
+                    >
                       Bác bỏ
                     </button>
                   </div>
-                  <table className="w-full text-sm text-left text-gray-600">
-                    <thead className="text-[13px] text-[#1a202c] font-bold bg-white border-b border-gray-200">
-                      <tr>
-                        <th className="px-4 py-3 text-center w-12">STT</th>
-                        <th className="px-4 py-3">Tên đại biểu</th>
-                        <th className="px-4 py-3">Chức vụ</th>
-                        <th className="px-4 py-3">Nội dung đăng ký</th>
-                        <th className="px-4 py-3">Ghi chú</th>
-                        <th className="px-4 py-3">Thời gian bắt đầu phát biểu</th>
-                        <th className="px-4 py-3 text-center">Trạng thái</th>
-                        <th className="px-4 py-3 text-center">Hành động</th>
-                      </tr>
-                    </thead>
-                  </table>
-                  <EmptyState />
+
+                  {/* Table content */}
+                  {(() => {
+                    const filteredRequests = speakRequests.filter((req) =>
+                      activeSpeakTab === 'pending'
+                        ? req.status === 'Pending' || req.status === 'Approved'
+                        : req.status === 'Rejected'
+                    )
+
+                    return (
+                      <>
+                        <table className="w-full text-sm text-left text-gray-600">
+                          <thead className="text-[13px] text-[#1a202c] font-bold bg-white border-b border-gray-200">
+                            <tr>
+                              <th className="px-4 py-3 text-center w-12">STT</th>
+                              <th className="px-4 py-3">Tên đại biểu</th>
+                              <th className="px-4 py-3">Chức vụ</th>
+                              <th className="px-4 py-3">Nội dung đăng ký</th>
+                              <th className="px-4 py-3">Ghi chú</th>
+                              <th className="px-4 py-3">Thời gian bắt đầu phát biểu</th>
+                              <th className="px-4 py-3 text-center">Trạng thái</th>
+                              <th className="px-4 py-3 text-center">Hành động</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {filteredRequests.map((req, idx) => (
+                              <tr key={req.id} className="border-b last:border-0 hover:bg-gray-50">
+                                <td className="px-4 py-3 text-center">{idx + 1}</td>
+                                <td className="px-4 py-3 font-medium text-gray-900">
+                                  {req.userName}
+                                </td>
+                                <td className="px-4 py-3">Đại biểu</td>
+                                <td className="px-4 py-3">{req.topic || '-'}</td>
+                                <td className="px-4 py-3">-</td>
+                                <td className="px-4 py-3 text-center">
+                                  {req.durationMinutes !== null
+                                    ? `${req.durationMinutes} phút`
+                                    : '-'}
+                                </td>
+                                <td className="px-4 py-3 text-center">
+                                  <Badge
+                                    variant={
+                                      req.status === 'Pending'
+                                        ? 'secondary'
+                                        : req.status === 'Approved'
+                                          ? 'default'
+                                          : 'destructive'
+                                    }
+                                  >
+                                    {req.status === 'Pending'
+                                      ? 'Chờ duyệt'
+                                      : req.status === 'Approved'
+                                        ? 'Đã duyệt'
+                                        : 'Từ chối'}
+                                  </Badge>
+                                </td>
+                                <td className="px-4 py-3 text-center">-</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        {filteredRequests.length === 0 && <EmptyState />}
+                      </>
+                    )
+                  })()}
                 </div>
               </AccordionSection>
 

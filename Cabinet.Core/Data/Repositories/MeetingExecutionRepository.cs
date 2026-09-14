@@ -25,7 +25,7 @@ namespace Cabinet.Core.Data.Repositories
             await conn.OpenAsync();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = @"
-                SELECT s.Id, s.MeetingId, s.UserId, u.FullName as UserName, s.Status, s.CreatedAt
+                SELECT s.Id, s.MeetingId, s.UserId, u.FullName as UserName, s.Status, s.CreatedAt, s.Topic, s.DurationMinutes
                 FROM MeetingSpeakingRequests s
                 JOIN Users u ON s.UserId = u.Id
                 WHERE s.MeetingId = @MeetingId
@@ -41,7 +41,9 @@ namespace Cabinet.Core.Data.Repositories
                     UserId = reader.GetInt32(2),
                     UserName = reader.IsDBNull(3) ? "Unknown" : reader.GetString(3),
                     Status = reader.GetString(4),
-                    CreatedAt = reader.GetDateTime(5)
+                    CreatedAt = reader.GetDateTime(5),
+                    Topic = reader.IsDBNull(6) ? null : reader.GetString(6),
+                    DurationMinutes = reader.IsDBNull(7) ? null : reader.GetInt32(7)
                 });
             }
             return results;
@@ -53,7 +55,7 @@ namespace Cabinet.Core.Data.Repositories
             await conn.OpenAsync();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = @"
-                SELECT s.Id, s.MeetingId, s.UserId, u.FullName as UserName, s.Status, s.CreatedAt
+                SELECT s.Id, s.MeetingId, s.UserId, u.FullName as UserName, s.Status, s.CreatedAt, s.Topic, s.DurationMinutes
                 FROM MeetingSpeakingRequests s
                 JOIN Users u ON s.UserId = u.Id
                 WHERE s.Id = @Id";
@@ -68,13 +70,15 @@ namespace Cabinet.Core.Data.Repositories
                     UserId = reader.GetInt32(2),
                     UserName = reader.IsDBNull(3) ? "Unknown" : reader.GetString(3),
                     Status = reader.GetString(4),
-                    CreatedAt = reader.GetDateTime(5)
+                    CreatedAt = reader.GetDateTime(5),
+                    Topic = reader.IsDBNull(6) ? null : reader.GetString(6),
+                    DurationMinutes = reader.IsDBNull(7) ? null : reader.GetInt32(7)
                 };
             }
             return null;
         }
 
-        public async Task<int> CreateSpeakingRequestAsync(int meetingId, int userId)
+        public async Task<int> CreateSpeakingRequestAsync(int meetingId, int userId, string? topic)
         {
             using var conn = new SqliteConnection(_connectionString);
             await conn.OpenAsync();
@@ -89,20 +93,22 @@ namespace Cabinet.Core.Data.Repositories
             if (exists) return 0; // Already requested
 
             cmd.CommandText = @"
-                INSERT INTO MeetingSpeakingRequests (MeetingId, UserId, Status)
-                VALUES (@MeetingId, @UserId, 'Pending');
+                INSERT INTO MeetingSpeakingRequests (MeetingId, UserId, Status, Topic)
+                VALUES (@MeetingId, @UserId, 'Pending', @Topic);
                 SELECT last_insert_rowid();";
+            cmd.Parameters.AddWithValue("@Topic", topic ?? (object)DBNull.Value);
 
             return Convert.ToInt32(await cmd.ExecuteScalarAsync());
         }
 
-        public async Task<bool> UpdateSpeakingRequestStatusAsync(int id, string status)
+        public async Task<bool> UpdateSpeakingRequestStatusAsync(int id, string status, int? durationMinutes = null)
         {
             using var conn = new SqliteConnection(_connectionString);
             await conn.OpenAsync();
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = "UPDATE MeetingSpeakingRequests SET Status = @Status WHERE Id = @Id";
+            cmd.CommandText = "UPDATE MeetingSpeakingRequests SET Status = @Status, DurationMinutes = @DurationMinutes WHERE Id = @Id";
             cmd.Parameters.AddWithValue("@Status", status);
+            cmd.Parameters.AddWithValue("@DurationMinutes", durationMinutes ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@Id", id);
             return (await cmd.ExecuteNonQueryAsync()) > 0;
         }

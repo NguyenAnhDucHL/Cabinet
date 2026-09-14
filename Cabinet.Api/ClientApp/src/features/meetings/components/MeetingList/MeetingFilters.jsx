@@ -62,6 +62,7 @@ export function MeetingFilters({
             </Button>
           </PopoverTrigger>
           <PopoverContent
+            side="top"
             align="end"
             collisionPadding={16}
             style={{ maxHeight: 'var(--radix-popover-content-available-height, 80vh)' }}
@@ -158,6 +159,7 @@ export function MeetingFilters({
             </Button>
           </PopoverTrigger>
           <PopoverContent
+            side="top"
             align="end"
             collisionPadding={16}
             style={{ maxHeight: 'var(--radix-popover-content-available-height, 80vh)' }}
@@ -304,7 +306,13 @@ export function MeetingFilters({
               Thời gian
             </Button>
           </PopoverTrigger>
-          <PopoverContent align="end" className="w-[280px] p-4 rounded-xl">
+          <PopoverContent
+            side="top"
+            align="end"
+            collisionPadding={16}
+            style={{ maxHeight: 'var(--radix-popover-content-available-height, 80vh)' }}
+            className="w-[280px] p-4 rounded-xl overflow-y-auto"
+          >
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-gray-600">Từ ngày</label>

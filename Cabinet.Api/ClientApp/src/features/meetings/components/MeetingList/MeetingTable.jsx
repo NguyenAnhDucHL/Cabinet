@@ -228,7 +228,9 @@ export function MeetingTable({
                             </TooltipContent>
                           </Tooltip>
                           <DropdownMenuContent
+                            side="top"
                             align="end"
+                            collisionPadding={16}
                             className="w-56 rounded-xl shadow-lg border-gray-100 p-1"
                           >
                             <DropdownMenuItem
