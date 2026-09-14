@@ -47,6 +47,17 @@ export function MeetingList() {
     presider: '',
   })
 
+  const [visibleColumns, setVisibleColumns] = useState({
+    stt: true,
+    time: true,
+    title: true,
+    location: true,
+    presider: true,
+    type: true,
+    status: true,
+    actions: true,
+  })
+
   const filteredMeetings = meetings.filter((m) => {
     const matchSearch = m.title?.toLowerCase().includes(searchQuery.toLowerCase())
     if (!matchSearch) return false
@@ -202,6 +213,8 @@ export function MeetingList() {
             fetchMeetings={fetchMeetings}
             filters={filters}
             setFilters={setFilters}
+            visibleColumns={visibleColumns}
+            setVisibleColumns={setVisibleColumns}
           />
 
           <MeetingTable
@@ -215,6 +228,7 @@ export function MeetingList() {
             deleteMeeting={deleteMeeting}
             setConfirmMeeting={setConfirmMeeting}
             setSaveLibraryMeeting={setSaveLibraryMeeting}
+            visibleColumns={visibleColumns}
           />
 
           {!loading && filteredMeetings.length > 0 && (

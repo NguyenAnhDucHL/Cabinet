@@ -2087,3 +2087,11 @@ Tệp này lưu trữ lịch sử các thay đổi và tính năng mới đượ
   - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
   - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingList.jsx` (Sửa đổi)
 - **Lệnh git commit**: `git commit -m "feat(meetings): cập nhật giao diện bộ lọc danh sách phiên họp"`
+
+### [2026-09-14 12:53] Bổ sung cấu hình hiển thị cột cho bảng phiên họp
+- **Mô tả**: Thêm tính năng Popover "Cấu hình hiển thị cột" (icon SlidersHorizontal) cho phép người dùng tùy chọn ẩn/hiện các cột trong bảng danh sách phiên họp (STT, Thời gian, Tên, Địa điểm, Chủ trì, Loại, Trạng thái, Hành động). Nút "Cài lại" giúp khôi phục trạng thái mặc định (hiển thị tất cả).
+- **Tệp thay đổi**:
+  - `Cabinet.Api/ClientApp/src/cabinet/pages/MeetingList.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingFilters.jsx` (Sửa đổi)
+  - `Cabinet.Api/ClientApp/src/features/meetings/components/MeetingList/MeetingTable.jsx` (Sửa đổi)
+- **Lệnh git commit**: `git commit -m "feat(meetings): thêm tính năng cấu hình hiển thị cột bảng phiên họp"`

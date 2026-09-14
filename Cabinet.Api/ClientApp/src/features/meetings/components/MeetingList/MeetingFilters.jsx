@@ -1,5 +1,12 @@
 import React from 'react'
-import { Search, Filter, RefreshCw, Calendar as CalendarIcon } from 'lucide-react'
+import {
+  Search,
+  Filter,
+  RefreshCw,
+  Calendar as CalendarIcon,
+  SlidersHorizontal,
+} from 'lucide-react'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -17,6 +24,8 @@ export function MeetingFilters({
   fetchMeetings,
   filters,
   setFilters,
+  visibleColumns,
+  setVisibleColumns,
 }) {
   const updateFilter = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }))
@@ -35,9 +44,82 @@ export function MeetingFilters({
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <Button variant="outline" size="icon" className="w-9 h-9 rounded-full text-gray-500">
-          <Filter size={16} />
-        </Button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="w-9 h-9 rounded-full text-[#c8102e] border-[#c8102e] bg-red-50 hover:bg-red-100 shrink-0"
+            >
+              <SlidersHorizontal size={16} />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent align="end" className="w-[220px] p-4 rounded-xl">
+            <h3 className="font-bold text-gray-800 mb-3">Cấu hình hiển thị cột</h3>
+            <div className="space-y-3">
+              <label className="flex items-center gap-2 text-sm font-medium cursor-pointer">
+                <Checkbox
+                  checked={Object.values(visibleColumns).every((v) => v)}
+                  onCheckedChange={(checked) => {
+                    setVisibleColumns({
+                      stt: checked,
+                      time: checked,
+                      title: checked,
+                      location: checked,
+                      presider: checked,
+                      type: checked,
+                      status: checked,
+                      actions: checked,
+                    })
+                  }}
+                  className="data-[state=checked]:bg-[#c8102e] data-[state=checked]:border-[#c8102e]"
+                />
+                Hiển thị tất cả
+              </label>
+              {[
+                { key: 'stt', label: 'STT' },
+                { key: 'time', label: 'Thời gian họp' },
+                { key: 'title', label: 'Tên phiên họp' },
+                { key: 'location', label: 'Địa điểm họp' },
+                { key: 'presider', label: 'Chủ trì cuộc họp' },
+                { key: 'type', label: 'Loại phiên họp' },
+                { key: 'status', label: 'Trạng thái tham gia' },
+                { key: 'actions', label: 'Hành động' },
+              ].map((col) => (
+                <label
+                  key={col.key}
+                  className="flex items-center gap-2 text-sm cursor-pointer text-gray-700"
+                >
+                  <Checkbox
+                    checked={visibleColumns[col.key]}
+                    onCheckedChange={(checked) =>
+                      setVisibleColumns((prev) => ({ ...prev, [col.key]: checked }))
+                    }
+                    className="data-[state=checked]:bg-[#c8102e] data-[state=checked]:border-[#c8102e]"
+                  />
+                  {col.label}
+                </label>
+              ))}
+              <Button
+                className="w-full bg-[#c8102e] hover:bg-[#a50e27] text-white mt-4"
+                onClick={() =>
+                  setVisibleColumns({
+                    stt: true,
+                    time: true,
+                    title: true,
+                    location: true,
+                    presider: true,
+                    type: true,
+                    status: true,
+                    actions: true,
+                  })
+                }
+              >
+                Cài lại
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
         <Button
           variant="outline"
           size="icon"
